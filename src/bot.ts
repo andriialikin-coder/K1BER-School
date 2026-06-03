@@ -79,38 +79,67 @@ bot.on('text', async (ctx) => {
         const cleanPhone = rawPhone.replace(/[^\d+]/g, '');
 
         // --- ПАРСИНГ ИМЕНИ ИЗ ТЕКСТА ---
-        // Вырезаем номер телефона из сообщения
+        // Очищаем строку от номера телефона, чтобы вытащить имя
         let nameCandidate = text.replace(rawPhone, '');
+        // Полностью убираем любые цифры из остатка текста
+        nameCandidate = nameCandidate.replace(/[\d]/g, '');
 
-        // Удаляем стоп-слова (укр/рус) — нечувствительно к регистру
-        const stopWords = [
-            'мене звати', 'моє ім\'я', 'мене звуть', 'моє імя',
-            'меня зовут', 'моё имя', 'мое имя',
-            'ось номер', 'ось мій номер', 'мій номер', 'мой номер',
-            'номер телефону', 'номер телефона', 'телефон',
-            'це мій', 'це мой', 'ось', 'це',
-            'запишіть', 'запишите', 'запиши',
-            'будь ласка', 'пожалуйста',
-            'зателефонуйте', 'перезвоните', 'зателефонуй'
+        let parsedName = '';
+
+        // Жесткие маркеры-префиксы. Если юзер написал один из них, имя будет СЛЕДУЮЩИМ словом.
+        const nameMarkers = [
+            'мене звати', 'мене звуть', 'звати мене', 'моє ім\'я', 'моє імя',
+            'меня зовут', 'мое имя', 'моё имя', 'ім\'я', 'імя', 'имя', 'я'
         ];
 
-        // Защита от обрезания имен: ищем стоп-слова только как самостоятельные слова
-        for (const word of stopWords) {
-            const safeRegex = new RegExp(`(^|\\s)${word}(?=\\s|$)`, 'gi');
-            nameCandidate = nameCandidate.replace(safeRegex, ' ');
+        for (const marker of nameMarkers) {
+            const markerRegex = new RegExp(`(?:^|\\s)${marker}(?:\\s+|$)([^\\s,.:;!?]+)`, 'i');
+            const match = nameCandidate.match(markerRegex);
+            if (match && match[1]) {
+                // Нашли слово идущее сразу за маркером (например, "Наталя")
+                parsedName = match[1].trim();
+                break;
+            }
         }
 
-        // Аккуратно удаляем одиночные союзы (і, й, а, та), не вырывая их из середины имен
-        nameCandidate = nameCandidate.replace(/(^|\s)(і|й|а|та)(?=\s|$)/gi, ' ');
+        // Если маркер не сработал (юзер просто написал "Наталя 0991234567"), включаем резервную глубокую очистку
+        if (!parsedName) {
+            const stopWords = [
+                'ось номер', 'ось мій номер', 'мій номер', 'мой номер',
+                'номер телефону', 'номер телефона', 'телефон',
+                'це мій', 'це мой', 'ось', 'це', 'це я',
+                'запишіть', 'запишите', 'запиши',
+                'будь ласка', 'пожалуйста',
+                'зателефонуйте', 'перезвоните', 'зателефонуй'
+            ];
 
-        // Убираем лишние символы: запятые, точки, двоеточия, лишние пробелы
-        nameCandidate = nameCandidate
-            .replace(/[,.:;!?()"\-\+]/g, '')
-            .replace(/\s+/g, ' ')
-            .trim();
+            for (const word of stopWords) {
+                const safeRegex = new RegExp(`(^|\\s)${word}(?=\\s|$)`, 'gi');
+                nameCandidate = nameCandidate.replace(safeRegex, ' ');
+            }
 
-        // Если после очистки остались слова — это имя, иначе берем из Telegram
-        const parsedName = nameCandidate.length > 0 ? nameCandidate : (ctx.from?.first_name || 'Клієнт');
+            // Убираем одиночные союзы
+            nameCandidate = nameCandidate.replace(/(^|\s)(і|й|а|та)(?=\s|$)/gi, ' ');
+
+            // Сносим пунктуацию
+            nameCandidate = nameCandidate
+                .replace(/[,.:;!?()"\-\+_\/\\|*]/g, '')
+                .replace(/\s+/g, ' ')
+                .trim();
+
+            // Если что-то осталось — берем первое слово как имя
+            if (nameCandidate) {
+                parsedName = nameCandidate.split(' ')[0];
+            }
+        }
+
+        // Финальная валидация длины. Если все еще пусто или мусор — берем имя из Telegram-профиля
+        parsedName = (parsedName.length >= 2 && parsedName.length < 20)
+            ? parsedName
+            : (ctx.from?.first_name || 'Шановний клієнт');
+
+        // Делаем первую букву имени заглавной на уровне кода, для красоты в CRM
+        parsedName = parsedName.charAt(0).toUpperCase() + parsedName.slice(1);
 
         console.log(`[PHONE CAPTURED] Юзер ${chatId} | Номер: ${cleanPhone} | Ім'я: ${parsedName}`);
 
