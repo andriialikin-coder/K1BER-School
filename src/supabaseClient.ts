@@ -1,7 +1,12 @@
 import { createClient } from '@supabase/supabase-js';
 
-// Используем явное приведение типов, чтобы убрать красные ошибки
-const supabaseUrl = process.env.SUPABASE_URL as string;
-const supabaseAnonKey = process.env.SUPABASE_ANON_KEY as string;
+// Вытаскиваем переменные из окружения
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
+
+// Добавляем проверку, чтобы не запускать клиент с пустыми ключами
+if (!supabaseUrl || !supabaseAnonKey) {
+    throw new Error("Missing Supabase environment variables!");
+}
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
