@@ -78,11 +78,40 @@ bot.on('text', async (ctx) => {
         const rawPhone = phoneMatch[0];
         const cleanPhone = rawPhone.replace(/[^\d+]/g, '');
 
-        console.log(`[PHONE CAPTURED] Юзер ${chatId} отправил номер: ${cleanPhone}`);
+        // --- ПАРСИНГ ИМЕНИ ИЗ ТЕКСТА ---
+        // Вырезаем номер телефона из сообщения
+        let nameCandidate = text.replace(rawPhone, '');
 
-        // 1. ЗАПИСЬ В CRM (Supabase) — upsert в leads
+        // Удаляем стоп-слова (укр/рус) — нечувствительно к регистру
+        const stopWords = [
+            'мене звати', 'моє ім\'я', 'мене звуть', 'моє імя',
+            'меня зовут', 'моё имя', 'мое имя',
+            'ось номер', 'ось мій номер', 'мій номер', 'мой номер',
+            'номер телефону', 'номер телефона', 'телефон',
+            'це мій', 'це мой', 'ось', 'це', 'і', 'й',
+            'запишіть', 'запишите', 'запиши',
+            'будь ласка', 'пожалуйста',
+            'зателефонуйте', 'перезвоните', 'зателефонуй'
+        ];
+        for (const word of stopWords) {
+            nameCandidate = nameCandidate.replace(new RegExp(word, 'gi'), '');
+        }
+
+        // Убираем лишние символы: запятые, точки, двоеточия, лишние пробелы
+        nameCandidate = nameCandidate
+            .replace(/[,.:;!?()"\-\+]/g, '')
+            .replace(/\s+/g, ' ')
+            .trim();
+
+        // Если после очистки остались слова — это имя, иначе берем из Telegram
+        const parsedName = nameCandidate.length > 0 ? nameCandidate : (ctx.from?.first_name || 'Клієнт');
+
+        console.log(`[PHONE CAPTURED] Юзер ${chatId} | Номер: ${cleanPhone} | Ім'я: ${parsedName}`);
+
+        // 1. ЗАПИСЬ В CRM (Supabase) — upsert в leads с именем и номером
         const { error: crmError } = await supabase.from('leads').upsert({
             telegram_id: chatId,
+            name: parsedName,
             phone: cleanPhone,
             status: 'phone_captured'
         }, { onConflict: 'telegram_id' });
@@ -105,9 +134,9 @@ bot.on('text', async (ctx) => {
             updated_at: new Date().toISOString()
         });
 
-        // 3. ОТВЕТ КЛИЕНТУ — фиксированное сообщение
+        // 3. ОТВЕТ КЛИЕНТУ — персонализированное сообщение
         await ctx.reply(
-            `Дякую! Ваш номер ${cleanPhone} зафіксовано. ` +
+            `Дякую, ${parsedName}! Ваш номер ${cleanPhone} зафіксовано. ` +
             `Наш менеджер зв'яжеться з вами найближчим часом для підтвердження запису на безкоштовний урок.`
         );
 
