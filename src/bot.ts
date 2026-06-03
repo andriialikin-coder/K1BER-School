@@ -1,40 +1,125 @@
 import { Telegraf, Context } from 'telegraf';
 import { supabase } from './supabaseClient';
 
-// Строгое приведение типа для токена
 const token = (process.env.BOT_TOKEN || '') as string;
+const groqApiKey = (process.env.GROQ_API_KEY || '') as string;
 
-if (!token) {
-    console.error("Критическая ошибка: BOT_TOKEN отсутствует в окружении.");
+if (!token || !groqApiKey) {
+    console.error("Критическая ошибка: BOT_TOKEN или GROQ_API_KEY отсутствует в Vercel.");
 }
 
 const bot = new Telegraf(token);
 
-bot.start((ctx: Context) => {
-    ctx.reply('Привет! Я твой помощник. Как тебя зовут?');
+// --- ОБРАБОТКА /START ---
+bot.start(async (ctx: Context) => {
+    const chatId = ctx.from?.id.toString();
+    const userName = ctx.from?.first_name || 'Unknown';
+    if (!chatId) return;
+
+    // 1. Достаем динамическое приветствие
+    const { data: promptData } = await supabase.from('prompts').select('greeting_text').eq('name', 'main_bot').single();
+    const greeting = promptData?.greeting_text || 'Привет! Я готов к работе.';
+
+    // 2. Обнуляем/создаем историю и пишем лида в CRM
+    await supabase.from('chat_histories').upsert({
+        chat_id: chatId,
+        messages: [{ role: "assistant", content: greeting }],
+        updated_at: new Date().toISOString()
+    });
+
+    await supabase.from('leads').upsert({
+        telegram_id: chatId,
+        name: userName,
+        source: 'bot',
+        status: 'new'
+    }, { onConflict: 'telegram_id' });
+
+    await ctx.reply(greeting);
 });
 
+// --- ОСНОВНЫЕ "МОЗГИ" ---
 bot.on('text', async (ctx) => {
-    const text = ctx.message?.text;
-    const userId = ctx.from?.id.toString();
+    const text = ctx.message.text;
+    const chatId = ctx.from.id.toString();
 
-    if (!text || !userId) return;
+    // 1. Подгружаем системный промпт (личность бота)
+    const { data: promptData } = await supabase.from('prompts').select('content, temperature').eq('name', 'main_bot').single();
+    const systemPrompt = promptData?.content || "Ты полезный ассистент.";
 
-    // Пишем напрямую в Supabase
-    const { error } = await supabase
-        .from('leads')
-        .insert([{
-            telegram_id: userId,
-            name: text,
-            source: 'bot',
-            status: 'new'
-        }]);
+    // 2. Ищем триггерные слова для перехвата стратегии
+    const { data: triggers } = await supabase.from('objection_knowledge_base').select('objection_keyword, ai_strategy');
+    let injectionMessage = null;
 
-    if (error) {
-        console.error('Ошибка базы данных:', error.message);
-        await ctx.reply('Ошибка системы, попробуй позже.');
-    } else {
-        await ctx.reply('Записал! Скоро с тобой свяжутся.');
+    if (triggers && triggers.length > 0) {
+        const cleanText = text.toLowerCase();
+        const matched = triggers.find(t => {
+            if (!t.objection_keyword) return false;
+            const keywords = t.objection_keyword.toLowerCase().split(',').map((k: string) => k.trim());
+            return keywords.some((keyword: string) => {
+                const regex = new RegExp(`(?:^|[\\s.,!?()\\-"'])${keyword}(?:[\\s.,!?()\\-"']|$)`, 'i');
+                return regex.test(cleanText);
+            });
+        });
+
+        if (matched) {
+            console.log(`[TRIGGER] Перехват на слово: ${matched.objection_keyword}`);
+            injectionMessage = {
+                role: "system",
+                content: `КРИТИЧЕСКОЕ ПРАВИЛО: Клиент озвучил триггер "${matched.objection_keyword}". Твоя стратегия: ${matched.ai_strategy}. Строго следуй ей сейчас.`
+            };
+        }
+    }
+
+    // 3. Поднимаем историю диалога
+    const { data: historyData } = await supabase.from('chat_histories').select('messages').eq('chat_id', chatId).maybeSingle();
+    const history = Array.isArray(historyData?.messages) ? historyData.messages : [];
+
+    // 4. Формируем стек памяти для LLM (системный промпт + история + инъекция + текущий текст)
+    history.push({ role: "user", content: text });
+    const messagesForGroq = [
+        { role: "system", content: systemPrompt },
+        ...history.slice(-10, -1) // Берем последние реплики, чтобы не переполнять токеты
+    ];
+    if (injectionMessage) messagesForGroq.push(injectionMessage);
+    messagesForGroq.push(history[history.length - 1]); // Последнее сообщение юзера
+
+    // Показываем клиенту, что бот "печатает"
+    await ctx.sendChatAction('typing');
+
+    // 5. Запрос в нейросеть (Groq API)
+    try {
+        const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${groqApiKey}`,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                model: "llama-3.3-70b-versatile",
+                messages: messagesForGroq,
+                temperature: promptData?.temperature || 0.7,
+                max_tokens: 350
+            })
+        });
+
+        if (!response.ok) throw new Error(`Groq API Status: ${response.status}`);
+        const data = await response.json();
+        const aiReply = data.choices[0].message.content.trim();
+
+        // 6. Сохраняем ответ в память и обновляем лид в CRM
+        history.push({ role: "assistant", content: aiReply });
+        await supabase.from('chat_histories').upsert({ chat_id: chatId, messages: history, updated_at: new Date().toISOString() });
+
+        await supabase.from('leads').upsert({
+            telegram_id: chatId,
+            raw_data: text, // Сохраняем последнее сообщение
+            status: 'in_progress'
+        }, { onConflict: 'telegram_id' });
+
+        await ctx.reply(aiReply);
+    } catch (e) {
+        console.error("[LLM ERROR]:", e);
+        await ctx.reply("Секунду, я обдумываю информацию... (Системная задержка)");
     }
 });
 
