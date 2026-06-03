@@ -64,42 +64,14 @@ bot.command('clear', async (ctx) => {
     await ctx.reply(greeting);
 });
 
-// ========== ПЕРЕХВАТ НОМЕРА ТЕЛЕФОНА (ДО Groq API) ==========
-const phoneRegex = /(?:\+?\d{1,3})?[\s\-]?\(?\d{2,3}\)?[\s\-]?\d{3}[\s\-]?\d{2}[\s\-]?\d{2}/;
-const phoneMatch = text.match(phoneRegex);
+// --- ОСНОВНЫЕ "МОЗГИ" ---
+bot.on('text', async (ctx) => {
+    const text = ctx.message.text;
+    const chatId = ctx.from.id.toString();
 
-if (phoneMatch) {
-    // Очищаем номер от пробелов, дефисов, скобок — оставляем только цифры и +
-    const rawPhone = phoneMatch[0];
-    const cleanPhone = rawPhone.replace(/[^\d+]/g, '');
-
-    // --- ПАРСИНГ ИМЕНИ ИЗ ТЕКСТА ---
-    // Вырезаем номер телефона из сообщения
-    let nameCandidate = text.replace(rawPhone, '');
-
-    // Удаляем стоп-слова (укр/рус) — нечувствительно к регистру
-    const stopWords = [
-        'мене звати', 'моє ім\'я', 'мене звуть', 'моє імя',
-        'меня зовут', 'моё имя', 'мое имя',
-        'ось номер', 'ось мій номер', 'мій номер', 'мой номер',
-        'номер телефону', 'номер телефона', 'телефон',
-        'це мій', 'це мой', 'ось', 'це', 'і', 'й',
-        'запишіть', 'запишите', 'запиши',
-        'будь ласка', 'пожалуйста',
-        'зателефонуйте', 'перезвоните', 'зателефонуй'
-    ];
-    for (const word of stopWords) {
-        nameCandidate = nameCandidate.replace(new RegExp(word, 'gi'), '');
-    }
-
-    // Убираем лишние символы: запятые, точки, двоеточия, лишние пробелы
-    nameCandidate = nameCandidate
-        .replace(/[,.:;!?()"\-\+]/g, '')
-        .replace(/\s+/g, ' ')
-        .trim();
-
-    // Если после очистки остались слова — это имя, иначе берем из Telegram
-    const parsedName = nameCandidate.length > 0 ? nameCandidate : (ctx.from?.first_name || 'Клієнт');
+    // ========== ПЕРЕХВАТ НОМЕРА ТЕЛЕФОНА (ДО Groq API) ==========
+    const phoneRegex = /(?:\+?\d{1,3})?[\s\-]?\(?\d{2,3}\)?[\s\-]?\d{3}[\s\-]?\d{2}[\s\-]?\d{2}/;
+    const phoneMatch = text.match(phoneRegex);
 
     if (phoneMatch) {
         // Очищаем номер от пробелов, дефисов, скобок — оставляем только цифры и +
@@ -122,7 +94,7 @@ if (phoneMatch) {
             'зателефонуйте', 'перезвоните', 'зателефонуй'
         ];
 
-        // Защита от обрезания имен: ищем стоп-слова только как самостоятельные слова (с учетом пробелов или краев строки)
+        // Защита от обрезания имен: ищем стоп-слова только как самостоятельные слова
         for (const word of stopWords) {
             const safeRegex = new RegExp(`(^|\\s)${word}(?=\\s|$)`, 'gi');
             nameCandidate = nameCandidate.replace(safeRegex, ' ');
@@ -155,12 +127,12 @@ if (phoneMatch) {
         }
 
         // 2. ОЧИСТКА ПАМЯТИ — сброс истории диалога
-        const { data: promptData } = await supabase
+        const { data: resetPromptData } = await supabase
             .from('prompts')
             .select('greeting_text')
             .eq('name', 'main_bot')
             .single();
-        const resetGreeting = promptData?.greeting_text || 'Дякуємо за звернення!';
+        const resetGreeting = resetPromptData?.greeting_text || 'Дякуємо за звернення!';
 
         await supabase.from('chat_histories').upsert({
             chat_id: chatId,
@@ -187,7 +159,7 @@ if (phoneMatch) {
     }
 
     const systemPrompt = promptData?.content || "Ты полезный ассистент.";
-    console.log("[SYSTEM PROMPT LOADED]:", systemPrompt.substring(0, 50) + "..."); // Выведет первые 50 символов в логи Vercel
+    console.log("[SYSTEM PROMPT LOADED]:", systemPrompt.substring(0, 50) + "...");
 
     // 2. Ищем триггерные слова для перехвата стратегии
     const { data: triggers } = await supabase.from('objection_knowledge_base').select('objection_keyword, ai_strategy');
@@ -221,7 +193,7 @@ if (phoneMatch) {
     history.push({ role: "user", content: text });
     const messagesForGroq = [
         { role: "system", content: systemPrompt },
-        ...history.slice(-10, -1) // Берем последние реплики, чтобы не переполнять токеты
+        ...history.slice(-10, -1) // Берем последние реплики, чтобы не переполнять токены
     ];
     if (injectionMessage) messagesForGroq.push(injectionMessage);
     messagesForGroq.push(history[history.length - 1]); // Последнее сообщение юзера
