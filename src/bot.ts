@@ -70,31 +70,35 @@ bot.on('text', async (ctx) => {
     const chatId = ctx.from.id.toString();
 
     // ========== ПЕРЕХВАТ НОМЕРА ТЕЛЕФОНА (ДО Groq API) ==========
-    // Жесткая регулярка ТОЛЬКО под украинские мобильные номера
-    const phoneRegex = /(?:\+?38)?(?:\s*\(?0\d{2}\)?\s*|\s*0\d{2}\s*)[\d\s\-]{7,9}/g;
+    // Ищем любые непрерывные последовательности цифр и символов телефона (от 9 до 20 символов)
+    // Это не даст коду вырывать куски из середины длинного бреда
+    const phoneRegex = /(?:\+?[\d][\d\s\-\(\)]{8,20})/g;
     const matches = text.match(phoneRegex);
 
     if (matches) {
         let cleanPhone = '';
         let rawPhone = '';
 
-        // Проверяем каждое совпадение на валидность (длина, спам, префикс 0 или 380)
+        // Проверяем каждое совпадение на жесткую валидность
         for (const match of matches) {
-            const tempClean = match.replace(/[^\d]/g, ''); // Строго цифры
+            const tempClean = match.replace(/[^\d]/g, ''); // Оставляем СТРОГО цифры
 
-            const isValidLength = tempClean.length === 10 || tempClean.length === 12;
-            const isNotSpam = !/^(\d)\1+$/.test(tempClean);
-            const hasValidPrefix = tempClean.startsWith('0') || tempClean.startsWith('380');
+            // Если клиент ввел сплошную "колбасу" из 15-20 цифр (карта, бред) — бракуем целиком.
+            // Украинский мобильный это ИДЕАЛЬНО 10 цифр (начинается на 0) ИЛИ 12 цифр (начинается на 380).
+            const isUa10 = tempClean.length === 10 && tempClean.startsWith('0');
+            const isUa12 = tempClean.length === 12 && tempClean.startsWith('380');
 
-            if (isValidLength && isNotSpam && hasValidPrefix) {
-                // Приводим к стандарту: +380...
-                cleanPhone = tempClean.length === 10 ? '+38' + tempClean : '+' + tempClean;
-                rawPhone = match;
-                break;
+            if (isUa10 || isUa12) {
+                const isNotSpam = !/^(\d)\1+$/.test(tempClean); // Защита от 0000000000
+                if (isNotSpam) {
+                    cleanPhone = isUa10 ? '+38' + tempClean : '+' + tempClean;
+                    rawPhone = match;
+                    break;
+                }
             }
         }
 
-        // Если нашли РЕАЛЬНЫЙ украинский номер:
+        // Если нашли РЕАЛЬНЫЙ украинский номер, а не вырванный кусок:
         if (cleanPhone && rawPhone) {
             // --- ПАРСИНГ ИМЕНИ ИЗ ТЕКСТА ---
             let nameCandidate = text.replace(rawPhone, '');
