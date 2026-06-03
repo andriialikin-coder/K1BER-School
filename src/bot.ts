@@ -18,7 +18,13 @@ bot.start(async (ctx: Context) => {
 
     // 1. Достаем динамическое приветствие
     const { data: promptData } = await supabase.from('prompts').select('greeting_text').eq('name', 'main_bot').single();
-    const greeting = promptData?.greeting_text || 'Привет! Я готов к работе.';
+    const greeting = promptData?.greeting_text;
+
+    if (!greeting) {
+        console.error("[CRITICAL] Помилка: Поле greeting_text порожнє або відсутнє в таблиці prompts для name='main_bot'!");
+        await ctx.reply("Сталася помилка при запуску бота. Будь ласка, спробуйте пізніше або зверніться до адміністратора.");
+        return;
+    }
 
     // 2. Обнуляем/создаем историю и пишем лида в CRM
     await supabase.from('chat_histories').upsert({
