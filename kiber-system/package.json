@@ -2,7 +2,7 @@
   "name": "kiber-system",
   "version": "1.0.0",
   "description": "",
-  "main": "api/webhook.js",
+  "main": "api/webhook.ts",
   "scripts": {
     "build": "tsc"
   },
