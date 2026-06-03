@@ -69,6 +69,53 @@ bot.on('text', async (ctx) => {
     const text = ctx.message.text;
     const chatId = ctx.from.id.toString();
 
+    // ========== ПЕРЕХВАТ НОМЕРА ТЕЛЕФОНА (ДО Groq API) ==========
+    const phoneRegex = /(?:\+?\d{1,3})?[\s\-]?\(?\d{2,3}\)?[\s\-]?\d{3}[\s\-]?\d{2}[\s\-]?\d{2}/;
+    const phoneMatch = text.match(phoneRegex);
+
+    if (phoneMatch) {
+        // Очищаем номер от пробелов, дефисов, скобок — оставляем только цифры и +
+        const rawPhone = phoneMatch[0];
+        const cleanPhone = rawPhone.replace(/[^\d+]/g, '');
+
+        console.log(`[PHONE CAPTURED] Юзер ${chatId} отправил номер: ${cleanPhone}`);
+
+        // 1. ЗАПИСЬ В CRM (Supabase) — upsert в leads
+        const { error: crmError } = await supabase.from('leads').upsert({
+            telegram_id: chatId,
+            phone: cleanPhone,
+            status: 'phone_captured'
+        }, { onConflict: 'telegram_id' });
+
+        if (crmError) {
+            console.error('[CRM ERROR] Не удалось сохранить номер:', crmError.message);
+        }
+
+        // 2. ОЧИСТКА ПАМЯТИ — сброс истории диалога
+        const { data: promptData } = await supabase
+            .from('prompts')
+            .select('greeting_text')
+            .eq('name', 'main_bot')
+            .single();
+        const resetGreeting = promptData?.greeting_text || 'Дякуємо за звернення!';
+
+        await supabase.from('chat_histories').upsert({
+            chat_id: chatId,
+            messages: [{ role: "assistant", content: resetGreeting }],
+            updated_at: new Date().toISOString()
+        });
+
+        // 3. ОТВЕТ КЛИЕНТУ — фиксированное сообщение
+        await ctx.reply(
+            `Дякую! Ваш номер ${cleanPhone} зафіксовано. ` +
+            `Наш менеджер зв'яжеться з вами найближчим часом для підтвердження запису на безкоштовний урок.`
+        );
+
+        // 4. СТОП — запрос к Groq API НЕ уходит
+        return;
+    }
+    // ========== КОНЕЦ ПЕРЕХВАТА НОМЕРА ==========
+
     // 1. Подгружаем системный промпт (личность бота)
     const { data: promptData, error: promptError } = await supabase.from('prompts').select('content, temperature').eq('name', 'main_bot').single();
 
