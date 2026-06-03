@@ -43,8 +43,14 @@ bot.on('text', async (ctx) => {
     const chatId = ctx.from.id.toString();
 
     // 1. Подгружаем системный промпт (личность бота)
-    const { data: promptData } = await supabase.from('prompts').select('content, temperature').eq('name', 'main_bot').single();
+    const { data: promptData, error: promptError } = await supabase.from('prompts').select('content, temperature').eq('name', 'main_bot').single();
+
+    if (promptError) {
+        console.error("[CRITICAL DB ERROR] Не удалось загрузить промпт из Supabase:", promptError.message);
+    }
+
     const systemPrompt = promptData?.content || "Ты полезный ассистент.";
+    console.log("[SYSTEM PROMPT LOADED]:", systemPrompt.substring(0, 50) + "..."); // Выведет первые 50 символов в логи Vercel
 
     // 2. Ищем триггерные слова для перехвата стратегии
     const { data: triggers } = await supabase.from('objection_knowledge_base').select('objection_keyword, ai_strategy');
