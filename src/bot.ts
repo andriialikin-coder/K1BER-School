@@ -1,35 +1,41 @@
-import { Telegraf } from 'telegraf';
+import { Telegraf, Context } from 'telegraf';
 import { supabase } from './supabaseClient';
 
-// Явно объявляем токен, вытаскивая его из глобального окружения safe-методом
-const token = (typeof process !== 'undefined' && process.env ? process.env.BOT_TOKEN : '') as string;
+// Строгое приведение типа для токена
+const token = (process.env.BOT_TOKEN || '') as string;
 
 if (!token) {
-    console.warn("Внимание: BOT_TOKEN не обнаружен в локальном окружении. Код готов к деплою на Vercel.");
+    console.error("Критическая ошибка: BOT_TOKEN отсутствует в окружении.");
 }
 
 const bot = new Telegraf(token);
 
-bot.start((ctx) => {
+bot.start((ctx: Context) => {
     ctx.reply('Привет! Я твой помощник. Как тебя зовут?');
 });
 
 bot.on('text', async (ctx) => {
-    const text = ctx.message.text;
-    const userId = ctx.from.id.toString();
+    const text = ctx.message?.text;
+    const userId = ctx.from?.id.toString();
 
-    // Запись в Supabase
+    if (!text || !userId) return;
+
+    // Пишем напрямую в Supabase
     const { error } = await supabase
         .from('leads')
-        .insert([{ telegram_id: userId, name: text, source: 'bot', status: 'new' }]);
+        .insert([{
+            telegram_id: userId,
+            name: text,
+            source: 'bot',
+            status: 'new'
+        }]);
 
     if (error) {
-        console.error('Ошибка Supabase:', error);
-        ctx.reply('Ошибка системы, попробуй позже.');
+        console.error('Ошибка базы данных:', error.message);
+        await ctx.reply('Ошибка системы, попробуй позже.');
     } else {
-        ctx.reply('Записал! Скоро с тобой свяжутся.');
+        await ctx.reply('Записал! Скоро с тобой свяжутся.');
     }
 });
 
-// Экспортируем бота для работы через Webhook на Vercel
 export default bot;
