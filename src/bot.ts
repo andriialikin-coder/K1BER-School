@@ -10,23 +10,26 @@ if (!token || !groqApiKey) {
 
 const bot = new Telegraf(token);
 
+// --- АНТИСПАМ (Rate Limit in-memory) ---
+// Зберігає час останнього повідомлення від користувача
+const spamCache = new Map<string, number>();
+const SPAM_COOLDOWN_MS = 2000; // 2 секунди між повідомленнями
+
 // --- ОБРАБОТКА /START ---
 bot.start(async (ctx: Context) => {
     const chatId = ctx.from?.id.toString();
     const userName = ctx.from?.first_name || 'Unknown';
     if (!chatId) return;
 
-    // 1. Достаем динамическое приветствие
     const { data: promptData } = await supabase.from('prompts').select('greeting_text').eq('name', 'main_bot').single();
     const greeting = promptData?.greeting_text;
 
     if (!greeting) {
-        console.error("[CRITICAL] Помилка: Поле greeting_text порожнє або відсутнє в таблиці prompts для name='main_bot'!");
-        await ctx.reply("Сталася помилка при запуску бота. Будь ласка, спробуйте пізніше або зверніться до адміністратора.");
+        console.error("[CRITICAL] Помилка: Поле greeting_text порожнє або відсутнє!");
+        await ctx.reply("Сталася помилка при запуску бота.");
         return;
     }
 
-    // 2. Обнуляем/создаем историю и пишем лида в CRM
     await supabase.from('chat_histories').upsert({
         chat_id: chatId,
         messages: [{ role: "assistant", content: greeting }],
@@ -48,12 +51,10 @@ bot.command('clear', async (ctx) => {
     const chatId = ctx.from?.id.toString();
     if (!chatId) return;
 
-    // 1. Достаем динамическое приветствие (или берем заглушку)
     const { data: promptData, error: promptError } = await supabase.from('prompts').select('greeting_text').eq('name', 'main_bot').single();
     if (promptError) console.error("[CRITICAL] Ошибка загрузки промпта при /clear:", promptError.message);
     const greeting = promptData?.greeting_text || 'Память очищена. Начнем заново.';
 
-    // 2. Жестко перезаписываем историю диалога
     await supabase.from('chat_histories').upsert({
         chat_id: chatId,
         messages: [{ role: "assistant", content: greeting }],
@@ -69,7 +70,17 @@ bot.on('text', async (ctx) => {
     const text = ctx.message.text;
     const chatId = ctx.from.id.toString();
 
-    // ========== ПЕРЕХВАТ НОМЕРА ТЕЛЕФОНА (ДО Groq API) ==========
+    // ========== 0. ЗАХИСТ ВІД СПАМУ ==========
+    const now = Date.now();
+    const lastMessageTime = spamCache.get(chatId) || 0;
+
+    if (now - lastMessageTime < SPAM_COOLDOWN_MS) {
+        console.warn(`[SPAM BLOCKED] Користувач ${chatId} відправляє повідомлення занадто швидко.`);
+        return; // Мовчки ігноруємо, щоб не витрачати ресурси Vercel та Groq
+    }
+    spamCache.set(chatId, now); // Оновлюємо таймер
+
+    // ========== 1. ПЕРЕХВАТ НОМЕРА ТЕЛЕФОНА (ДО Groq API) ==========
     const phoneRegex = /(?:\+?[\d][\d\s\-\(\)]{8,20})/g;
     const matches = text.match(phoneRegex);
 
@@ -90,7 +101,7 @@ bot.on('text', async (ctx) => {
 
                 if (isNotSpam && !isTestNumber) {
                     cleanPhoneForCRM = isUa10 ? '+38' + tempClean : '+' + tempClean;
-                    displayPhoneForUser = match.trim(); // Сохраняем формат юзера для чата
+                    displayPhoneForUser = match.trim();
                     rawPhone = match;
                     break;
                 } else if (isTestNumber) {
@@ -122,31 +133,42 @@ bot.on('text', async (ctx) => {
             parsedName = (parsedName.length >= 2 && parsedName.length < 20) ? parsedName : (ctx.from?.first_name || 'Шановний клієнт');
             parsedName = parsedName.charAt(0).toUpperCase() + parsedName.slice(1);
 
-            // 1. ЗАПИСЬ В CRM (идеальный формат)
-            await supabase.from('leads').upsert({ telegram_id: chatId, name: parsedName, phone: cleanPhoneForCRM, status: 'phone_captured' }, { onConflict: 'telegram_id' });
+            console.log(`[REAL LEAD CAPTURED] ID: ${chatId} | Ім'я: ${parsedName} | Тел: ${cleanPhoneForCRM}`);
 
-            // 2. ОЧИСТКА ПАМЯТИ
-            const { data: promptData } = await supabase.from('prompts').select('greeting_text').eq('name', 'main_bot').single();
-            await supabase.from('chat_histories').upsert({ chat_id: chatId, messages: [{ role: "assistant", content: promptData?.greeting_text || 'Дякуємо!' }], updated_at: new Date().toISOString() });
+            // === ПАРАЛЕЛЬНА ОПТИМІЗОВАНА ЗАПИС В БД (Захист від Vercel Timeout 5s) ===
+            try {
+                await Promise.all([
+                    supabase.from('leads').upsert({
+                        telegram_id: chatId,
+                        name: parsedName,
+                        phone: cleanPhoneForCRM,
+                        status: 'phone_captured'
+                    }, { onConflict: 'telegram_id' }),
 
-            // 3. ОТВЕТ КЛИЕНТУ (нативный формат без системных плюсов)
+                    supabase.from('chat_histories').upsert({
+                        chat_id: chatId,
+                        messages: [{ role: "assistant", content: "Дякуємо за реєстрацію! Наш менеджер незабаром зв'яжеться з вами." }],
+                        updated_at: new Date().toISOString()
+                    })
+                ]);
+            } catch (dbError) {
+                console.error("[CRITICAL DB ERROR]:", dbError);
+            }
+
+            // ВІДПОВІДЬ КЛІЄНТУ (нативний формат)
             await ctx.reply(`Дякую, ${parsedName}! Ваш номер ${displayPhoneForUser} зафіксовано. Наш менеджер зв'яжеться з вами найближчим часом для підтвердження запису на безкоштовний урок.`);
             return;
         }
     }
     // ========== КОНЕЦ ПЕРЕХВАТА НОМЕРА ==========
 
-    // 1. Подгружаем системный промпт (личность бота)
+    // 2. Подгружаем системный промпт (личность бота)
     const { data: promptData, error: promptError } = await supabase.from('prompts').select('content, temperature').eq('name', 'main_bot').single();
 
-    if (promptError) {
-        console.error("[CRITICAL DB ERROR] Не удалось загрузить промпт из Supabase:", promptError.message);
-    }
-
+    if (promptError) console.error("[CRITICAL DB ERROR] Не удалось загрузить промпт из Supabase:", promptError.message);
     const systemPrompt = promptData?.content || "Ты полезный ассистент.";
-    console.log("[SYSTEM PROMPT LOADED]:", systemPrompt.substring(0, 50) + "...");
 
-    // 2. Ищем триггерные слова для перехвата стратегии
+    // 3. Ищем триггерные слова для перехвата стратегии
     const { data: triggers } = await supabase.from('objection_knowledge_base').select('objection_keyword, ai_strategy');
     let injectionMessage = null;
 
@@ -170,20 +192,18 @@ bot.on('text', async (ctx) => {
         }
     }
 
-    // 3. Поднимаем историю диалога
+    // 4. Поднимаем историю диалога
     const { data: historyData } = await supabase.from('chat_histories').select('messages').eq('chat_id', chatId).maybeSingle();
     const history = Array.isArray(historyData?.messages) ? historyData.messages : [];
 
-    // 4. Формируем стек памяти для LLM (системный промпт + история + инъекция + текущий текст)
     history.push({ role: "user", content: text });
     const messagesForGroq = [
         { role: "system", content: systemPrompt },
-        ...history.slice(-10, -1) // Берем последние реплики, чтобы не переполнять токены
+        ...history.slice(-10, -1)
     ];
     if (injectionMessage) messagesForGroq.push(injectionMessage);
-    messagesForGroq.push(history[history.length - 1]); // Последнее сообщение юзера
+    messagesForGroq.push(history[history.length - 1]);
 
-    // Показываем клиенту, что бот "печатает"
     await ctx.sendChatAction('typing');
 
     // 5. Запрос в нейросеть (Groq API)
@@ -212,7 +232,7 @@ bot.on('text', async (ctx) => {
 
         await supabase.from('leads').upsert({
             telegram_id: chatId,
-            raw_data: text, // Сохраняем последнее сообщение
+            raw_data: text,
             status: 'in_progress'
         }, { onConflict: 'telegram_id' });
 
