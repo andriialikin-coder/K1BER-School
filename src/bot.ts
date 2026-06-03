@@ -192,13 +192,25 @@ bot.on('text', async (ctx) => {
         }
     }
 
-    // 4. Поднимаем историю диалога
-    const { data: historyData } = await supabase.from('chat_histories').select('messages').eq('chat_id', chatId).maybeSingle();
-    const history = Array.isArray(historyData?.messages) ? historyData.messages : [];
+    // 4. Поднимаем историю диалога и СТАТУС ЛИДА (параллельно для скорости)
+    const [historyRes, leadRes] = await Promise.all([
+        supabase.from('chat_histories').select('messages').eq('chat_id', chatId).maybeSingle(),
+        supabase.from('leads').select('status').eq('telegram_id', chatId).maybeSingle()
+    ]);
+
+    const history = Array.isArray(historyRes.data?.messages) ? historyRes.data.messages : [];
+    const isCaptured = leadRes.data?.status === 'phone_captured';
+
+    // 4.1 Если лид уже сдал номер — жестко меняем ему личность, отключая воронку продаж
+    let finalSystemPrompt = systemPrompt;
+    if (isCaptured) {
+        finalSystemPrompt = "Ти — Олег, адміністратор Kiber School. Цей клієнт ВЖЕ залишив свій номер телефону, і заявка успішно передана менеджеру. Твоя єдина мета зараз: ввічливо і лаконічно відповідати на його поточні запитання або попрощатися. КРИТИЧНЕ ПРАВИЛО: БІЛЬШЕ НІКОЛИ НЕ ПРОСИ НОМЕР ТЕЛЕФОНУ І НЕ ПРОПОНУЙ БРОНЮВАТИ МІСЦЕ.";
+        injectionMessage = null; // Отключаем скрипты возражений, они больше не нужны
+    }
 
     history.push({ role: "user", content: text });
     const messagesForGroq = [
-        { role: "system", content: systemPrompt },
+        { role: "system", content: finalSystemPrompt },
         ...history.slice(-10, -1)
     ];
     if (injectionMessage) messagesForGroq.push(injectionMessage);
