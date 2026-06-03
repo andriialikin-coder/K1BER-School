@@ -90,10 +90,16 @@ bot.on('text', async (ctx) => {
 
             if (isUa10 || isUa12) {
                 const isNotSpam = !/^(\d)\1+$/.test(tempClean); // Защита от 0000000000
-                if (isNotSpam) {
+
+                // ЖЕСТКИЙ ФИЛЬТР: Проверяем, не пытается ли юзер скопировать наш пример "0501234567"
+                const isTestNumber = tempClean.endsWith('0501234567') || tempClean.endsWith('501234567');
+
+                if (isNotSpam && !isTestNumber) {
                     cleanPhone = isUa10 ? '+38' + tempClean : '+' + tempClean;
                     rawPhone = match;
                     break;
+                } else if (isTestNumber) {
+                    console.log(`[SECURITY] Юзер ${chatId} ввів тестовий номер із шаблону. Перехват заблоковано.`);
                 }
             }
         }
