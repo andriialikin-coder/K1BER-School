@@ -11,9 +11,8 @@ if (!token || !groqApiKey) {
 const bot = new Telegraf(token);
 
 // --- АНТИСПАМ (Rate Limit in-memory) ---
-// Зберігає час останнього повідомлення від користувача
 const spamCache = new Map<string, number>();
-const SPAM_COOLDOWN_MS = 2000; // 2 секунди між повідомленнями
+const SPAM_COOLDOWN_MS = 2000;
 
 // --- ОБРАБОТКА /START ---
 bot.start(async (ctx: Context) => {
@@ -61,6 +60,8 @@ bot.command('clear', async (ctx) => {
         updated_at: new Date().toISOString()
     });
 
+    await supabase.from('leads').update({ status: 'new' }).eq('telegram_id', chatId);
+
     console.log(`[MEMORY CLEARED] Юзер ${chatId} сбросил контекст.`);
     await ctx.reply(greeting);
 });
@@ -76,9 +77,9 @@ bot.on('text', async (ctx) => {
 
     if (now - lastMessageTime < SPAM_COOLDOWN_MS) {
         console.warn(`[SPAM BLOCKED] Користувач ${chatId} відправляє повідомлення занадто швидко.`);
-        return; // Мовчки ігноруємо, щоб не витрачати ресурси Vercel та Groq
+        return;
     }
-    spamCache.set(chatId, now); // Оновлюємо таймер
+    spamCache.set(chatId, now);
 
     // ========== 1. ПЕРЕХВАТ НОМЕРА ТЕЛЕФОНА (ДО Groq API) ==========
     const phoneRegex = /(?:\+?[\d][\d\s\-\(\)]{8,20})/g;
@@ -135,7 +136,6 @@ bot.on('text', async (ctx) => {
 
             console.log(`[REAL LEAD CAPTURED] ID: ${chatId} | Ім'я: ${parsedName} | Тел: ${cleanPhoneForCRM}`);
 
-            // === ПАРАЛЕЛЬНА ОПТИМІЗОВАНА ЗАПИС В БД (Захист від Vercel Timeout 5s) ===
             try {
                 await Promise.all([
                     supabase.from('leads').upsert({
@@ -155,7 +155,6 @@ bot.on('text', async (ctx) => {
                 console.error("[CRITICAL DB ERROR]:", dbError);
             }
 
-            // ВІДПОВІДЬ КЛІЄНТУ (нативний формат)
             await ctx.reply(`Дякую, ${parsedName}! Ваш номер ${displayPhoneForUser} зафіксовано. Наш менеджер зв'яжеться з вами найближчим часом для підтвердження запису на безкоштовний урок.`);
             return;
         }
@@ -205,7 +204,7 @@ bot.on('text', async (ctx) => {
     let finalSystemPrompt = systemPrompt;
     if (isCaptured) {
         finalSystemPrompt = "Ти — Олег, адміністратор Kiber School. Цей клієнт ВЖЕ залишив свій номер телефону, і заявка успішно передана менеджеру. Твоя єдина мета зараз: ввічливо і лаконічно відповідати на його поточні запитання або попрощатися. КРИТИЧНЕ ПРАВИЛО: БІЛЬШЕ НІКОЛИ НЕ ПРОСИ НОМЕР ТЕЛЕФОНУ І НЕ ПРОПОНУЙ БРОНЮВАТИ МІСЦЕ.";
-        injectionMessage = null; // Отключаем скрипты возражений, они больше не нужны
+        injectionMessage = null;
     }
 
     history.push({ role: "user", content: text });
@@ -242,11 +241,14 @@ bot.on('text', async (ctx) => {
         history.push({ role: "assistant", content: aiReply });
         await supabase.from('chat_histories').upsert({ chat_id: chatId, messages: history, updated_at: new Date().toISOString() });
 
-        await supabase.from('leads').upsert({
-            telegram_id: chatId,
-            raw_data: text,
-            status: 'in_progress'
-        }, { onConflict: 'telegram_id' });
+        // Важно: записываем raw_data ТОЛЬКО если статус еще не "phone_captured", чтобы не сломать стейт-менеджмент
+        if (!isCaptured) {
+            await supabase.from('leads').upsert({
+                telegram_id: chatId,
+                raw_data: text,
+                status: 'in_progress'
+            }, { onConflict: 'telegram_id' });
+        }
 
         await ctx.reply(aiReply);
     } catch (e) {
