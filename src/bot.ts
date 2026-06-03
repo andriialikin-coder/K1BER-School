@@ -37,6 +37,27 @@ bot.start(async (ctx: Context) => {
     await ctx.reply(greeting);
 });
 
+// --- ОЧИСТКА ПАМЯТИ (/clear) ---
+bot.command('clear', async (ctx) => {
+    const chatId = ctx.from?.id.toString();
+    if (!chatId) return;
+
+    // 1. Достаем динамическое приветствие (или берем заглушку)
+    const { data: promptData, error: promptError } = await supabase.from('prompts').select('greeting_text').eq('name', 'main_bot').single();
+    if (promptError) console.error("[CRITICAL] Ошибка загрузки промпта при /clear:", promptError.message);
+    const greeting = promptData?.greeting_text || 'Память очищена. Начнем заново.';
+
+    // 2. Жестко перезаписываем историю диалога
+    await supabase.from('chat_histories').upsert({
+        chat_id: chatId,
+        messages: [{ role: "assistant", content: greeting }],
+        updated_at: new Date().toISOString()
+    });
+
+    console.log(`[MEMORY CLEARED] Юзер ${chatId} сбросил контекст.`);
+    await ctx.reply(greeting);
+});
+
 // --- ОСНОВНЫЕ "МОЗГИ" ---
 bot.on('text', async (ctx) => {
     const text = ctx.message.text;
