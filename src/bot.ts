@@ -70,113 +70,118 @@ bot.on('text', async (ctx) => {
     const chatId = ctx.from.id.toString();
 
     // ========== ПЕРЕХВАТ НОМЕРА ТЕЛЕФОНА (ДО Groq API) ==========
-    const phoneRegex = /(?:\+?\d{1,3})?[\s\-]?\(?\d{2,3}\)?[\s\-]?\d{3}[\s\-]?\d{2}[\s\-]?\d{2}/;
-    const phoneMatch = text.match(phoneRegex);
+    // Жесткая регулярка ТОЛЬКО под украинские мобильные номера
+    const phoneRegex = /(?:\+?38)?(?:\s*\(?0\d{2}\)?\s*|\s*0\d{2}\s*)[\d\s\-]{7,9}/g;
+    const matches = text.match(phoneRegex);
 
-    if (phoneMatch) {
-        // Очищаем номер от пробелов, дефисов, скобок — оставляем только цифры и +
-        const rawPhone = phoneMatch[0];
-        const cleanPhone = rawPhone.replace(/[^\d+]/g, '');
+    if (matches) {
+        let cleanPhone = '';
+        let rawPhone = '';
 
-        // --- ПАРСИНГ ИМЕНИ ИЗ ТЕКСТА ---
-        // Очищаем строку от номера телефона, чтобы вытащить имя
-        let nameCandidate = text.replace(rawPhone, '');
-        // Полностью убираем любые цифры из остатка текста
-        nameCandidate = nameCandidate.replace(/[\d]/g, '');
+        // Проверяем каждое совпадение на валидность (длина, спам, префикс 0 или 380)
+        for (const match of matches) {
+            const tempClean = match.replace(/[^\d]/g, ''); // Строго цифры
 
-        let parsedName = '';
+            const isValidLength = tempClean.length === 10 || tempClean.length === 12;
+            const isNotSpam = !/^(\d)\1+$/.test(tempClean);
+            const hasValidPrefix = tempClean.startsWith('0') || tempClean.startsWith('380');
 
-        // Жесткие маркеры-префиксы. Если юзер написал один из них, имя будет СЛЕДУЮЩИМ словом.
-        const nameMarkers = [
-            'мене звати', 'мене звуть', 'звати мене', 'моє ім\'я', 'моє імя',
-            'меня зовут', 'мое имя', 'моё имя', 'ім\'я', 'імя', 'имя', 'я'
-        ];
-
-        for (const marker of nameMarkers) {
-            const markerRegex = new RegExp(`(?:^|\\s)${marker}(?:\\s+|$)([^\\s,.:;!?]+)`, 'i');
-            const match = nameCandidate.match(markerRegex);
-            if (match && match[1]) {
-                // Нашли слово идущее сразу за маркером (например, "Наталя")
-                parsedName = match[1].trim();
+            if (isValidLength && isNotSpam && hasValidPrefix) {
+                // Приводим к стандарту: +380...
+                cleanPhone = tempClean.length === 10 ? '+38' + tempClean : '+' + tempClean;
+                rawPhone = match;
                 break;
             }
         }
 
-        // Если маркер не сработал (юзер просто написал "Наталя 0991234567"), включаем резервную глубокую очистку
-        if (!parsedName) {
-            const stopWords = [
-                'ось номер', 'ось мій номер', 'мій номер', 'мой номер',
-                'номер телефону', 'номер телефона', 'телефон',
-                'це мій', 'це мой', 'ось', 'це', 'це я',
-                'запишіть', 'запишите', 'запиши',
-                'будь ласка', 'пожалуйста',
-                'зателефонуйте', 'перезвоните', 'зателефонуй'
+        // Если нашли РЕАЛЬНЫЙ украинский номер:
+        if (cleanPhone && rawPhone) {
+            // --- ПАРСИНГ ИМЕНИ ИЗ ТЕКСТА ---
+            let nameCandidate = text.replace(rawPhone, '');
+            nameCandidate = nameCandidate.replace(/[\d]/g, ''); // Сносим все цифры
+
+            let parsedName = '';
+
+            // Жесткие маркеры-префиксы
+            const nameMarkers = [
+                'мене звати', 'мене звуть', 'звати мене', 'моє ім\'я', 'моє імя',
+                'меня зовут', 'мое имя', 'моё имя', 'ім\'я', 'імя', 'имя', 'я'
             ];
 
-            for (const word of stopWords) {
-                const safeRegex = new RegExp(`(^|\\s)${word}(?=\\s|$)`, 'gi');
-                nameCandidate = nameCandidate.replace(safeRegex, ' ');
+            for (const marker of nameMarkers) {
+                const markerRegex = new RegExp(`(?:^|\\s)${marker}(?:\\s+|$)([^\\s,.:;!?]+)`, 'i');
+                const match = nameCandidate.match(markerRegex);
+                if (match && match[1]) {
+                    parsedName = match[1].trim();
+                    break;
+                }
             }
 
-            // Убираем одиночные союзы
-            nameCandidate = nameCandidate.replace(/(^|\s)(і|й|а|та)(?=\s|$)/gi, ' ');
+            // Резервная очистка, если нет маркеров
+            if (!parsedName) {
+                const stopWords = [
+                    'ось номер', 'ось мій номер', 'мій номер', 'мой номер',
+                    'номер телефону', 'номер телефона', 'телефон',
+                    'це мій', 'це мой', 'ось', 'це', 'це я',
+                    'запишіть', 'запишите', 'запиши',
+                    'будь ласка', 'пожалуйста',
+                    'зателефонуйте', 'перезвоните', 'зателефонуй'
+                ];
 
-            // Сносим пунктуацию
-            nameCandidate = nameCandidate
-                .replace(/[,.:;!?()"\-\+_\/\\|*]/g, '')
-                .replace(/\s+/g, ' ')
-                .trim();
+                for (const word of stopWords) {
+                    const safeRegex = new RegExp(`(^|\\s)${word}(?=\\s|$)`, 'gi');
+                    nameCandidate = nameCandidate.replace(safeRegex, ' ');
+                }
 
-            // Если что-то осталось — берем первое слово как имя
-            if (nameCandidate) {
-                parsedName = nameCandidate.split(' ')[0];
+                nameCandidate = nameCandidate.replace(/(^|\s)(і|й|а|та)(?=\s|$)/gi, ' ');
+
+                nameCandidate = nameCandidate
+                    .replace(/[,.:;!?()"\-\+_\/\\|*]/g, '')
+                    .replace(/\s+/g, ' ')
+                    .trim();
+
+                if (nameCandidate) {
+                    parsedName = nameCandidate.split(' ')[0];
+                }
             }
+
+            // Валидация имени и капитализация
+            parsedName = (parsedName.length >= 2 && parsedName.length < 20)
+                ? parsedName
+                : (ctx.from?.first_name || 'Шановний клієнт');
+
+            parsedName = parsedName.charAt(0).toUpperCase() + parsedName.slice(1);
+
+            console.log(`[REAL LEAD CAPTURED] ID: ${chatId} | Ім'я: ${parsedName} | Тел: ${cleanPhone}`);
+
+            // 1. ЗАПИСЬ В CRM (Supabase)
+            const { error: crmError } = await supabase.from('leads').upsert({
+                telegram_id: chatId,
+                name: parsedName,
+                phone: cleanPhone,
+                status: 'phone_captured'
+            }, { onConflict: 'telegram_id' });
+
+            if (crmError) console.error('[CRM ERROR]:', crmError.message);
+
+            // 2. ОЧИСТКА ПАМЯТИ
+            const { data: resetPromptData } = await supabase.from('prompts').select('greeting_text').eq('name', 'main_bot').single();
+            const resetGreeting = resetPromptData?.greeting_text || 'Дякуємо за звернення!';
+
+            await supabase.from('chat_histories').upsert({
+                chat_id: chatId,
+                messages: [{ role: "assistant", content: resetGreeting }],
+                updated_at: new Date().toISOString()
+            });
+
+            // 3. ОТВЕТ КЛИЕНТУ
+            await ctx.reply(
+                `Дякую, ${parsedName}! Ваш номер ${cleanPhone} зафіксовано. Наш менеджер зв'яжеться з вами найближчим часом для підтвердження запису на безкоштовний урок.`
+            );
+
+            // 4. СТОП
+            return;
         }
-
-        // Финальная валидация длины. Если все еще пусто или мусор — берем имя из Telegram-профиля
-        parsedName = (parsedName.length >= 2 && parsedName.length < 20)
-            ? parsedName
-            : (ctx.from?.first_name || 'Шановний клієнт');
-
-        // Делаем первую букву имени заглавной на уровне кода, для красоты в CRM
-        parsedName = parsedName.charAt(0).toUpperCase() + parsedName.slice(1);
-
-        console.log(`[PHONE CAPTURED] Юзер ${chatId} | Номер: ${cleanPhone} | Ім'я: ${parsedName}`);
-
-        // 1. ЗАПИСЬ В CRM (Supabase) — upsert в leads с именем и номером
-        const { error: crmError } = await supabase.from('leads').upsert({
-            telegram_id: chatId,
-            name: parsedName,
-            phone: cleanPhone,
-            status: 'phone_captured'
-        }, { onConflict: 'telegram_id' });
-
-        if (crmError) {
-            console.error('[CRM ERROR] Не удалось сохранить номер:', crmError.message);
-        }
-
-        // 2. ОЧИСТКА ПАМЯТИ — сброс истории диалога
-        const { data: resetPromptData } = await supabase
-            .from('prompts')
-            .select('greeting_text')
-            .eq('name', 'main_bot')
-            .single();
-        const resetGreeting = resetPromptData?.greeting_text || 'Дякуємо за звернення!';
-
-        await supabase.from('chat_histories').upsert({
-            chat_id: chatId,
-            messages: [{ role: "assistant", content: resetGreeting }],
-            updated_at: new Date().toISOString()
-        });
-
-        // 3. ОТВЕТ КЛИЕНТУ — персонализированное сообщение
-        await ctx.reply(
-            `Дякую, ${parsedName}! Ваш номер ${cleanPhone} зафіксовано. ` +
-            `Наш менеджер зв'яжеться з вами найближчим часом для підтвердження запису на безкоштовний урок.`
-        );
-
-        // 4. СТОП — запрос к Groq API НЕ уходит
-        return;
     }
     // ========== КОНЕЦ ПЕРЕХВАТА НОМЕРА ==========
 
