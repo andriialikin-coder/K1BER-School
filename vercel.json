@@ -1,7 +1,7 @@
 {
   "version": 2,
-  "buildCommand": "",
-  "outputDirectory": "",
+  "buildCommand": "cd crm && npm install && npm run build",
+  "outputDirectory": "crm/dist",
   "builds": [
     {
       "src": "api/**/*.ts",
@@ -12,6 +12,10 @@
     {
       "src": "/api/(.*)",
       "dest": "/api/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
     }
   ]
 }
