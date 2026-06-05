@@ -632,11 +632,11 @@ const ContactsAndMap = () => (
 );
 
 // МІНІ-КАБІНЕТ (Після успішної авторизації)
-const MiniCabinet = ({ clientName, registeredCourse, phone }: { clientName: string, registeredCourse: string, phone: string }) => {
+const MiniCabinet = ({ clientName, registeredCourse, phone, initialTime }: { clientName: string, registeredCourse: string, phone: string, initialTime?: string }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [isConfirming, setIsConfirming] = useState(false);
-    const [selectedTime, setSelectedTime] = useState('');
-    const [isConfirmed, setIsConfirmed] = useState(false);
+    const [selectedTime, setSelectedTime] = useState(initialTime || '');
+    const [isConfirmed, setIsConfirmed] = useState(!!initialTime);
     const [receiptUrl] = useState('');
 
     const handleConfirm = async () => {
@@ -715,52 +715,57 @@ const MiniCabinet = ({ clientName, registeredCourse, phone }: { clientName: stri
                         </div>
                     </div>
                 ) : (
-                    <>
-                        <h2 className="text-2xl font-black text-center mb-6">
+                    <div className="mb-6">
+                        <h2 className="text-2xl font-black text-center mb-2">
                             {clientName ? `Вітаємо, ${clientName}!` : 'Вітаємо!'}
-                            <br />Вашу дитину записано на <span className="text-cyan-400">{registeredCourse || 'обраний курс'}</span>.
                         </h2>
-                        
-                        <p className="text-center text-slate-400 text-sm mb-4">Оберіть зручний час для першого заняття:</p>
+                        <p className="text-center text-slate-300 text-sm mb-4">
+                            Вашу дитину записано на <span className="text-cyan-400 font-bold">{registeredCourse || 'обраний курс'}</span>.
+                        </p>
+                        <p className="text-center text-slate-400 text-sm">Оберіть зручний час для першого заняття:</p>
+                    </div>
+                )}
 
-                        <div className="space-y-3 mb-8">
-                            <button 
-                                onClick={() => setSelectedTime('Субота 11:00')}
-                                className={`w-full text-left bg-slate-950 border ${selectedTime === 'Субота 11:00' ? 'border-cyan-400 shadow-[0_0_15px_rgba(34,211,238,0.3)]' : 'border-emerald-500/30 hover:border-emerald-500/60'} p-4 rounded-xl flex items-center justify-between transition-all`}
-                            >
-                                <span className="text-sm font-semibold">🟢 Субота 11:00</span>
-                                <span className="text-xs text-emerald-400 bg-emerald-950/60 px-2 py-1 rounded-md">Є місця</span>
-                            </button>
-                            <button 
-                                onClick={() => setSelectedTime('Неділя 14:00')}
-                                className={`w-full text-left bg-slate-950 border ${selectedTime === 'Неділя 14:00' ? 'border-cyan-400 shadow-[0_0_15px_rgba(34,211,238,0.3)]' : 'border-amber-500/30 hover:border-amber-500/60'} p-4 rounded-xl flex items-center justify-between transition-all`}
-                            >
-                                <span className="text-sm font-semibold">🔥 Неділя 14:00</span>
-                                <span className="text-xs text-amber-400 bg-amber-950/60 px-2 py-1 rounded-md">Залишилось 2 місця</span>
-                            </button>
-                        </div>
+                <div className="space-y-3 mb-8">
+                    <button 
+                        onClick={() => !isConfirmed && setSelectedTime('Субота 11:00')}
+                        disabled={isConfirmed}
+                        className={`w-full text-left bg-slate-950 border ${selectedTime === 'Субота 11:00' ? 'border-cyan-400 shadow-[0_0_15px_rgba(34,211,238,0.3)]' : 'border-emerald-500/30'} ${!isConfirmed && selectedTime !== 'Субота 11:00' ? 'hover:border-emerald-500/60' : ''} p-4 rounded-xl flex items-center justify-between transition-all disabled:opacity-90 disabled:cursor-default`}
+                    >
+                        <span className="text-sm font-semibold">🟢 Субота 11:00</span>
+                        <span className="text-xs text-emerald-400 bg-emerald-950/60 px-2 py-1 rounded-md">Є місця</span>
+                    </button>
+                    <button 
+                        onClick={() => !isConfirmed && setSelectedTime('Неділя 14:00')}
+                        disabled={isConfirmed}
+                        className={`w-full text-left bg-slate-950 border ${selectedTime === 'Неділя 14:00' ? 'border-cyan-400 shadow-[0_0_15px_rgba(34,211,238,0.3)]' : 'border-amber-500/30'} ${!isConfirmed && selectedTime !== 'Неділя 14:00' ? 'hover:border-amber-500/60' : ''} p-4 rounded-xl flex items-center justify-between transition-all disabled:opacity-90 disabled:cursor-default`}
+                    >
+                        <span className="text-sm font-semibold">🔥 Неділя 14:00</span>
+                        <span className="text-xs text-amber-400 bg-amber-950/60 px-2 py-1 rounded-md">Залишилось 2 місця</span>
+                    </button>
+                </div>
 
-                        <button 
-                            onClick={handleConfirm}
-                            disabled={!selectedTime || isConfirming}
-                            className="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 disabled:opacity-50 text-white font-bold py-4 px-4 rounded-xl shadow-lg transition-all mb-8"
-                        >
-                            {isConfirming ? 'Бронюємо...' : '👉 Підтвердити безкоштовне бронювання'}
-                        </button>
-                    </>
+                {!isConfirmed && (
+                    <button 
+                        onClick={handleConfirm}
+                        disabled={!selectedTime || isConfirming}
+                        className="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 disabled:opacity-50 text-white font-bold py-4 px-4 rounded-xl shadow-lg transition-all mb-8"
+                    >
+                        {isConfirming ? 'Бронюємо...' : '👉 Підтвердити безкоштовне бронювання'}
+                    </button>
                 )}
 
                 {/* Опціональний Upsell */}
-                <div className="pt-6 border-t border-slate-800">
+                <div className={`pt-6 border-t border-slate-800 ${!isConfirmed ? 'mt-2' : ''}`}>
                     <p className="text-center text-slate-400 text-xs mb-4">
                         🎁 Бажаєте викупити повний курс заздалегідь та зафіксувати знижку? (Необов'язково)
                     </p>
                     <button 
                         onClick={handlePayment} 
                         disabled={isLoading}
-                        className="w-full bg-slate-800 hover:bg-slate-700 disabled:opacity-50 text-slate-300 font-medium py-3 px-4 rounded-xl text-sm transition-colors"
+                        className="w-full bg-[#111111] hover:bg-black disabled:opacity-50 text-white font-bold py-3.5 px-4 rounded-xl text-sm transition-all hover:shadow-[0_0_15px_rgba(255,255,255,0.1)] flex items-center justify-center gap-2"
                     >
-                        {isLoading ? 'Генеруємо інвойс...' : 'Оплатити курс через Mono Pay'}
+                        {isLoading ? 'Генеруємо інвойс...' : 'Оплатити курс через mono Pay'}
                     </button>
                     
                     {receiptUrl && (
@@ -777,7 +782,7 @@ const MiniCabinet = ({ clientName, registeredCourse, phone }: { clientName: stri
 
 // ГОЛОВНА СТОРІНКА ЛЕНДИНГУ
 export default function LandingPage() {
-    const [authData, setAuthData] = useState<{name: string, course: string, phone: string} | null>(null);
+    const [authData, setAuthData] = useState<{name: string, course: string, phone: string, chosenTime?: string} | null>(null);
     const [isLoadingAuth, setIsLoadingAuth] = useState(true);
 
     React.useEffect(() => {
@@ -788,12 +793,12 @@ export default function LandingPage() {
                 try {
                     const { data, error } = await supabase
                         .from('leads')
-                        .select('name, course')
+                        .select('name, course, chosen_time')
                         .eq('phone', phone)
                         .single();
                     
                     if (!error && data) {
-                        setAuthData({ name: data.name || '', course: data.course || '', phone });
+                        setAuthData({ name: data.name || '', course: data.course || '', phone, chosenTime: data.chosen_time });
                     }
                 } catch (e) {
                     console.error("Error fetching lead:", e);
@@ -809,7 +814,7 @@ export default function LandingPage() {
     }
 
     if (authData) {
-        return <MiniCabinet clientName={authData.name} registeredCourse={authData.course} phone={authData.phone} />;
+        return <MiniCabinet clientName={authData.name} registeredCourse={authData.course} phone={authData.phone} initialTime={authData.chosenTime} />;
     }
 
     return (
