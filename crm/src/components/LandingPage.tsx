@@ -339,6 +339,18 @@ const COURSES = [
 ];
 
 const Courses = () => {
+    const scrollRef = React.useRef<HTMLDivElement>(null);
+
+    const scroll = (direction: 'left' | 'right') => {
+        if (scrollRef.current) {
+            const scrollAmount = window.innerWidth > 768 ? 364 : 300; // ширина картки + gap
+            scrollRef.current.scrollBy({
+                left: direction === 'left' ? -scrollAmount : scrollAmount,
+                behavior: 'smooth'
+            });
+        }
+    };
+
     const handleSelectCourse = (e: React.MouseEvent, courseTitle: string) => {
         e.preventDefault();
         const event = new CustomEvent('selectCourse', { detail: { course: courseTitle } });
@@ -366,17 +378,26 @@ const Courses = () => {
             </div>
 
             {/* Карусель курсів */}
-            <style>{`
-                .courses-scroll::-webkit-scrollbar { height: 10px; }
-                .courses-scroll::-webkit-scrollbar-track { background: transparent; }
-                .courses-scroll::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; border: 3px solid #0f172a; }
-                .courses-scroll::-webkit-scrollbar-thumb:hover { background: #475569; }
-                @supports not selector(::-webkit-scrollbar) {
-                    .courses-scroll { scrollbar-color: #334155 transparent; scrollbar-width: thin; }
-                }
-            `}</style>
-            <div className="w-full">
-                <div className="flex flex-nowrap overflow-x-auto gap-6 pb-8 pt-2 px-6 md:px-12 xl:px-[calc((100vw-1024px)/2)] snap-x snap-mandatory courses-scroll">
+            <div className="relative w-full pb-4">
+                {/* Кнопки-стрілки */}
+                <button 
+                    onClick={() => scroll('left')} 
+                    className="hidden md:flex absolute left-4 lg:left-8 top-1/2 -translate-y-1/2 z-20 w-14 h-14 bg-slate-900/90 hover:bg-slate-800 text-white rounded-full items-center justify-center backdrop-blur-md border border-slate-700 shadow-2xl transition-all"
+                >
+                    <svg className="w-6 h-6 pr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" /></svg>
+                </button>
+
+                <button 
+                    onClick={() => scroll('right')} 
+                    className="hidden md:flex absolute right-4 lg:right-8 top-1/2 -translate-y-1/2 z-20 w-14 h-14 bg-slate-900/90 hover:bg-slate-800 text-cyan-400 rounded-full items-center justify-center backdrop-blur-md border border-slate-700 shadow-2xl transition-all hover:scale-105"
+                >
+                    <svg className="w-6 h-6 pl-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" /></svg>
+                </button>
+
+                <div 
+                    ref={scrollRef}
+                    className="flex flex-nowrap overflow-x-auto gap-6 pb-6 pt-2 px-6 lg:px-12 xl:px-[calc((100vw-1024px)/2)] snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+                >
                     {COURSES.map((course) => (
                         <div
                             key={course.title}
