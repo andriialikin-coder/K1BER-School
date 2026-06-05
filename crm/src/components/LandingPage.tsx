@@ -421,7 +421,7 @@ const Courses = () => {
 };
 
 // 5. КОМПОНЕНТ: ФОРМА ЗАХВАТУ ЛІДІВ (Форма -> Наша CRM)
-const RegisterForm = ({ onAuthSuccess }: { onAuthSuccess?: (name: string, course: string, phone: string) => void }) => {
+const RegisterForm = ({ onAuthSuccess }: { onAuthSuccess?: (name: string, course: string, phone: string, chosenTime?: string) => void }) => {
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [tab, setTab] = useState<'new' | 'existing'>('new');
@@ -446,14 +446,14 @@ const RegisterForm = ({ onAuthSuccess }: { onAuthSuccess?: (name: string, course
         try {
             const { data, error } = await supabase
                 .from('leads')
-                .select('name, course')
+                .select('name, course, chosen_time')
                 .eq('phone', loginPhone)
                 .single();
             
             if (!error && data) {
                 localStorage.setItem('kiberUserPhone', loginPhone);
                 if (onAuthSuccess) {
-                    onAuthSuccess(data.name || '', data.course || '', loginPhone);
+                    onAuthSuccess(data.name || '', data.course || '', loginPhone, data.chosen_time);
                 }
             } else {
                 setLoginError('Кабінет не знайдено. Перевірте номер або зареєструйтесь.');
@@ -948,7 +948,7 @@ export default function LandingPage() {
             <Hero />
             <PainPoints />
             <Courses />
-            <RegisterForm onAuthSuccess={(name, course, phone) => setAuthData({ name, course, phone })} />
+            <RegisterForm onAuthSuccess={(name, course, phone, chosenTime) => setAuthData({ name, course, phone, chosenTime })} />
             <FAQ />
             <ContactsAndMap />
         </div>
