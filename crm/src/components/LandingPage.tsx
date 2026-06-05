@@ -164,7 +164,7 @@ const Hero = () => (
             {/* CTA */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <a
-                    href="#register"
+                    href="#booking-form"
                     className="group relative inline-flex items-center gap-3 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-extrabold py-4 px-8 rounded-2xl text-lg shadow-2xl shadow-cyan-500/30 hover:shadow-cyan-500/50 transition-all duration-300 hover:-translate-y-0.5"
                 >
                     Записати дитину на пробне
@@ -267,82 +267,14 @@ const PainPoints = () => (
 // 4. КОМПОНЕНТ: НАПРЯМКИ НАВЧАННЯ (Courses)
 const COURSES = [
     {
-        emoji: '🎮',
+        emoji: '⛏️',
         tag: 'Gamedev',
-        title: 'Створення власних ігор',
-        desc: 'Проектування ігрових рівнів, розробка логіки персонажів та механік. Дитина зрозуміє, як влаштовані її улюблені ігри зсередині.',
-        ages: '7–15 років',
-        tagColor: 'text-cyan-400 bg-cyan-950/60 border-cyan-800/40',
-        btnBorder: 'border-cyan-500/30 hover:border-cyan-400 hover:bg-cyan-950/40',
-        cardBorder: 'hover:border-cyan-500/40',
-        emojiGlow: 'from-cyan-500/20 to-blue-600/20',
-    },
-    {
-        emoji: '🧊',
-        tag: '3D & Animation',
-        title: '3D-моделювання та анімація',
-        desc: 'Робота з тривимірним простором, створення об’єктних моделей, персонажів та їх оживлення за допомогою анімації.',
-        ages: '9–15 років',
-        tagColor: 'text-violet-400 bg-violet-950/60 border-violet-800/40',
-        btnBorder: 'border-violet-500/30 hover:border-violet-400 hover:bg-violet-950/40',
-        cardBorder: 'hover:border-violet-500/40',
-        emojiGlow: 'from-violet-500/20 to-blue-600/20',
-    },
-    {
-        emoji: '💻',
-        tag: 'IT & Code',
-        title: 'Сучасні IT-напрямки',
-        desc: 'Практичні проекти: від перших кроків у коді до створення реальних інтерфейсів. Фундамент для майбутньої IT-професії.',
-        ages: '10–15 років',
+        title: 'Minecraft: Архітектори реальності',
+        desc: 'Програмуємо портали та механізми. Вчимо логіку та алгоритми у грі.',
+        ages: '8+',
         tagColor: 'text-emerald-400 bg-emerald-950/60 border-emerald-800/40',
         btnBorder: 'border-emerald-500/30 hover:border-emerald-400 hover:bg-emerald-950/40',
         cardBorder: 'hover:border-emerald-500/40',
-        emojiGlow: 'from-emerald-500/20 to-cyan-600/20',
-    },
-];
-
-const Courses = () => (
-    <section id="courses" className="w-full bg-slate-950 text-white py-20 px-6 border-b border-slate-900">
-        <div className="max-w-5xl mx-auto">
-
-            {/* Заголовок */}
-            <div className="text-center mb-14">
-                <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-blue-400 bg-blue-950/50 px-4 py-1.5 rounded-full border border-blue-800/40 mb-4">
-                    Програми навчання
-                </span>
-                <h2 className="text-3xl md:text-4xl font-black tracking-tight">
-                    Літні IT-інтенсиви
-                    <br />
-                    <span className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
-                        для дітей 7–15 років
-                    </span>
-                </h2>
-            </div>
-
-            {/* Картки курсів */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {COURSES.map((course) => (
-                    <div
-                        key={course.title}
-                        className={`group bg-slate-900 rounded-2xl border border-slate-800 ${course.cardBorder} transition-all duration-300 flex flex-col overflow-hidden`}
-                    >
-                        {/* Верхня частина — іконка + тег */}
-                        <div className={`relative h-44 bg-gradient-to-br ${course.emojiGlow} bg-slate-950 flex items-center justify-center border-b border-slate-800 group-hover:border-slate-700 transition-colors`}>
-                            <span className="text-6xl group-hover:scale-110 transition-transform duration-300 drop-shadow-lg">
-                                {course.emoji}
-                            </span>
-                            <span className={`absolute top-4 right-4 text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full border ${course.tagColor}`}>
-                                {course.tag}
-                            </span>
-                        </div>
-
-                        {/* Контент */}
-                        <div className="p-6 flex flex-col flex-1">
-                            <div className="flex items-start justify-between gap-2 mb-3">
-                                <h3 className="text-xl font-black text-slate-100 leading-tight">{course.title}</h3>
-                            </div>
-                            <p className="text-slate-400 text-sm leading-relaxed flex-1">{course.desc}</p>
-
                             {/* Вік + кнопка */}
                             <div className="mt-6 pt-5 border-t border-slate-800 flex items-center justify-between gap-3">
                                 <span className="text-xs text-slate-500 font-medium">
@@ -375,6 +307,15 @@ const RegisterForm = ({ onAuthSuccess }: { onAuthSuccess?: (name: string, course
     
     const [loginPhone, setLoginPhone] = useState('');
     const [loginError, setLoginError] = useState('');
+
+    React.useEffect(() => {
+        const handleCourseSelect = (e: CustomEvent) => {
+            setFormData(prev => ({ ...prev, course: e.detail.course }));
+            setTab('new');
+        };
+        window.addEventListener('selectCourse', handleCourseSelect as EventListener);
+        return () => window.removeEventListener('selectCourse', handleCourseSelect as EventListener);
+    }, []);
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -441,7 +382,7 @@ const RegisterForm = ({ onAuthSuccess }: { onAuthSuccess?: (name: string, course
     };
 
     return (
-        <section id="register" className="w-full bg-slate-900 text-white py-20 px-6 border-b border-slate-950">
+        <section id="booking-form" className="w-full bg-slate-900 text-white py-20 px-6 border-b border-slate-950">
             <div className="max-w-md mx-auto bg-slate-950 p-8 rounded-2xl border border-slate-800 shadow-xl shadow-slate-950">
                 {/* Urgent-бейдж */}
                 <div className="flex justify-center mb-5">
@@ -535,11 +476,9 @@ const RegisterForm = ({ onAuthSuccess }: { onAuthSuccess?: (name: string, course
                                         className="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-cyan-500 text-white appearance-none"
                                     >
                                         <option value="" disabled>Оберіть напрямок...</option>
-                                        <option value="Minecraft: Програмуємо портал (8+)">Minecraft: Програмуємо портал (8+)</option>
-                                        <option value="Geometry Dash: Створюємо 2D-платформер (11+)">Geometry Dash: Створюємо 2D-платформер (11+)</option>
-                                        <option value="Геніальні додатки з ШІ & App Inventor (8+)">Геніальні додатки з ШІ &amp; App Inventor (8+)</option>
-                                        <option value="Ферма на Python: Гра-симулятор (11+)">Ферма на Python: Гра-симулятор (11+)</option>
-                                        <option value="Ідеальний сайт з нуля & ШІ-помічник (11+)">Ідеальний сайт з нуля &amp; ШІ-помічник (11+)</option>
+                                        {COURSES.map(c => (
+                                            <option key={c.title} value={c.title}>{c.title}</option>
+                                        ))}
                                     </select>
                                 </div>
                             </>
