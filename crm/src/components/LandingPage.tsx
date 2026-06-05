@@ -292,6 +292,7 @@ const PainPoints = () => (
 const COURSES = [
     {
         slug: 'minecraft',
+        price: 4500,
         image: '/1.png',
         tag: 'Gamedev',
         title: 'Minecraft: Архітектори реальності',
@@ -303,6 +304,7 @@ const COURSES = [
     },
     {
         slug: 'geometry-dash',
+        price: 4800,
         image: '/2.png',
         tag: 'Gamedev',
         title: 'Geometry Dash: 2D-платформер',
@@ -314,6 +316,7 @@ const COURSES = [
     },
     {
         slug: 'construct',
+        price: 5200,
         image: '/3.png',
         tag: 'Gamedev',
         title: 'Construct: Лабораторія ігор зі Стічем',
@@ -325,6 +328,7 @@ const COURSES = [
     },
     {
         slug: 'python',
+        price: 6000,
         image: '/8.png',
         tag: 'Code',
         title: 'Python: Ферма-симулятор',
@@ -336,6 +340,7 @@ const COURSES = [
     },
     {
         slug: 'mobile-ai',
+        price: 5500,
         image: '/5.png',
         tag: 'Mobile & AI',
         title: 'ШІ та App Inventor: Мобільні додатки',
@@ -347,6 +352,7 @@ const COURSES = [
     },
     {
         slug: 'web-ai',
+        price: 5800,
         image: '/6.png',
         tag: 'Web & AI',
         title: 'Ідеальний сайт з нуля + ШІ',
@@ -358,6 +364,7 @@ const COURSES = [
     },
     {
         slug: '3d-print',
+        price: 6500,
         image: '/7.png',
         tag: '3D & Print',
         title: '3D-моделювання та 3D-друк',
@@ -466,8 +473,14 @@ const Courses = ({ slotsData }: { slotsData: Record<string, number> }) => {
                                 </div>
                                 <p className="text-slate-400 text-sm leading-relaxed flex-1">{course.desc}</p>
 
+                                {/* Ціна */}
+                                <div className="mt-4 flex items-baseline gap-2">
+                                    <span className="text-2xl font-black text-white">{course.price} ₴</span>
+                                    <span className="text-sm font-medium text-slate-500">/ інтенсив</span>
+                                </div>
+
                                 {/* Кнопка */}
-                                <div className="mt-auto pt-6">
+                                <div className="mt-4 pt-4 border-t border-slate-800/50">
                                     <a
                                         href="#booking-form"
                                         onClick={(e) => handleSelectCourse(e, course.title)}
@@ -906,6 +919,11 @@ const MiniCabinet = ({ clientName, registeredCourse, phone, initialTime }: { cli
     const [isConfirmed, setIsConfirmed] = useState(!!initialTime);
     const [receiptUrl] = useState('');
 
+    const courseData = COURSES.find(c => c.title === registeredCourse);
+    const fullPrice = courseData?.price || 5000;
+    const discount = Math.round(fullPrice * 0.15);
+    const discountedPrice = fullPrice - discount;
+
     const handleConfirm = async () => {
         setIsConfirming(true);
         try {
@@ -936,7 +954,7 @@ const MiniCabinet = ({ clientName, registeredCourse, phone, initialTime }: { cli
                     'X-Token': 'sandbox_monobank_test_token_here'
                 },
                 body: JSON.stringify({
-                    amount: 10000,
+                    amount: discountedPrice * 100, // В копійках
                     ccy: 980,
                     redirectUrl: window.location.href,
                     destination: "Оплата за інтенсив: " + registeredCourse
@@ -1024,26 +1042,42 @@ const MiniCabinet = ({ clientName, registeredCourse, phone, initialTime }: { cli
 
                 {/* Опціональний Upsell */}
                 <div className={`pt-6 border-t border-slate-800 ${!isConfirmed ? 'mt-2' : ''}`}>
-                    <p className="text-center text-slate-400 text-xs mb-4">
-                        🎁 Бажаєте викупити повний курс заздалегідь та зафіксувати знижку? (Необов'язково)
-                    </p>
-                    <button
-                        onClick={handlePayment}
-                        disabled={isLoading}
-                        className="w-full bg-[#000000] hover:bg-[#1a1a1a] border border-white/5 disabled:opacity-50 text-white font-bold h-[52px] px-4 rounded-xl transition-all shadow-md flex items-center justify-center gap-2 group"
-                    >
-                        {isLoading ? 'Генеруємо інвойс...' : (
-                            <div className="flex items-center gap-2.5">
-                                <span className="text-slate-300 font-medium text-sm mr-1">Оплатити курс через</span>
-                                <div className="flex items-center gap-[6px] group-hover:scale-105 transition-transform duration-300">
-                                    <span className="text-white font-bold text-[19px] tracking-tight leading-none" style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}>mono</span>
-                                    <div className="bg-white rounded-[5px] px-[6px] py-[3px] flex items-center justify-center">
-                                        <span className="text-black font-bold text-[14px] leading-none tracking-tight" style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}>Pay</span>
+                    <div className="bg-gradient-to-br from-indigo-950/40 to-slate-900 border border-indigo-500/20 rounded-xl p-5 mb-4 relative overflow-hidden">
+                        {/* Decorative glow */}
+                        <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 blur-2xl rounded-full translate-x-1/2 -translate-y-1/2 pointer-events-none" />
+                        
+                        <p className="text-center text-slate-300 text-sm mb-3 relative z-10 font-medium">
+                            🎁 Бажаєте викупити повний курс заздалегідь та зафіксувати <span className="text-emerald-400 font-bold">знижку -15%</span>?
+                        </p>
+                        
+                        <div className="flex flex-col items-center justify-center gap-1 mb-4 relative z-10">
+                            <div className="flex items-center gap-2 text-slate-400">
+                                <span className="line-through decoration-red-500/50">{fullPrice} ₴</span>
+                                <span className="text-xs bg-red-500/20 text-red-400 px-1.5 py-0.5 rounded font-bold">-15%</span>
+                            </div>
+                            <div className="text-4xl font-black text-white tracking-tight">
+                                {discountedPrice} <span className="text-xl text-slate-400 font-medium">₴</span>
+                            </div>
+                        </div>
+
+                        <button
+                            onClick={handlePayment}
+                            disabled={isLoading}
+                            className="w-full bg-[#000000] hover:bg-[#1a1a1a] border border-white/5 disabled:opacity-50 text-white font-bold h-[52px] px-4 rounded-xl transition-all shadow-md flex items-center justify-center gap-2 group relative z-10"
+                        >
+                            {isLoading ? 'Генеруємо інвойс...' : (
+                                <div className="flex items-center gap-2.5">
+                                    <span className="text-slate-300 font-medium text-sm mr-1">Оплатити курс через</span>
+                                    <div className="flex items-center gap-[6px] group-hover:scale-105 transition-transform duration-300">
+                                        <span className="text-white font-bold text-[19px] tracking-tight leading-none" style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}>mono</span>
+                                        <div className="bg-white rounded-[5px] px-[6px] py-[3px] flex items-center justify-center">
+                                            <span className="text-black font-bold text-[14px] leading-none tracking-tight" style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}>Pay</span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        )}
-                    </button>
+                            )}
+                        </button>
+                    </div>
 
                     {receiptUrl && (
                         <button className="w-full mt-4 bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium py-3 px-4 rounded-xl text-sm transition-colors flex justify-center items-center gap-2">
