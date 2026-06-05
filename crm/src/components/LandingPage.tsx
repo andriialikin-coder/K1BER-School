@@ -214,7 +214,7 @@ const PainPoints = () => (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 
                 {/* Card 1: 2 columns (Text left, Icon right) */}
-                <div className="md:col-span-2 group relative bg-white/5 backdrop-blur-md p-8 md:p-10 rounded-3xl border border-white/10 hover:border-cyan-500/40 transition-all duration-300 overflow-hidden flex items-center">
+                <div className="md:col-span-2 group relative bg-white/5 backdrop-blur-md p-8 md:p-10 rounded-3xl border border-white/20 hover:border-cyan-500/50 shadow-lg shadow-black/20 transition-all duration-300 overflow-hidden flex items-center">
                     {/* Hover Glow */}
                     <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-0" />
                     
@@ -237,7 +237,7 @@ const PainPoints = () => (
                 </div>
 
                 {/* Card 2: 1 column (Vertical stack, icon top right, text bottom) */}
-                <div className="md:col-span-1 group relative bg-white/5 backdrop-blur-md p-8 md:p-10 rounded-3xl border border-white/10 hover:border-violet-500/40 transition-all duration-300 overflow-hidden min-h-[260px] flex flex-col justify-between">
+                <div className="md:col-span-1 group relative bg-white/5 backdrop-blur-md p-8 md:p-10 rounded-3xl border border-white/20 hover:border-violet-500/50 shadow-lg shadow-black/20 transition-all duration-300 overflow-hidden min-h-[260px] flex flex-col justify-between">
                     <div className="absolute inset-0 bg-gradient-to-br from-violet-500/10 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-0" />
                     
                     <div className="relative z-10 w-full flex justify-end mb-6">
@@ -259,7 +259,7 @@ const PainPoints = () => (
                 </div>
 
                 {/* Card 3: 3 columns (Wide banner, Icon left, Text right) */}
-                <div className="md:col-span-3 group relative bg-white/5 backdrop-blur-md p-8 md:p-10 rounded-3xl border border-white/10 hover:border-emerald-500/40 transition-all duration-300 overflow-hidden flex items-center">
+                <div className="md:col-span-3 group relative bg-white/5 backdrop-blur-md p-8 md:p-10 rounded-3xl border border-white/20 hover:border-emerald-500/50 shadow-lg shadow-black/20 transition-all duration-300 overflow-hidden flex items-center">
                     <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-0" />
                     
                     <div className="relative z-10 flex flex-col md:flex-row items-center justify-start w-full gap-8 md:gap-12">
@@ -417,7 +417,7 @@ const Courses = () => {
 
                 <div
                     ref={scrollRef}
-                    className="flex flex-nowrap overflow-x-auto gap-6 pb-6 pt-2 px-6 lg:px-12 xl:px-[calc((100vw-1024px)/2)] snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+                    className="flex flex-nowrap overflow-x-auto gap-6 pb-6 pt-2 px-6 md:px-16 lg:px-24 snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
                 >
                     {COURSES.map((course) => (
                         <div
