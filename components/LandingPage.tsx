@@ -765,7 +765,13 @@ const MiniCabinet = ({ clientName, registeredCourse, phone, initialTime }: { cli
                         disabled={isLoading}
                         className="w-full bg-[#111111] hover:bg-black disabled:opacity-50 text-white font-bold py-3.5 px-4 rounded-xl text-sm transition-all hover:shadow-[0_0_15px_rgba(255,255,255,0.1)] flex items-center justify-center gap-2"
                     >
-                        {isLoading ? 'Генеруємо інвойс...' : 'Оплатити курс через mono Pay'}
+                        {isLoading ? 'Генеруємо інвойс...' : (
+                            <div className="flex items-center gap-1">
+                                <span>Оплатити курс через</span>
+                                <span className="font-semibold ml-1 text-base">mono</span>
+                                <span className="bg-white text-black px-2 py-0.5 rounded-full font-bold text-[11px] uppercase tracking-wide">Pay</span>
+                            </div>
+                        )}
                     </button>
                     
                     {receiptUrl && (
@@ -774,6 +780,15 @@ const MiniCabinet = ({ clientName, registeredCourse, phone, initialTime }: { cli
                         </button>
                     )}
                 </div>
+
+                {isConfirmed && (
+                    <button 
+                        onClick={() => window.location.href = window.location.pathname}
+                        className="w-full mt-5 text-center text-slate-400 hover:text-white transition-colors text-sm py-2 font-medium"
+                    >
+                        ← Повернутися на головну
+                    </button>
+                )}
 
             </div>
         </div>
