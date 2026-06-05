@@ -217,7 +217,7 @@ const PainPoints = () => (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 
                 {/* Card 1: 2 columns (Text left, Icon right) */}
-                <div className="md:col-span-2 group relative bg-white/5 backdrop-blur-md p-8 md:p-10 rounded-3xl border border-white/20 hover:border-cyan-500/50 shadow-lg shadow-black/20 transition-all duration-300 overflow-hidden flex items-center">
+                <div className="md:col-span-2 group relative bg-white/5 backdrop-blur-md p-8 md:p-10 rounded-3xl border border-white/20 hover:border-cyan-500/50 shadow-lg shadow-black/20 transition-all duration-300 overflow-hidden flex flex-col justify-center">
                     {/* Hover Glow */}
                     <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-0" />
                     
@@ -243,7 +243,7 @@ const PainPoints = () => (
                 <div className="md:col-span-1 group relative bg-white/5 backdrop-blur-md p-8 md:p-10 rounded-3xl border border-white/20 hover:border-violet-500/50 shadow-lg shadow-black/20 transition-all duration-300 overflow-hidden min-h-[260px] flex flex-col justify-between">
                     <div className="absolute inset-0 bg-gradient-to-br from-violet-500/10 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-0" />
                     
-                    <div className="relative z-10 w-full flex justify-end mb-6">
+                    <div className="relative z-10 w-full flex justify-center md:justify-end mb-6">
                         <div className="relative w-fit">
                             <div className="absolute inset-0 rounded-full blur-2xl opacity-40 group-hover:opacity-70 transition-opacity duration-300 bg-violet-500" />
                             <span className="text-6xl md:text-7xl relative select-none block transform group-hover:scale-110 group-hover:rotate-6 transition-transform duration-300">
@@ -262,7 +262,7 @@ const PainPoints = () => (
                 </div>
 
                 {/* Card 3: 3 columns (Wide banner, Icon left, Text right) */}
-                <div className="md:col-span-3 group relative bg-white/5 backdrop-blur-md p-8 md:p-10 rounded-3xl border border-white/20 hover:border-emerald-500/50 shadow-lg shadow-black/20 transition-all duration-300 overflow-hidden flex items-center">
+                <div className="md:col-span-3 group relative bg-white/5 backdrop-blur-md p-8 md:p-10 rounded-3xl border border-white/20 hover:border-emerald-500/50 shadow-lg shadow-black/20 transition-all duration-300 overflow-hidden flex flex-col justify-center">
                     <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-0" />
                     
                     <div className="relative z-10 flex flex-col md:flex-row items-center justify-start w-full gap-8 md:gap-12">
