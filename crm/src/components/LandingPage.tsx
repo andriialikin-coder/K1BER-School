@@ -105,6 +105,9 @@ const Hero = () => (
             }}
         />
 
+        {/* Decorative Background Glows */}
+        <div className="absolute top-[10%] left-1/2 -translate-x-1/2 w-[80%] max-w-[800px] h-[400px] bg-gradient-to-r from-cyan-600/30 to-blue-600/30 blur-[100px] rounded-full pointer-events-none" />
+
         <div className="relative max-w-4xl">
 
             {/* Бейдж */}
@@ -114,7 +117,7 @@ const Hero = () => (
             </div>
 
             {/* Головний заголовок */}
-            <h1 className="text-5xl md:text-7xl font-black tracking-tight leading-[1.05]">
+            <h1 className="text-5xl md:text-7xl font-black tracking-tight leading-[1.05] relative z-10">
                 Твоя дитина{' '}
                 <span className="relative inline-block">
                     <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-cyan-300 bg-clip-text text-transparent">
@@ -132,28 +135,28 @@ const Hero = () => (
             </h1>
 
             {/* Неоновий акцент */}
-            <div className="mt-6 inline-block bg-slate-900 border border-slate-800 rounded-xl px-6 py-3 shadow-lg shadow-cyan-900/20">
+            <div className="mt-6 inline-block bg-slate-900/80 backdrop-blur-sm border border-slate-800 rounded-xl px-6 py-3 shadow-lg shadow-cyan-900/20 relative z-10">
                 <p className="text-cyan-400 font-bold text-sm md:text-base drop-shadow-md">
                     🔥 Практика &gt;80% — мінімум теорії, максимум реальних проектів за комп&apos;ютером!
                 </p>
             </div>
 
             {/* Підзаголовок */}
-            <p className="text-slate-400 text-lg md:text-xl mt-8 max-w-2xl mx-auto leading-relaxed">
-                Школа програмування для дітей у Сумах. Ваша дитина не просто вчить теорію — вона{' '}
+            <p className="text-slate-400 text-lg md:text-xl mt-8 max-w-2xl mx-auto leading-relaxed relative z-10">
+                Школа програмування для дітей у місті Суми. Ваша дитина не просто вчить теорію — вона{' '}
                 <span className="text-slate-200 font-medium">пише код і випускає власні проекти</span>{' '}
                 вже з першого місяця.
             </p>
 
             {/* Статистика */}
-            <div className="flex flex-wrap justify-center gap-8 mt-10 mb-10 text-center">
+            <div className="flex flex-wrap justify-center gap-8 mt-10 mb-10 text-center relative z-10">
                 {[
                     { value: '200+', label: 'учнів у Сумах' },
-                    { value: '3', label: 'напрямки навчання' },
+                    { value: '8', label: 'унікальних ІТ-інтенсивів' },
                     { value: '1-е', label: 'заняття — безкоштовно' },
                 ].map((stat) => (
                     <div key={stat.value} className="flex flex-col items-center">
-                        <span className="text-3xl font-black bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent leading-none">
+                        <span className="text-3xl font-black bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent leading-none drop-shadow-sm">
                             {stat.value}
                         </span>
                         <span className="text-slate-500 text-xs font-medium mt-1 uppercase tracking-wider">{stat.label}</span>
