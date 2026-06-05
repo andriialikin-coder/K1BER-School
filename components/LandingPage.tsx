@@ -32,6 +32,10 @@ const Header = () => {
                         FAQ
                         <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-cyan-400 group-hover:w-full transition-all duration-300" />
                     </a>
+                    <a href="#contacts" className="text-slate-400 hover:text-white transition-colors duration-200 relative group">
+                        Контакти
+                        <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-cyan-400 group-hover:w-full transition-all duration-300" />
+                    </a>
                 </nav>
 
                 {/* CTA кнопка */}
@@ -65,6 +69,7 @@ const Header = () => {
                     <a href="#about" onClick={() => setMenuOpen(false)} className="text-slate-300 hover:text-cyan-400 transition-colors py-1">Про нас</a>
                     <a href="#courses" onClick={() => setMenuOpen(false)} className="text-slate-300 hover:text-cyan-400 transition-colors py-1">Курси</a>
                     <a href="#faq" onClick={() => setMenuOpen(false)} className="text-slate-300 hover:text-cyan-400 transition-colors py-1">FAQ</a>
+                    <a href="#contacts" onClick={() => setMenuOpen(false)} className="text-slate-300 hover:text-cyan-400 transition-colors py-1">📍 Контакти</a>
                     <a href="#register" onClick={() => setMenuOpen(false)} className="mt-2 text-center bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold py-2.5 px-4 rounded-xl text-sm">
                         Записатись на пробне
                     </a>
