@@ -691,44 +691,72 @@ const RegisterForm = ({ onAuthSuccess }: { onAuthSuccess?: (name: string, course
 };
 
 // 6. КОМПОНЕНТ: БЛОК FAQ (Заділ під AI Visibility)
-const FAQ = () => (
-    <section id="faq" className="w-full bg-slate-950 text-white py-16 px-6">
-        <div className="max-w-3xl mx-auto">
-            <h2 className="text-2xl md:text-4xl font-bold text-center tracking-tight">Популярні питання батьків</h2>
-            <div className="mt-12 space-y-4">
-                {[
-                    {
-                        q: "Чи потрібен дитині свій ноутбук?",
-                        a: "Ні, ми повністю забезпечуємо студентів потужними ПК та всім необхідним ліцензійним софтом у нашому хабі в ТРЦ «КИЇВ». Від вас потрібен лише гарний настрій дитини."
-                    },
-                    {
-                        q: "Дитина буде просто грати в комп'ютерні ігри?",
-                        a: "Жодних ігор заради ігор. Ми використовуємо Minecraft, Roblox та інші платформи виключно як професійні інструменти. Дитина переходить з ролі звичайного гравця в роль розробника: пише код, будує логіку та створює власні проекти."
-                    },
-                    {
-                        q: "Чи потрібна попередня підготовка або знання коду?",
-                        a: "Абсолютно ні. Наші програми розроблені з нуля. Навіть якщо дитина ніколи не бачила рядка коду, ментори адаптують матеріал і допоможуть зробити перші кроки без стресу та шкільних оцінок."
-                    },
-                    {
-                        q: "Хто викладає на літніх інтенсивах?",
-                        a: "Практикуючі ІТ-спеціалісти та досвідчені ментори, які вміють пояснювати складні технічні речі простою мовою. Жодних нудних лекцій та застарілих методичок — тільки жива практика та підтримка."
-                    },
-                    {
-                        q: "Що дитина отримає по завершенню?",
-                        a: "Реальний цифровий продукт: власну 2D/3D гру, мобільний додаток, працюючий сайт або власноруч надруковану 3D-модель (залежно від обраного напрямку). А головне — розуміння, що комп'ютер це інструмент для створення, а не лише для розваг."
-                    }
-                ].map((item, i) => (
-                    <div key={i} className="bg-slate-900 p-5 rounded-xl border border-slate-800/60">
-                        <h3 className="font-bold text-slate-200">{item.q}</h3>
-                        <p className="text-slate-400 text-sm mt-2 leading-relaxed">
-                            {item.a}
-                        </p>
-                    </div>
-                ))}
+const FAQ = () => {
+    const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+    const toggleFaq = (index: number) => {
+        setOpenIndex(openIndex === index ? null : index);
+    };
+
+    const faqs = [
+        {
+            q: "Чи потрібен дитині свій ноутбук?",
+            a: "Ні, ми повністю забезпечуємо студентів потужними ПК та всім необхідним ліцензійним софтом у нашому хабі в ТРЦ «КИЇВ». Від вас потрібен лише гарний настрій дитини."
+        },
+        {
+            q: "Дитина буде просто грати в комп'ютерні ігри?",
+            a: "Жодних ігор заради ігор. Ми використовуємо Minecraft, Roblox та інші платформи виключно як професійні інструменти. Дитина переходить з ролі звичайного гравця в роль розробника: пише код, будує логіку та створює власні проекти."
+        },
+        {
+            q: "Чи потрібна попередня підготовка або знання коду?",
+            a: "Абсолютно ні. Наші програми розроблені з нуля. Навіть якщо дитина ніколи не бачила рядка коду, ментори адаптують матеріал і допоможуть зробити перші кроки без стресу та шкільних оцінок."
+        },
+        {
+            q: "Хто викладає на літніх інтенсивах?",
+            a: "Практикуючі ІТ-спеціалісти та досвідчені ментори, які вміють пояснювати складні технічні речі простою мовою. Жодних нудних лекцій та застарілих методичок — тільки жива практика та підтримка."
+        },
+        {
+            q: "Що дитина отримає по завершенню?",
+            a: "Реальний цифровий продукт: власну 2D/3D гру, мобільний додаток, працюючий сайт або власноруч надруковану 3D-модель (залежно від обраного напрямку). А головне — розуміння, що комп'ютер це інструмент для створення, а не лише для розваг."
+        }
+    ];
+
+    return (
+        <section id="faq" className="w-full bg-slate-950 text-white py-16 px-6">
+            <div className="max-w-3xl mx-auto">
+                <h2 className="text-2xl md:text-4xl font-bold text-center tracking-tight">Популярні питання батьків</h2>
+                <div className="mt-12 space-y-4">
+                    {faqs.map((item, i) => {
+                        const isOpen = openIndex === i;
+                        return (
+                            <div 
+                                key={i} 
+                                onClick={() => toggleFaq(i)}
+                                className={`cursor-pointer bg-white/5 backdrop-blur-md border rounded-2xl transition-all duration-300 p-5 md:p-6 ${isOpen ? 'border-blue-500/50 bg-white/10' : 'border-white/10 hover:border-white/20'}`}
+                            >
+                                <div className="flex justify-between items-center gap-4">
+                                    <h3 className="text-white font-bold text-lg">{item.q}</h3>
+                                    <div className={`flex-shrink-0 text-slate-400 transform transition-transform duration-300 ${isOpen ? 'rotate-180 text-blue-400' : 'rotate-0'}`}>
+                                        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div className={`grid transition-all duration-300 ease-in-out ${isOpen ? 'grid-rows-[1fr] opacity-100 mt-4' : 'grid-rows-[0fr] opacity-0'}`}>
+                                    <div className="overflow-hidden">
+                                        <p className="text-gray-400 text-sm leading-relaxed">
+                                            {item.a}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        );
+                    })}
+                </div>
             </div>
-        </div>
-    </section>
-);
+        </section>
+    );
+};
 
 // 7. КОМПОНЕНТ: КОНТАКТИ ТА КАРТА (GEO / AI Visibility)
 const ContactsAndMap = () => (
