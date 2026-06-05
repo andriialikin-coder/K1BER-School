@@ -149,13 +149,26 @@ export default function CRMPage() {
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
 
   useEffect(() => {
-    const password = prompt("Введіть секретний ключ доступу до CRM:");
-    if (password === "K1berAdmin2026!") {
-      setIsAuthenticated(true);
-    } else {
-      alert("Доступ заборонено!");
-      window.location.href = "/"; // Викидаємо хакера на лендинг
-    }
+    const checkAuth = () => {
+      const expires = sessionStorage.getItem('crm_auth_expires');
+      if (expires && parseInt(expires) > Date.now()) {
+        setIsAuthenticated(true);
+        // Refresh the session timer for another 30 mins
+        sessionStorage.setItem('crm_auth_expires', (Date.now() + 30 * 60 * 1000).toString());
+        return;
+      }
+
+      const password = prompt("Введіть секретний ключ доступу до CRM:");
+      if (password === "K1berAdmin2026!") {
+        setIsAuthenticated(true);
+        sessionStorage.setItem('crm_auth_expires', (Date.now() + 30 * 60 * 1000).toString());
+      } else {
+        alert("Доступ заборонено!");
+        window.location.href = "/"; // Викидаємо на лендинг
+      }
+    };
+    
+    checkAuth();
   }, []);
 
   const fetchLeads = useCallback(async () => {
