@@ -608,7 +608,7 @@ const ContactsAndMap = () => (
 // МІНІ-КАБІНЕТ (Після успішної авторизації)
 const MiniCabinet = () => {
     const [isLoading, setIsLoading] = useState(false);
-    const [receiptUrl, setReceiptUrl] = useState('');
+    const [receiptUrl] = useState('');
 
     const handlePayment = async () => {
         setIsLoading(true);
