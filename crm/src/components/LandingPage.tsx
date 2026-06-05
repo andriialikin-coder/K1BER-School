@@ -938,13 +938,17 @@ const MiniCabinet = ({ clientName, registeredCourse, phone, initialTime }: { cli
                     <button
                         onClick={handlePayment}
                         disabled={isLoading}
-                        className="w-full bg-[#111111] hover:bg-black disabled:opacity-50 text-white font-bold py-3.5 px-4 rounded-xl text-sm transition-all hover:shadow-[0_0_15px_rgba(255,255,255,0.1)] flex items-center justify-center gap-2"
+                        className="w-full bg-[#000000] hover:bg-[#1a1a1a] border border-white/5 disabled:opacity-50 text-white font-bold h-[52px] px-4 rounded-xl transition-all shadow-md flex items-center justify-center gap-2 group"
                     >
                         {isLoading ? 'Генеруємо інвойс...' : (
-                            <div className="flex items-center gap-1">
-                                <span>Оплатити курс через</span>
-                                <span className="font-semibold ml-1 text-base">mono</span>
-                                <span className="bg-white text-black px-2 py-0.5 rounded-full font-bold text-[11px] uppercase tracking-wide">Pay</span>
+                            <div className="flex items-center gap-2.5">
+                                <span className="text-slate-300 font-medium text-sm mr-1">Оплатити курс через</span>
+                                <div className="flex items-center gap-[6px] group-hover:scale-105 transition-transform duration-300">
+                                    <span className="text-white font-bold text-[19px] tracking-tight leading-none" style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}>mono</span>
+                                    <div className="bg-white rounded-[5px] px-[6px] py-[3px] flex items-center justify-center">
+                                        <span className="text-black font-bold text-[14px] leading-none tracking-tight" style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}>Pay</span>
+                                    </div>
+                                </div>
                             </div>
                         )}
                     </button>
