@@ -291,6 +291,7 @@ const PainPoints = () => (
 // 4. КОМПОНЕНТ: НАПРЯМКИ НАВЧАННЯ (Courses)
 const COURSES = [
     {
+        slug: 'minecraft',
         image: '/1.png',
         tag: 'Gamedev',
         title: 'Minecraft: Архітектори реальності',
@@ -301,6 +302,7 @@ const COURSES = [
         cardBorder: 'hover:border-emerald-500/40',
     },
     {
+        slug: 'geometry-dash',
         image: '/2.png',
         tag: 'Gamedev',
         title: 'Geometry Dash: 2D-платформер',
@@ -311,6 +313,7 @@ const COURSES = [
         cardBorder: 'hover:border-blue-500/40',
     },
     {
+        slug: 'construct',
         image: '/3.png',
         tag: 'Gamedev',
         title: 'Construct: Лабораторія ігор зі Стічем',
@@ -321,6 +324,7 @@ const COURSES = [
         cardBorder: 'hover:border-violet-500/40',
     },
     {
+        slug: 'python',
         image: '/8.png',
         tag: 'Code',
         title: 'Python: Ферма-симулятор',
@@ -331,6 +335,7 @@ const COURSES = [
         cardBorder: 'hover:border-yellow-500/40',
     },
     {
+        slug: 'mobile-ai',
         image: '/5.png',
         tag: 'Mobile & AI',
         title: 'ШІ та App Inventor: Мобільні додатки',
@@ -341,6 +346,7 @@ const COURSES = [
         cardBorder: 'hover:border-pink-500/40',
     },
     {
+        slug: 'web-ai',
         image: '/6.png',
         tag: 'Web & AI',
         title: 'Ідеальний сайт з нуля + ШІ',
@@ -351,6 +357,7 @@ const COURSES = [
         cardBorder: 'hover:border-cyan-500/40',
     },
     {
+        slug: '3d-print',
         image: '/7.png',
         tag: '3D & Print',
         title: '3D-моделювання та 3D-друк',
@@ -362,7 +369,7 @@ const COURSES = [
     }
 ];
 
-const Courses = () => {
+const Courses = ({ slotsData }: { slotsData: Record<string, number> }) => {
     const scrollRef = React.useRef<HTMLDivElement>(null);
 
     const scroll = (direction: 'left' | 'right') => {
@@ -447,9 +454,14 @@ const Courses = () => {
                             {/* Контент */}
                             <div className="p-6 flex flex-col flex-1">
                                 <div className="mb-4">
-                                    <span className="inline-block px-2.5 py-1 rounded-md bg-white/10 text-white text-xs font-black tracking-wider uppercase shadow-[0_0_10px_rgba(255,255,255,0.1)] border border-white/10 mb-3">
-                                        👤 {course.ages}
-                                    </span>
+                                    <div className="flex justify-between items-start mb-3">
+                                        <span className="inline-block px-2.5 py-1 rounded-md bg-white/10 text-white text-xs font-black tracking-wider uppercase shadow-[0_0_10px_rgba(255,255,255,0.1)] border border-white/10">
+                                            👤 {course.ages}
+                                        </span>
+                                        <div className={`text-xs font-semibold px-2 py-1 rounded flex items-center gap-1 ${(slotsData[course.slug] ?? 10) < 6 ? 'bg-red-950/50 border border-red-500/30 text-red-400' : 'bg-orange-950/50 border border-orange-500/30 text-orange-400'}`}>
+                                            🔥 Залишилось: {slotsData[course.slug] ?? 10} місць
+                                        </div>
+                                    </div>
                                     <h3 className="text-xl font-black text-slate-100 leading-tight">{course.title}</h3>
                                 </div>
                                 <p className="text-slate-400 text-sm leading-relaxed flex-1">{course.desc}</p>
@@ -477,7 +489,7 @@ const Courses = () => {
 };
 
 // 5. КОМПОНЕНТ: ФОРМА ЗАХВАТУ ЛІДІВ (Форма -> Наша CRM)
-const RegisterForm = ({ onAuthSuccess }: { onAuthSuccess?: (name: string, course: string, phone: string, chosenTime?: string) => void }) => {
+const RegisterForm = ({ onAuthSuccess, slotsData, fetchSlots }: { onAuthSuccess?: (name: string, course: string, phone: string, chosenTime?: string) => void; slotsData: Record<string, number>; fetchSlots: () => void; }) => {
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [tab, setTab] = useState<'new' | 'existing'>('new');
@@ -556,6 +568,18 @@ const RegisterForm = ({ onAuthSuccess }: { onAuthSuccess?: (name: string, course
             }
 
             console.log("Успішне збереження в БД:", data);
+
+            // Крок 3: Списання місця
+            const selectedCourseSlug = COURSES.find(c => c.title === formData.course)?.slug;
+            if (selectedCourseSlug) {
+                const currentAvailable = slotsData[selectedCourseSlug] ?? 10;
+                await supabase
+                    .from('course_slots')
+                    .update({ available_slots: Math.max(0, currentAvailable - 1) })
+                    .eq('course_slug', selectedCourseSlug);
+                fetchSlots(); // Оновлюємо дані без перезавантаження сторінки
+            }
+
             localStorage.setItem('kiberUserPhone', formData.phone);
             if (onAuthSuccess) {
                 onAuthSuccess(formData.name, formData.course, formData.phone);
@@ -1049,8 +1073,21 @@ const MiniCabinet = ({ clientName, registeredCourse, phone, initialTime }: { cli
 export default function LandingPage() {
     const [authData, setAuthData] = useState<{ name: string, course: string, phone: string, chosenTime?: string } | null>(null);
     const [isLoadingAuth, setIsLoadingAuth] = useState(true);
+    const [slotsData, setSlotsData] = useState<Record<string, number>>({});
+
+    const fetchSlots = async () => {
+        const { data, error } = await supabase.from('course_slots').select('course_slug, available_slots');
+        if (data && !error) {
+            const slotsMap = data.reduce((acc: Record<string, number>, item) => {
+                acc[item.course_slug] = item.available_slots;
+                return acc;
+            }, {});
+            setSlotsData(slotsMap);
+        }
+    };
 
     React.useEffect(() => {
+        fetchSlots();
         const fetchUserData = async () => {
             const params = new URLSearchParams(window.location.search);
             const urlPhone = params.get('phone');
@@ -1093,8 +1130,12 @@ export default function LandingPage() {
             <Header />
             <Hero />
             <PainPoints />
-            <Courses />
-            <RegisterForm onAuthSuccess={(name, course, phone, chosenTime) => setAuthData({ name, course, phone, chosenTime })} />
+            <Courses slotsData={slotsData} />
+            <RegisterForm 
+                onAuthSuccess={(name, course, phone, chosenTime) => setAuthData({ name, course, phone, chosenTime })} 
+                slotsData={slotsData}
+                fetchSlots={fetchSlots}
+            />
             <FAQ />
             <ContactsAndMap />
         </div>
