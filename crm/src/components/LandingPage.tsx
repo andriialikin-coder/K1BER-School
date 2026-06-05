@@ -789,7 +789,9 @@ const ContactsAndMap = () => (
                 </p>
 
                 {/* Деталі */}
-                <div className="space-y-5 pt-2">
+                <div className="space-y-6 pt-2">
+                    
+                    {/* 1. Адреса */}
                     <div className="flex items-start gap-4 group">
                         <div className="w-10 h-10 rounded-xl bg-cyan-950/60 border border-cyan-800/30 flex items-center justify-center text-lg flex-shrink-0 group-hover:border-cyan-500/50 transition-colors duration-300">
                             📍
@@ -804,6 +806,23 @@ const ContactsAndMap = () => (
                         </div>
                     </div>
 
+                    {/* 2. Телефон (Дизайнерський акцент) */}
+                    <div className="flex items-start gap-4 group">
+                        <div className="w-10 h-10 rounded-xl bg-emerald-950/60 border border-emerald-800/30 flex items-center justify-center text-lg flex-shrink-0 group-hover:border-emerald-500/50 transition-colors duration-300 shadow-lg shadow-emerald-900/20">
+                            📞
+                        </div>
+                        <div className="pt-0.5">
+                            <h4 className="text-xs font-bold uppercase tracking-wider text-emerald-400/80 mb-1">Зателефонувати нам</h4>
+                            <a 
+                                href="tel:+380502828029" 
+                                className="inline-block text-2xl md:text-3xl font-black text-white hover:text-emerald-400 tracking-tight transition-colors duration-300 drop-shadow-md"
+                            >
+                                +38 050 282 80 29
+                            </a>
+                        </div>
+                    </div>
+
+                    {/* 3. Графік роботи */}
                     <div className="flex items-start gap-4 group">
                         <div className="w-10 h-10 rounded-xl bg-blue-950/60 border border-blue-800/30 flex items-center justify-center text-lg flex-shrink-0 group-hover:border-blue-500/50 transition-colors duration-300">
                             🕒
@@ -818,12 +837,13 @@ const ContactsAndMap = () => (
                         </div>
                     </div>
 
+                    {/* 4. Онлайн запис */}
                     <div className="flex items-start gap-4 group">
                         <div className="w-10 h-10 rounded-xl bg-violet-950/60 border border-violet-800/30 flex items-center justify-center text-lg flex-shrink-0 group-hover:border-violet-500/50 transition-colors duration-300">
-                            📞
+                            🎯
                         </div>
                         <div>
-                            <h4 className="text-sm font-bold text-slate-200 mb-0.5">Записатись на пробне</h4>
+                            <h4 className="text-sm font-bold text-slate-200 mb-0.5">Онлайн-запис</h4>
                             <a
                                 href="#booking-form"
                                 className="text-cyan-400 hover:text-cyan-300 text-sm font-semibold transition-colors duration-200 underline underline-offset-4 decoration-cyan-800 hover:decoration-cyan-400"
