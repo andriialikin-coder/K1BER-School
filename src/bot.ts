@@ -147,7 +147,7 @@ bot.on('text', async (ctx) => {
 
                     supabase.from('chat_histories').upsert({
                         chat_id: chatId,
-                        messages: [{ role: "assistant", content: "Дякуємо за реєстрацію! Наш менеджер незабаром зв'яжеться з вами." }],
+                        messages: [{ role: "assistant", content: "Дякуємо! Ваші дані внесено в систему. Тепер перейдіть на наш сайт, щоб обрати конкретний літній IT-інтенсив." }],
                         updated_at: new Date().toISOString()
                     })
                 ]);
@@ -155,7 +155,22 @@ bot.on('text', async (ctx) => {
                 console.error("[CRITICAL DB ERROR]:", dbError);
             }
 
-            await ctx.reply(`Дякую, ${parsedName}! Ваш номер ${displayPhoneForUser} зафіксовано. Наш менеджер зв'яжеться з вами найближчим часом для підтвердження запису на безкоштовний урок.`);
+            const urlPhone = encodeURIComponent(cleanPhoneForCRM);
+            const urlName = encodeURIComponent(parsedName);
+            const webAppUrl = `https://kiber-school.vercel.app/?phone=${urlPhone}&name=${urlName}`;
+
+            await ctx.reply(
+                "Дякуємо! Ваші дані внесено в систему. Тепер перейдіть на наш сайт, щоб обрати конкретний літній IT-інтенсив.",
+                {
+                    reply_markup: {
+                        inline_keyboard: [
+                            [
+                                { text: "🌐 Обрати курс на сайті", url: webAppUrl }
+                            ]
+                        ]
+                    }
+                }
+            );
             return;
         }
     }
