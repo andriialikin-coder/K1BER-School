@@ -6,6 +6,7 @@ import {
   X, PhoneCall, UserCheck, Archive, PhoneMissed, Clock,
   CheckCircle2, XCircle
 } from 'lucide-react';
+import LandingPage from './components/LandingPage';
 
 // ═══════════════════════════════════════════════
 //  SUPABASE CLIENT
@@ -196,9 +197,9 @@ function SkeletonRow() {
 }
 
 // ═══════════════════════════════════════════════
-//  MAIN APP
+//  CRM DASHBOARD
 // ═══════════════════════════════════════════════
-export default function App() {
+function CRMDashboard({ onBack }: { onBack: () => void }) {
   const [leads, setLeads] = useState<Lead[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -235,7 +236,6 @@ export default function App() {
   // ── Update status ──────────────────────────────
   const updateStatus = async (id: number, newStatus: string) => {
     setUpdatingIds(prev => new Set(prev).add(id));
-    // Optimistic update
     setLeads(prev => prev.map(l => l.id === id ? { ...l, status: newStatus } : l));
 
     const { error } = await supabase
@@ -245,7 +245,7 @@ export default function App() {
 
     if (error) {
       console.error('[CRM] Status update failed:', error.message);
-      fetchLeads(); // rollback
+      fetchLeads();
     }
     setUpdatingIds(prev => { const s = new Set(prev); s.delete(id); return s; });
   };
@@ -263,9 +263,9 @@ export default function App() {
 
   // ── Stats ─────────────────────────────────────
   const today = new Date().toDateString();
-  const newToday     = leads.filter(l => new Date(l.created_at).toDateString() === today).length;
-  const withPhone    = leads.filter(l => l.phone).length;
-  const invited      = leads.filter(l => l.status === 'Запрошений').length;
+  const newToday  = leads.filter(l => new Date(l.created_at).toDateString() === today).length;
+  const withPhone = leads.filter(l => l.phone).length;
+  const invited   = leads.filter(l => l.status === 'Запрошений').length;
 
   const formatDate = (iso: string) =>
     new Date(iso).toLocaleString('uk-UA', {
@@ -273,7 +273,6 @@ export default function App() {
       hour: '2-digit', minute: '2-digit',
     });
 
-  // ═════════════════════════════════════════════
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col" style={{ fontFamily: "'Inter', sans-serif" }}>
 
@@ -282,7 +281,7 @@ export default function App() {
         <div className="max-w-screen-xl mx-auto px-6 py-4">
           <div className="flex items-center gap-6">
 
-            {/* Logo */}
+            {/* Logo + back link */}
             <div className="flex items-center gap-3 flex-shrink-0">
               <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-violet-600 rounded-xl flex items-center justify-center shadow-md shadow-blue-200">
                 <Star size={18} className="text-white" fill="currentColor" />
@@ -301,20 +300,23 @@ export default function App() {
               <StatCard icon={UserCheck}  label="Запрошено"     value={invited}      colorClass="bg-amber-50 text-amber-600" />
             </div>
 
-            {/* Refresh button */}
-            <button
-              onClick={fetchLeads}
-              disabled={loading}
-              className="
-                flex items-center gap-2 px-4 py-2.5 flex-shrink-0
-                bg-slate-100 hover:bg-slate-200 active:bg-slate-300
-                rounded-xl text-sm font-semibold text-slate-600
-                transition-all duration-150 disabled:opacity-40
-              "
-            >
-              <RefreshCw size={14} className={loading ? 'animate-spin' : ''} />
-              <span className="hidden sm:inline">Оновити</span>
-            </button>
+            {/* Actions */}
+            <div className="flex items-center gap-2 flex-shrink-0">
+              <button
+                onClick={fetchLeads}
+                disabled={loading}
+                className="flex items-center gap-2 px-4 py-2.5 bg-slate-100 hover:bg-slate-200 active:bg-slate-300 rounded-xl text-sm font-semibold text-slate-600 transition-all duration-150 disabled:opacity-40"
+              >
+                <RefreshCw size={14} className={loading ? 'animate-spin' : ''} />
+                <span className="hidden sm:inline">Оновити</span>
+              </button>
+              <button
+                onClick={onBack}
+                className="flex items-center gap-2 px-4 py-2.5 bg-slate-100 hover:bg-slate-200 rounded-xl text-sm font-semibold text-slate-600 transition-all duration-150"
+              >
+                ← Сайт
+              </button>
+            </div>
           </div>
         </div>
       </header>
@@ -334,12 +336,7 @@ export default function App() {
                 placeholder="Пошук за іменем, телефоном або Telegram ID..."
                 value={search}
                 onChange={e => setSearch(e.target.value)}
-                className="
-                  w-full pl-10 pr-9 py-2.5 border border-slate-200 rounded-xl
-                  text-sm text-slate-700 placeholder-slate-400
-                  focus:outline-none focus:ring-2 focus:ring-blue-500/25 focus:border-blue-400
-                  transition-all duration-150
-                "
+                className="w-full pl-10 pr-9 py-2.5 border border-slate-200 rounded-xl text-sm text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/25 focus:border-blue-400 transition-all duration-150"
               />
               {search && (
                 <button
@@ -356,12 +353,7 @@ export default function App() {
               <select
                 value={statusFilter}
                 onChange={e => setStatusFilter(e.target.value)}
-                className="
-                  appearance-none w-full sm:w-52 pl-4 pr-9 py-2.5
-                  border border-slate-200 rounded-xl text-sm text-slate-700 bg-white
-                  focus:outline-none focus:ring-2 focus:ring-blue-500/25 focus:border-blue-400
-                  transition-all cursor-pointer
-                "
+                className="appearance-none w-full sm:w-52 pl-4 pr-9 py-2.5 border border-slate-200 rounded-xl text-sm text-slate-700 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/25 focus:border-blue-400 transition-all cursor-pointer"
               >
                 <option value="">Усі статуси</option>
                 {STATUS_OPTIONS.map(s => (
@@ -383,10 +375,7 @@ export default function App() {
           <div className="bg-rose-50 border border-rose-200 rounded-2xl p-4 mb-5 flex items-center gap-3">
             <AlertCircle size={18} className="text-rose-500 flex-shrink-0" />
             <p className="text-sm text-rose-700 flex-1">{error}</p>
-            <button
-              onClick={fetchLeads}
-              className="text-sm font-semibold text-rose-600 hover:text-rose-800 flex-shrink-0"
-            >
+            <button onClick={fetchLeads} className="text-sm font-semibold text-rose-600 hover:text-rose-800 flex-shrink-0">
               Повторити
             </button>
           </div>
@@ -401,7 +390,7 @@ export default function App() {
                   <th className="text-left px-6 py-3.5 text-[11px] font-semibold text-slate-500 uppercase tracking-widest whitespace-nowrap">
                     <span className="flex items-center gap-1.5"><Calendar size={11} />Дата</span>
                   </th>
-                  <th className="text-left px-6 py-3.5 text-[11px] font-semibold text-slate-500 uppercase tracking-widest">Ім'я</th>
+                  <th className="text-left px-6 py-3.5 text-[11px] font-semibold text-slate-500 uppercase tracking-widest">Ім&apos;я</th>
                   <th className="text-left px-6 py-3.5 text-[11px] font-semibold text-slate-500 uppercase tracking-widest">
                     <span className="flex items-center gap-1.5"><Phone size={11} />Телефон</span>
                   </th>
@@ -424,57 +413,33 @@ export default function App() {
                   filtered.map((lead, idx) => (
                     <tr
                       key={lead.id}
-                      className={`
-                        border-b border-slate-50 transition-colors duration-100
-                        hover:bg-blue-50/30
-                        ${idx % 2 !== 0 ? 'bg-slate-50/40' : 'bg-white'}
-                      `}
+                      className={`border-b border-slate-50 transition-colors duration-100 hover:bg-blue-50/30 ${idx % 2 !== 0 ? 'bg-slate-50/40' : 'bg-white'}`}
                     >
-                      {/* Date */}
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <span className="text-xs text-slate-500 font-mono tabular-nums">
-                          {formatDate(lead.created_at)}
-                        </span>
+                        <span className="text-xs text-slate-500 font-mono tabular-nums">{formatDate(lead.created_at)}</span>
                       </td>
-
-                      {/* Name */}
                       <td className="px-6 py-4">
                         <div>
                           <p className="text-sm font-semibold text-slate-800 leading-none">
                             {lead.name || <span className="text-slate-300 font-normal">Без імені</span>}
                           </p>
-                          <p className="text-[11px] text-slate-400 mt-1 font-mono">
-                            tg: {lead.telegram_id}
-                          </p>
+                          <p className="text-[11px] text-slate-400 mt-1 font-mono">tg: {lead.telegram_id}</p>
                         </div>
                       </td>
-
-                      {/* Phone */}
                       <td className="px-6 py-4 whitespace-nowrap">
                         {lead.phone ? (
-                          <a
-                            href={`tel:${lead.phone}`}
-                            className="text-sm font-semibold text-blue-600 hover:text-blue-800 hover:underline transition-colors"
-                          >
+                          <a href={`tel:${lead.phone}`} className="text-sm font-semibold text-blue-600 hover:text-blue-800 hover:underline transition-colors">
                             {lead.phone}
                           </a>
                         ) : (
                           <span className="text-sm text-slate-200 select-none">—</span>
                         )}
                       </td>
-
-                      {/* Current status badge */}
                       <td className="px-6 py-4">
                         <StatusBadge status={lead.status} />
                       </td>
-
-                      {/* Status dropdown */}
                       <td className="px-6 py-4">
-                        <StatusSelect
-                          lead={lead}
-                          onUpdate={updateStatus}
-                          isUpdating={updatingIds.has(lead.id)}
-                        />
+                        <StatusSelect lead={lead} onUpdate={updateStatus} isUpdating={updatingIds.has(lead.id)} />
                       </td>
                     </tr>
                   ))
@@ -484,7 +449,6 @@ export default function App() {
           </div>
         </div>
 
-        {/* Last updated */}
         {lastUpdated && !loading && (
           <p className="text-center text-xs text-slate-300 mt-4 tabular-nums">
             Оновлено о {lastUpdated.toLocaleTimeString('uk-UA')}
@@ -504,15 +468,44 @@ export default function App() {
               {dbConnected ? 'DB Connected' : 'DB Disconnected'}
             </span>
             <span
-              className={`
-                w-2 h-2 rounded-full ml-0.5
-                ${dbConnected ? 'bg-emerald-400 shadow-[0_0_6px_#34d399] animate-pulse' : 'bg-rose-400'}
-              `}
+              className={`w-2 h-2 rounded-full ml-0.5 ${dbConnected ? 'bg-emerald-400 shadow-[0_0_6px_#34d399] animate-pulse' : 'bg-rose-400'}`}
             />
           </div>
         </div>
       </footer>
+    </div>
+  );
+}
 
+// ═══════════════════════════════════════════════
+//  ROOT: ЛЕНДИНГ + СЕКРЕТНИЙ ВХІД В CRM
+// ═══════════════════════════════════════════════
+export default function App() {
+  const [showCRM, setShowCRM] = useState(false);
+
+  // Якщо активовано режим CRM — показуємо адмін-панель
+  if (showCRM) {
+    return <CRMDashboard onBack={() => setShowCRM(false)} />;
+  }
+
+  // За замовчуванням весь світ бачить лендинг
+  return (
+    <div className="relative">
+      <LandingPage />
+
+      {/* Секретна кнопка в футері — тільки для власника */}
+      <footer className="w-full bg-slate-950 py-6 text-center border-t border-slate-900">
+        <p className="text-slate-700 text-xs">
+          © {new Date().getFullYear()} K1BER.SCHOOL · Суми
+        </p>
+        <button
+          onClick={() => setShowCRM(true)}
+          className="mt-2 text-[10px] text-slate-800 hover:text-slate-600 transition-colors"
+          aria-label="Admin"
+        >
+          ·
+        </button>
+      </footer>
     </div>
   );
 }
