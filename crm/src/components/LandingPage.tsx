@@ -189,71 +189,100 @@ const Hero = () => (
 );
 
 // 3. КОМПОНЕНТ: ПЕРЕВАГИ ІНТЕНСИВУ (Benefits)
-const BENEFITS = [
+interface BenefitItem {
+    emoji: string;
+    title: string;
+    text: React.ReactNode;
+    accent: string;
+    glow: string;
+    colSpan: string;
+}
+
+const BENEFITS: BenefitItem[] = [
     {
         emoji: '🚀',
         title: 'Потужний апгрейд навичок',
-        text: 'Замість безцільного скролінгу гаджетів на канікулах — розвиток логіки, креативності та фундаментальних цифрових навичок.',
-        accent: 'from-cyan-500/10 to-blue-600/10',
-        border: 'border-cyan-800/30 group-hover:border-cyan-500/50',
-        glow: 'bg-cyan-950/60',
+        text: (
+            <>
+                Замість безцільного скролінгу гаджетів на канікулах — <strong className="text-white font-extrabold shadow-cyan-500/20 drop-shadow-[0_0_12px_rgba(255,255,255,0.7)]">розвиток логіки</strong>, креативності та фундаментальних цифрових навичок.
+            </>
+        ),
+        accent: 'from-cyan-500/10 to-blue-500/5',
+        glow: 'bg-cyan-500',
+        colSpan: 'md:col-span-2',
     },
     {
-        emoji: '👥',
+        emoji: '🤝',
         title: 'Нові друзі та оточення',
-        text: 'Командна робота, живе спілкування з однолітками, які поділяють інтерес до технологій, та море позитивних емоцій.',
-        accent: 'from-violet-500/10 to-blue-600/10',
-        border: 'border-violet-800/30 group-hover:border-violet-500/50',
-        glow: 'bg-violet-950/60',
+        text: (
+            <>
+                Командна робота, <strong className="text-white font-extrabold shadow-violet-500/20 drop-shadow-[0_0_12px_rgba(255,255,255,0.7)]">живе спілкування</strong> з однолітками, які поділяють інтерес до технологій, та море позитивних емоцій.
+            </>
+        ),
+        accent: 'from-violet-500/10 to-blue-500/5',
+        glow: 'bg-violet-500',
+        colSpan: 'md:col-span-1',
     },
     {
-        emoji: '🎓',
+        emoji: '👨‍💻',
         title: 'Підтримка та інтерактив',
-        text: 'Заняття проходять у формі гри, де немає нудної теорії, а кожну дитину супроводжує та підтримує досвідчений асистент.',
-        accent: 'from-emerald-500/10 to-cyan-600/10',
-        border: 'border-emerald-800/30 group-hover:border-emerald-500/50',
-        glow: 'bg-emerald-950/60',
+        text: (
+            <>
+                Заняття проходять у формі гри, де <strong className="text-white font-extrabold shadow-emerald-500/20 drop-shadow-[0_0_12px_rgba(255,255,255,0.7)]">немає нудної теорії</strong>, а кожну дитину супроводжує та підтримує досвідчений асистент.
+            </>
+        ),
+        accent: 'from-emerald-500/10 to-cyan-500/5',
+        glow: 'bg-emerald-500',
+        colSpan: 'md:col-span-3',
     },
 ];
 
 const PainPoints = () => (
-    <section id="about" className="w-full bg-slate-900 text-white py-20 px-6 border-b border-slate-950">
-        <div className="max-w-5xl mx-auto">
+    <section id="about" className="w-full bg-slate-900 text-white py-24 px-6 border-b border-slate-950 relative overflow-hidden">
+        {/* Subtle background glow */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-600/[0.03] rounded-full blur-3xl pointer-events-none" />
+
+        <div className="max-w-5xl mx-auto relative z-10">
 
             {/* Заголовок */}
-            <div className="text-center mb-14">
+            <div className="text-center mb-16">
                 <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-cyan-400 bg-cyan-950/50 px-4 py-1.5 rounded-full border border-cyan-800/40 mb-4">
                     Літній IT-інтенсив
                 </span>
-                <h2 className="text-3xl md:text-4xl font-black tracking-tight">
+                <h2 className="text-3xl md:text-5xl font-black tracking-tight leading-tight">
                     Що отримає ваша дитина
                     <br />
-                    <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
+                    <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-cyan-300 bg-clip-text text-transparent">
                         на літньому IT-інтенсиві?
                     </span>
                 </h2>
             </div>
 
-            {/* Картки */}
+            {/* Bento Grid */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {BENEFITS.map((b) => (
                     <div
                         key={b.title}
-                        className={`group relative bg-slate-950 p-7 rounded-2xl border ${b.border} transition-all duration-300 overflow-hidden`}
+                        className={`group relative bg-white/5 backdrop-blur-md p-8 md:p-10 rounded-3xl border border-white/10 hover:border-blue-500/40 transition-all duration-300 overflow-hidden flex flex-col justify-between ${b.colSpan}`}
                     >
-                        {/* Градієнт-підсвічування */}
-                        <div className={`absolute inset-0 bg-gradient-to-br ${b.accent} opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none`} />
+                        {/* Gradient hover background */}
+                        <div className={`absolute inset-0 bg-gradient-to-br ${b.accent} opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-3xl z-0`} />
 
-                        <div className="relative">
-                            {/* Іконка-бейдж */}
-                            <div className={`w-14 h-14 ${b.glow} rounded-2xl flex items-center justify-center text-2xl mb-5 border border-white/5 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
-                                {b.emoji}
+                        <div className="relative z-10 flex flex-col h-full justify-between">
+                            <div>
+                                {/* Icon with neon blur-glow */}
+                                <div className="relative mb-6 w-fit">
+                                    <div className={`absolute inset-0 rounded-full blur-2xl opacity-40 group-hover:opacity-70 transition-opacity duration-300 ${b.glow}`} />
+                                    <span className="text-5xl md:text-6xl relative select-none block transform group-hover:scale-110 transition-transform duration-300">
+                                        {b.emoji}
+                                    </span>
+                                </div>
+
+                                <h3 className="text-xl font-bold text-white tracking-tight leading-snug mb-3 group-hover:text-cyan-300 transition-colors duration-300">
+                                    {b.title}
+                                </h3>
                             </div>
-
-                            <h3 className="text-lg font-bold text-white leading-snug mb-3">
-                                {b.title}
-                            </h3>
-                            <p className="text-slate-400 text-sm leading-relaxed">
+                            <p className="text-slate-300/95 text-sm md:text-base leading-relaxed mt-2">
                                 {b.text}
                             </p>
                         </div>
