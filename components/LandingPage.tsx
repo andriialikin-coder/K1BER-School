@@ -348,8 +348,8 @@ const Courses = () => {
     };
 
     return (
-        <section id="courses" className="w-full bg-slate-950 text-white py-20 px-6 border-b border-slate-900 overflow-hidden">
-            <div className="max-w-5xl mx-auto">
+        <section id="courses" className="w-full bg-slate-950 text-white py-20 border-b border-slate-900 overflow-hidden">
+            <div className="max-w-5xl mx-auto px-6">
 
                 {/* Заголовок */}
                 <div className="text-center mb-14">
@@ -364,9 +364,20 @@ const Courses = () => {
                         </span>
                     </h2>
                 </div>
+            </div>
 
-                {/* Карусель курсів */}
-                <div className="flex flex-nowrap overflow-x-auto gap-6 pb-8 snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+            {/* Карусель курсів */}
+            <style>{`
+                .courses-scroll::-webkit-scrollbar { height: 10px; }
+                .courses-scroll::-webkit-scrollbar-track { background: transparent; }
+                .courses-scroll::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; border: 3px solid #0f172a; }
+                .courses-scroll::-webkit-scrollbar-thumb:hover { background: #475569; }
+                @supports not selector(::-webkit-scrollbar) {
+                    .courses-scroll { scrollbar-color: #334155 transparent; scrollbar-width: thin; }
+                }
+            `}</style>
+            <div className="w-full">
+                <div className="flex flex-nowrap overflow-x-auto gap-6 pb-8 pt-2 px-6 md:px-12 xl:px-[calc((100vw-1024px)/2)] snap-x snap-mandatory courses-scroll">
                     {COURSES.map((course) => (
                         <div
                             key={course.title}
