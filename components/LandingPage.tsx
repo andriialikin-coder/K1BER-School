@@ -1,4 +1,9 @@
 import React, { useState } from 'react';
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseUrl = (typeof process !== 'undefined' && process.env.NEXT_PUBLIC_SUPABASE_URL) || (typeof import.meta !== 'undefined' && (import.meta as any).env?.VITE_SUPABASE_URL) || 'https://xyz.supabase.co';
+const supabaseKey = (typeof process !== 'undefined' && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) || (typeof import.meta !== 'undefined' && (import.meta as any).env?.VITE_SUPABASE_ANON_KEY) || 'public-anon-key';
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 // 1. КОМПОНЕНТ: ШАПКА (Header)
 const Header = () => {
@@ -367,26 +372,42 @@ const RegisterForm = () => {
     const [tab, setTab] = useState<'new' | 'existing'>('new');
     const [formData, setFormData] = useState({ name: '', phone: '', course: '' });
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
 
-        const payload = tab === 'new' ? {
-            ...formData,
-            source: "website"
-        } : { phone: formData.phone };
-        
-        console.log("Submitting:", payload);
-
-        // Тут буде наш знайомий інжект у Supabase: supabase.from('leads').insert()
-        setTimeout(() => {
-            setLoading(false);
+        try {
             if (tab === 'new') {
+                // Тільки необхідні поля, згідно зі структурою таблиці
+                const payload = {
+                    name: formData.name,
+                    phone: formData.phone,
+                    course: formData.course,
+                    source: "website"
+                };
+                
+                console.log("Submitting payload to Supabase:", payload);
+
+                const { data, error } = await supabase
+                    .from('leads')
+                    .insert([payload]);
+
+                if (error) {
+                    console.error("КРИТИЧНА ПОМИЛКА SUPABASE:", error.message, error.details, error.hint);
+                    setLoading(false);
+                    return;
+                }
+
+                console.log("Успішне збереження в БД:", data);
                 setSuccess(true);
             } else {
                 window.location.href = `?phone=${encodeURIComponent(formData.phone)}`;
             }
-        }, 1000);
+        } catch (err) {
+            console.error("КРИТИЧНА ПОМИЛКА CATCH (Supabase):", err);
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
