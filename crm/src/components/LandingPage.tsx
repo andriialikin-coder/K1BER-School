@@ -189,54 +189,6 @@ const Hero = () => (
 );
 
 // 3. КОМПОНЕНТ: ПЕРЕВАГИ ІНТЕНСИВУ (Benefits)
-interface BenefitItem {
-    emoji: string;
-    title: string;
-    text: React.ReactNode;
-    accent: string;
-    glow: string;
-    colSpan: string;
-}
-
-const BENEFITS: BenefitItem[] = [
-    {
-        emoji: '🚀',
-        title: 'Потужний апгрейд навичок',
-        text: (
-            <>
-                Замість безцільного скролінгу гаджетів на канікулах — <strong className="text-white font-extrabold shadow-cyan-500/20 drop-shadow-[0_0_12px_rgba(255,255,255,0.7)]">розвиток логіки</strong>, креативності та фундаментальних цифрових навичок.
-            </>
-        ),
-        accent: 'from-cyan-500/10 to-blue-500/5',
-        glow: 'bg-cyan-500',
-        colSpan: 'md:col-span-2',
-    },
-    {
-        emoji: '🤝',
-        title: 'Нові друзі та оточення',
-        text: (
-            <>
-                Командна робота, <strong className="text-white font-extrabold shadow-violet-500/20 drop-shadow-[0_0_12px_rgba(255,255,255,0.7)]">живе спілкування</strong> з однолітками, які поділяють інтерес до технологій, та море позитивних емоцій.
-            </>
-        ),
-        accent: 'from-violet-500/10 to-blue-500/5',
-        glow: 'bg-violet-500',
-        colSpan: 'md:col-span-1',
-    },
-    {
-        emoji: '👨‍💻',
-        title: 'Підтримка та інтерактив',
-        text: (
-            <>
-                Заняття проходять у формі гри, де <strong className="text-white font-extrabold shadow-emerald-500/20 drop-shadow-[0_0_12px_rgba(255,255,255,0.7)]">немає нудної теорії</strong>, а кожну дитину супроводжує та підтримує досвідчений асистент.
-            </>
-        ),
-        accent: 'from-emerald-500/10 to-cyan-500/5',
-        glow: 'bg-emerald-500',
-        colSpan: 'md:col-span-3',
-    },
-];
-
 const PainPoints = () => (
     <section id="about" className="w-full bg-slate-900 text-white py-24 px-6 border-b border-slate-950 relative overflow-hidden">
         {/* Subtle background glow */}
@@ -260,34 +212,74 @@ const PainPoints = () => (
 
             {/* Bento Grid */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {BENEFITS.map((b) => (
-                    <div
-                        key={b.title}
-                        className={`group relative bg-white/5 backdrop-blur-md p-8 md:p-10 rounded-3xl border border-white/10 hover:border-blue-500/40 transition-all duration-300 overflow-hidden flex flex-col justify-between ${b.colSpan}`}
-                    >
-                        {/* Gradient hover background */}
-                        <div className={`absolute inset-0 bg-gradient-to-br ${b.accent} opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-3xl z-0`} />
 
-                        <div className="relative z-10 flex flex-col h-full justify-between">
-                            <div>
-                                {/* Icon with neon blur-glow */}
-                                <div className="relative mb-6 w-fit">
-                                    <div className={`absolute inset-0 rounded-full blur-2xl opacity-40 group-hover:opacity-70 transition-opacity duration-300 ${b.glow}`} />
-                                    <span className="text-5xl md:text-6xl relative select-none block transform group-hover:scale-110 transition-transform duration-300">
-                                        {b.emoji}
-                                    </span>
-                                </div>
+                {/* Card 1: 2 columns (Text left, Icon right) */}
+                <div className="md:col-span-2 group relative bg-white/5 backdrop-blur-md p-8 md:p-10 rounded-3xl border border-white/10 hover:border-cyan-500/40 transition-all duration-300 overflow-hidden flex items-center">
+                    {/* Hover Glow */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-0" />
+                    
+                    <div className="relative z-10 flex flex-col-reverse md:flex-row items-center justify-between w-full gap-8">
+                        <div className="space-y-4 max-w-md text-center md:text-left">
+                            <h3 className="text-2xl font-bold text-white tracking-tight group-hover:text-cyan-300 transition-colors duration-300">
+                                Потужний апгрейд навичок
+                            </h3>
+                            <p className="text-slate-300/95 text-base leading-relaxed">
+                                Замість безцільного скролінгу гаджетів на канікулах — <strong className="text-white font-extrabold shadow-cyan-500/20 drop-shadow-[0_0_12px_rgba(255,255,255,0.7)]">розвиток логіки</strong>, креативності та фундаментальних цифрових навичок.
+                            </p>
+                        </div>
+                        <div className="relative w-fit flex-shrink-0">
+                            <div className="absolute inset-0 rounded-full blur-3xl opacity-40 group-hover:opacity-70 transition-opacity duration-300 bg-cyan-500" />
+                            <span className="text-7xl md:text-8xl relative select-none block transform group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-300">
+                                🚀
+                            </span>
+                        </div>
+                    </div>
+                </div>
 
-                                <h3 className="text-xl font-bold text-white tracking-tight leading-snug mb-3 group-hover:text-cyan-300 transition-colors duration-300">
-                                    {b.title}
-                                </h3>
-                            </div>
-                            <p className="text-slate-300/95 text-sm md:text-base leading-relaxed mt-2">
-                                {b.text}
+                {/* Card 2: 1 column (Vertical stack, icon top right, text bottom) */}
+                <div className="md:col-span-1 group relative bg-white/5 backdrop-blur-md p-8 md:p-10 rounded-3xl border border-white/10 hover:border-violet-500/40 transition-all duration-300 overflow-hidden min-h-[260px] flex flex-col justify-between">
+                    <div className="absolute inset-0 bg-gradient-to-br from-violet-500/10 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-0" />
+                    
+                    <div className="relative z-10 w-full flex justify-end mb-6">
+                        <div className="relative w-fit">
+                            <div className="absolute inset-0 rounded-full blur-2xl opacity-40 group-hover:opacity-70 transition-opacity duration-300 bg-violet-500" />
+                            <span className="text-6xl md:text-7xl relative select-none block transform group-hover:scale-110 group-hover:rotate-6 transition-transform duration-300">
+                                🤝
+                            </span>
+                        </div>
+                    </div>
+                    <div className="relative z-10 space-y-3 text-center md:text-left">
+                        <h3 className="text-xl font-bold text-white tracking-tight group-hover:text-violet-300 transition-colors duration-300">
+                            Нові друзі та оточення
+                        </h3>
+                        <p className="text-slate-300/95 text-sm leading-relaxed">
+                            Командна робота, <strong className="text-white font-extrabold shadow-violet-500/20 drop-shadow-[0_0_12px_rgba(255,255,255,0.7)]">живе спілкування</strong> з однолітками, які поділяють інтерес до технологій, та море позитивних емоцій.
+                        </p>
+                    </div>
+                </div>
+
+                {/* Card 3: 3 columns (Wide banner, Icon left, Text right) */}
+                <div className="md:col-span-3 group relative bg-white/5 backdrop-blur-md p-8 md:p-10 rounded-3xl border border-white/10 hover:border-emerald-500/40 transition-all duration-300 overflow-hidden flex items-center">
+                    <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-0" />
+                    
+                    <div className="relative z-10 flex flex-col md:flex-row items-center justify-start w-full gap-8 md:gap-12">
+                        <div className="relative w-fit flex-shrink-0 mb-4 md:mb-0">
+                            <div className="absolute inset-0 rounded-full blur-3xl opacity-40 group-hover:opacity-70 transition-opacity duration-300 bg-emerald-500" />
+                            <span className="text-7xl md:text-8xl relative select-none block transform group-hover:scale-110 group-hover:-translate-y-2 transition-transform duration-300">
+                                👨‍💻
+                            </span>
+                        </div>
+                        <div className="space-y-4 max-w-3xl text-center md:text-left">
+                            <h3 className="text-2xl font-bold text-white tracking-tight group-hover:text-emerald-300 transition-colors duration-300">
+                                Підтримка та інтерактив
+                            </h3>
+                            <p className="text-slate-300/95 text-base md:text-lg leading-relaxed">
+                                Заняття проходять у формі гри, де <strong className="text-white font-extrabold shadow-emerald-500/20 drop-shadow-[0_0_12px_rgba(255,255,255,0.7)]">немає нудної теорії</strong>, а кожну дитину супроводжує та підтримує досвідчений асистент.
                             </p>
                         </div>
                     </div>
-                ))}
+                </div>
+
             </div>
         </div>
     </section>
