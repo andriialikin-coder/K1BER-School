@@ -372,13 +372,18 @@ const Courses = () => {
                             className={`group bg-slate-900 rounded-2xl border border-slate-800 ${course.cardBorder} transition-all duration-300 flex flex-col overflow-hidden w-[85vw] sm:w-[320px] shrink-0 snap-center`}
                         >
                             {/* Блок для картинки */}
-                            <div className="h-48 w-full bg-slate-800 relative overflow-hidden border-b border-slate-800 group-hover:border-slate-700 transition-colors">
+                            <div className="h-48 w-full bg-slate-800 relative overflow-hidden border-b border-slate-800 group-hover:border-slate-700 transition-colors flex items-center justify-center">
+                                {/* Иконка-плейсхолдер на фоне */}
+                                <svg className="w-12 h-12 text-slate-700 absolute" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
                                 <img 
                                     src={course.image} 
-                                    alt={course.title} 
-                                    className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500 group-hover:scale-105 transform"
+                                    alt="" 
+                                    onError={(e) => { e.currentTarget.style.opacity = '0'; }}
+                                    className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500 group-hover:scale-105 transform relative z-10"
                                 />
-                                <span className={`absolute top-4 right-4 text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full border backdrop-blur-md ${course.tagColor}`}>
+                                <span className={`absolute top-4 right-4 z-20 text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full border backdrop-blur-md ${course.tagColor}`}>
                                     {course.tag}
                                 </span>
                             </div>
