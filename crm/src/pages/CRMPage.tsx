@@ -45,6 +45,7 @@ const LEGACY_CONFIG: Record<string, { label: string; badge: string; dot: string 
   new:            { label: 'Новий (сист.)',  badge: 'bg-blue-50 text-blue-600 ring-1 ring-blue-500/20',  dot: 'bg-blue-400' },
   in_progress:    { label: 'В діалозі',      badge: 'bg-yellow-50 text-yellow-700 ring-1 ring-yellow-500/20', dot: 'bg-yellow-400' },
   phone_captured: { label: '📱 Телефон',    badge: 'bg-teal-50 text-teal-700 ring-1 ring-teal-500/20',  dot: 'bg-teal-500' },
+  time_confirmed: { label: '🗓️ Час обрано', badge: 'bg-purple-50 text-purple-700 ring-1 ring-purple-500/20', dot: 'bg-purple-500' },
 };
 
 const getStatusConfig = (status: string) => {
