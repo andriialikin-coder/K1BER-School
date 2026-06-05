@@ -367,7 +367,7 @@ const Courses = () => (
 );
 
 // 5. КОМПОНЕНТ: ФОРМА ЗАХВАТУ ЛІДІВ (Форма -> Наша CRM)
-const RegisterForm = () => {
+const RegisterForm = ({ onAuthSuccess }: { onAuthSuccess?: (name: string, course: string, phone: string) => void }) => {
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [tab, setTab] = useState<'new' | 'existing'>('new');
@@ -400,6 +400,9 @@ const RegisterForm = () => {
                 }
 
                 console.log("Успішне збереження в БД:", data);
+                if (onAuthSuccess) {
+                    onAuthSuccess(formData.name, formData.course, formData.phone);
+                }
                 setSuccess(true);
             } else {
                 window.location.href = `?phone=${encodeURIComponent(formData.phone)}`;
@@ -628,7 +631,7 @@ const ContactsAndMap = () => (
 );
 
 // МІНІ-КАБІНЕТ (Після успішної авторизації)
-const MiniCabinet = () => {
+const MiniCabinet = ({ clientName, registeredCourse }: { clientName: string, registeredCourse: string }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [receiptUrl] = useState('');
 
@@ -645,6 +648,7 @@ const MiniCabinet = () => {
                     amount: 10000,
                     ccy: 980,
                     redirectUrl: window.location.href,
+                    destination: "Оплата за інтенсив: " + registeredCourse
                 })
             });
             const data = await response.json();
@@ -662,7 +666,8 @@ const MiniCabinet = () => {
         <div className="w-full min-h-screen bg-slate-950 text-white flex flex-col items-center justify-center p-6 font-sans">
             <div className="max-w-md w-full bg-slate-900 border border-slate-800 rounded-2xl p-8 shadow-xl">
                 <h2 className="text-2xl font-black text-center mb-6">
-                    Вітаємо!<br />Вашу дитину записано на <span className="text-cyan-400">[Курс]</span>.
+                    {clientName ? `Вітаємо, ${clientName}!` : 'Вітаємо!'}
+                    <br />Вашу дитину записано на <span className="text-cyan-400">{registeredCourse || 'обраний курс'}</span>.
                 </h2>
                 
                 <div className="space-y-3 mb-8">
@@ -696,17 +701,39 @@ const MiniCabinet = () => {
 
 // ГОЛОВНА СТОРІНКА ЛЕНДИНГУ
 export default function LandingPage() {
-    const [isAuth, setIsAuth] = useState(false);
+    const [authData, setAuthData] = useState<{name: string, course: string, phone: string} | null>(null);
+    const [isLoadingAuth, setIsLoadingAuth] = useState(true);
 
     React.useEffect(() => {
-        const params = new URLSearchParams(window.location.search);
-        if (params.get('phone')) {
-            setIsAuth(true);
-        }
+        const fetchUserData = async () => {
+            const params = new URLSearchParams(window.location.search);
+            const phone = params.get('phone');
+            if (phone) {
+                try {
+                    const { data, error } = await supabase
+                        .from('leads')
+                        .select('name, course')
+                        .eq('phone', phone)
+                        .single();
+                    
+                    if (!error && data) {
+                        setAuthData({ name: data.name || '', course: data.course || '', phone });
+                    }
+                } catch (e) {
+                    console.error("Error fetching lead:", e);
+                }
+            }
+            setIsLoadingAuth(false);
+        };
+        fetchUserData();
     }, []);
 
-    if (isAuth) {
-        return <MiniCabinet />;
+    if (isLoadingAuth) {
+        return <div className="w-full min-h-screen bg-slate-950 flex items-center justify-center text-white font-sans">Завантаження...</div>;
+    }
+
+    if (authData) {
+        return <MiniCabinet clientName={authData.name} registeredCourse={authData.course} />;
     }
 
     return (
@@ -715,7 +742,7 @@ export default function LandingPage() {
             <Hero />
             <PainPoints />
             <Courses />
-            <RegisterForm />
+            <RegisterForm onAuthSuccess={(name, course, phone) => setAuthData({ name, course, phone })} />
             <FAQ />
             <ContactsAndMap />
         </div>
