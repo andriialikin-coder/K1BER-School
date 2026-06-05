@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 // 1. КОМПОНЕНТ: ШАПКА (Header)
-// 1. КОМПОНЕНТ: ШАПКА (Header)
 const Header = () => {
     const [menuOpen, setMenuOpen] = React.useState(false);
 
@@ -75,15 +74,14 @@ const Header = () => {
     );
 };
 
-
-// 2. КОМПОНЕНТ: ГОЛОВНИЙ ЕКРАН (Hero Section)
 // 2. КОМПОНЕНТ: ГОЛОВНИЙ ЕКРАН (Hero Section)
 const Hero = () => (
     <section className="relative w-full bg-slate-950 text-white pt-32 pb-24 px-6 flex flex-col items-center text-center overflow-hidden">
 
         {/* Фоновий неон-ефект */}
         <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-cyan-500/8 rounded-full blur-3xl" />
+            {/* bg-cyan-500/[0.08] — arbitrary opacity, бо Tailwind не знає /8 */}
+            <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-cyan-500/[0.08] rounded-full blur-3xl" />
             <div className="absolute top-1/3 left-1/3 w-[300px] h-[300px] bg-blue-600/10 rounded-full blur-3xl" />
         </div>
 
@@ -172,7 +170,6 @@ const Hero = () => (
     </section>
 );
 
-
 // 3. КОМПОНЕНТ: БЛОК БОЛЮ ТА ПРОБЛЕМАТИКИ (Pain Points)
 const PainPoints = () => (
     <section id="about" className="w-full bg-slate-900 text-white py-16 px-6 border-b border-slate-950">
@@ -244,12 +241,12 @@ const RegisterForm = () => {
 
                 {success ? (
                     <div className="mt-6 p-4 bg-emerald-950/50 border border-emerald-800/40 text-emerald-400 rounded-xl text-center text-sm font-medium">
-                        🎉 [Успішно! Дані вже миттєво з'явилися в нашій CRM-панелі]
+                        🎉 [Успішно! Дані вже миттєво з&apos;явилися в нашій CRM-панелі]
                     </div>
                 ) : (
                     <form onSubmit={handleSubmit} className="mt-8 space-y-4">
                         <div>
-                            <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Ім'я батька/матері</label>
+                            <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Ім&apos;я батька/матері</label>
                             <input type="text" required placeholder="Наприклад, Сергій" className="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-cyan-500 text-white" />
                         </div>
                         <div>
