@@ -1201,6 +1201,11 @@ export default function LandingPage() {
             />
             <FAQ />
             <ContactsAndMap />
+            <footer className="w-full bg-slate-950 py-6 text-center border-t border-slate-900">
+                <p className="text-slate-700 text-xs">
+                    © {new Date().getFullYear()} K1BER.SCHOOL · Суми
+                </p>
+            </footer>
         </div>
     );
 }
