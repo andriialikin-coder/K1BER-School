@@ -3,7 +3,7 @@ import CRMPage from './pages/CRMPage';
 
 export default function App() {
   // Простий роутінг
-  if (window.location.pathname === '/crm') {
+  if (window.location.pathname.startsWith('/crm')) {
     return <CRMPage />;
   }
 
