@@ -30,6 +30,11 @@ interface Lead {
   chosen_time: string | null;
 }
 
+interface CourseSlot {
+  course_slug: string;
+  available_slots: number;
+}
+
 // ═══════════════════════════════════════════════
 //  STATUS CONFIGURATION
 // ═══════════════════════════════════════════════
@@ -146,7 +151,9 @@ export default function CRMPage() {
     return expires ? parseInt(expires) > Date.now() : false;
   });
   const [leads, setLeads] = useState<Lead[]>([]);
+  const [courseSlots, setCourseSlots] = useState<CourseSlot[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingSlots, setLoadingSlots] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
@@ -198,11 +205,48 @@ export default function CRMPage() {
     }
   }, [isAuthenticated]);
 
+  const fetchSlots = useCallback(async () => {
+    if (!isAuthenticated) return;
+    setLoadingSlots(true);
+    const { data, error } = await supabase.from('course_slots').select('*').order('course_slug');
+    if (!error && data) {
+      setCourseSlots(data);
+    }
+    setLoadingSlots(false);
+  }, [isAuthenticated]);
+
   useEffect(() => { 
-    if (isAuthenticated) fetchLeads(); 
-  }, [isAuthenticated, fetchLeads]);
+    if (isAuthenticated) {
+      fetchLeads(); 
+      fetchSlots();
+    }
+  }, [isAuthenticated, fetchLeads, fetchSlots]);
 
   if (!isAuthenticated) return <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center font-sans">Перевірка доступу...</div>;
+
+  const handleRefresh = () => {
+    fetchLeads();
+    fetchSlots();
+  };
+
+  const updateSlot = async (slug: string, delta: number) => {
+    const slot = courseSlots.find(s => s.course_slug === slug);
+    if (!slot) return;
+    const newVal = Math.max(0, slot.available_slots + delta);
+    
+    // Optimistic UI update
+    setCourseSlots(prev => prev.map(s => s.course_slug === slug ? { ...s, available_slots: newVal } : s));
+
+    const { error } = await supabase
+      .from('course_slots')
+      .update({ available_slots: newVal })
+      .eq('course_slug', slug);
+
+    if (error) {
+      console.error(error);
+      fetchSlots(); // revert on error
+    }
+  };
 
   const updateStatus = async (id: number, newStatus: string) => {
     setUpdatingIds(prev => new Set(prev).add(id));
@@ -266,8 +310,8 @@ export default function CRMPage() {
 
             <div className="flex items-center gap-2 flex-shrink-0">
               <button
-                onClick={fetchLeads}
-                disabled={loading}
+                onClick={handleRefresh}
+                disabled={loading || loadingSlots}
                 className="flex items-center gap-2 px-4 py-2.5 bg-slate-100 hover:bg-slate-200 active:bg-slate-300 rounded-xl text-sm font-semibold text-slate-600 transition-all duration-150 disabled:opacity-40"
               >
                 <RefreshCw size={14} className={loading ? 'animate-spin' : ''} />
@@ -285,6 +329,36 @@ export default function CRMPage() {
       </header>
 
       <main className="flex-1 max-w-screen-xl mx-auto w-full px-6 py-8">
+        
+        {/* ── Slots Management ── */}
+        <div className="mb-6">
+          <h2 className="text-sm font-bold text-slate-800 mb-3 flex items-center gap-2">
+            <Database size={16} className="text-blue-500" />
+            Аналітика та керування місцями
+          </h2>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            {loadingSlots ? (
+              <div className="col-span-full text-xs text-slate-400">Завантаження місць...</div>
+            ) : (
+              courseSlots.map(slot => (
+                <div key={slot.course_slug} className="bg-white rounded-xl border border-slate-200 p-3 flex flex-col justify-between shadow-sm hover:border-blue-300 hover:shadow-md transition-all">
+                  <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-3 truncate" title={slot.course_slug}>
+                    {slot.course_slug.replace(/-/g, ' ')}
+                  </p>
+                  <div className="flex items-center justify-between mt-auto">
+                    <button onClick={() => updateSlot(slot.course_slug, -1)} className="w-8 h-8 flex items-center justify-center bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg transition-colors font-bold text-lg leading-none active:bg-slate-300">-</button>
+                    <div className="text-center">
+                      <span className="font-bold text-slate-800 text-xl tabular-nums leading-none block">{slot.available_slots}</span>
+                      <span className="text-[9px] font-medium text-slate-400 uppercase tracking-widest mt-0.5 block">місць</span>
+                    </div>
+                    <button onClick={() => updateSlot(slot.course_slug, 1)} className="w-8 h-8 flex items-center justify-center bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg transition-colors font-bold text-lg leading-none active:bg-slate-300">+</button>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4 mb-5">
           <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
             <div className="relative flex-1 min-w-0">
