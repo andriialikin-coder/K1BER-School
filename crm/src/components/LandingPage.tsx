@@ -124,6 +124,13 @@ const Hero = () => (
                 </span>
             </h1>
 
+            {/* Неоновий акцент */}
+            <div className="mt-6 inline-block bg-slate-900 border border-slate-800 rounded-xl px-6 py-3 shadow-lg shadow-cyan-900/20">
+                <p className="text-cyan-400 font-bold text-sm md:text-base drop-shadow-md">
+                    🔥 Практика &gt;80% — мінімум теорії, максимум реальних проектів за комп&apos;ютером!
+                </p>
+            </div>
+
             {/* Підзаголовок */}
             <p className="text-slate-400 text-lg md:text-xl mt-8 max-w-2xl mx-auto leading-relaxed">
                 Школа програмування для дітей у Сумах. Ваша дитина не просто вчить теорію — вона{' '}
@@ -356,15 +363,28 @@ const Courses = () => (
 const RegisterForm = () => {
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
+    const [tab, setTab] = useState<'new' | 'existing'>('new');
+    const [formData, setFormData] = useState({ name: '', phone: '', course: '' });
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
 
+        const payload = tab === 'new' ? {
+            ...formData,
+            source: "website"
+        } : { phone: formData.phone };
+        
+        console.log("Submitting:", payload);
+
         // Тут буде наш знайомий інжект у Supabase: supabase.from('leads').insert()
         setTimeout(() => {
             setLoading(false);
-            setSuccess(true);
+            if (tab === 'new') {
+                setSuccess(true);
+            } else {
+                window.location.href = `?phone=${encodeURIComponent(formData.phone)}`;
+            }
         }, 1000);
     };
 
@@ -385,27 +405,81 @@ const RegisterForm = () => {
                         літній інтенсив
                     </span>
                 </h2>
-                <p className="text-slate-400 text-sm text-center mt-3 leading-relaxed">
+                <p className="text-slate-400 text-sm text-center mt-3 leading-relaxed mb-6">
                     Скоріше обирайте напрямок та бронюйте місце для дитини.
                     <span className="text-slate-300 font-medium"> Кількість місць у групах обмежена!</span>
                 </p>
+
+                <div className="flex bg-slate-900 rounded-xl p-1 mb-6">
+                    <button 
+                        type="button"
+                        onClick={() => setTab('new')} 
+                        className={`flex-1 text-sm font-bold py-2.5 rounded-lg transition-colors ${tab === 'new' ? 'bg-slate-800 text-white shadow' : 'text-slate-400 hover:text-slate-200'}`}
+                    >
+                        Новий запис
+                    </button>
+                    <button 
+                        type="button"
+                        onClick={() => setTab('existing')} 
+                        className={`flex-1 text-sm font-bold py-2.5 rounded-lg transition-colors ${tab === 'existing' ? 'bg-slate-800 text-white shadow' : 'text-slate-400 hover:text-slate-200'}`}
+                    >
+                        Вже маю кабінет
+                    </button>
+                </div>
 
                 {success ? (
                     <div className="mt-6 p-4 bg-emerald-950/50 border border-emerald-800/40 text-emerald-400 rounded-xl text-center text-sm font-medium">
                         🎉 Заявку отримано! Ми зателефонуємо вам найближчим часом.
                     </div>
                 ) : (
-                    <form onSubmit={handleSubmit} className="mt-8 space-y-4">
-                        <div>
-                            <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Ім&apos;я батька/матері</label>
-                            <input type="text" required placeholder="Наприклад, Сергій" className="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-cyan-500 text-white" />
-                        </div>
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                        {tab === 'new' && (
+                            <div>
+                                <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Ім&apos;я батька/матері</label>
+                                <input 
+                                    type="text" 
+                                    required 
+                                    value={formData.name}
+                                    onChange={e => setFormData({...formData, name: e.target.value})}
+                                    placeholder="Наприклад, Сергій" 
+                                    className="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-cyan-500 text-white" 
+                                />
+                            </div>
+                        )}
+                        
                         <div>
                             <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Номер телефону</label>
-                            <input type="tel" required placeholder="+380 (__) ___-__-__" className="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-cyan-500 text-white" />
+                            <input 
+                                type="tel" 
+                                required 
+                                value={formData.phone}
+                                onChange={e => setFormData({...formData, phone: e.target.value})}
+                                placeholder="+380 (__) ___-__-__" 
+                                className="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-cyan-500 text-white" 
+                            />
                         </div>
+
+                        {tab === 'new' && (
+                            <div>
+                                <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Вибір напрямку</label>
+                                <select 
+                                    required 
+                                    value={formData.course}
+                                    onChange={e => setFormData({...formData, course: e.target.value})}
+                                    className="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-cyan-500 text-white appearance-none"
+                                >
+                                    <option value="" disabled>Оберіть напрямок...</option>
+                                    <option value="Minecraft: Програмуємо портал (8+)">Minecraft: Програмуємо портал (8+)</option>
+                                    <option value="Geometry Dash: Створюємо 2D-платформер (11+)">Geometry Dash: Створюємо 2D-платформер (11+)</option>
+                                    <option value="Геніальні додатки з ШІ & App Inventor (8+)">Геніальні додатки з ШІ &amp; App Inventor (8+)</option>
+                                    <option value="Ферма на Python: Гра-симулятор (11+)">Ферма на Python: Гра-симулятор (11+)</option>
+                                    <option value="Ідеальний сайт з нуля & ШІ-помічник (11+)">Ідеальний сайт з нуля &amp; ШІ-помічник (11+)</option>
+                                </select>
+                            </div>
+                        )}
+
                         <button type="submit" disabled={loading} className="w-full mt-2 bg-gradient-to-r from-cyan-500 to-blue-600 hover:opacity-90 disabled:opacity-50 text-white font-bold py-3.5 px-4 rounded-xl text-sm transition">
-                            {loading ? 'Відправляємо...' : 'Забронювати місце на інтенсив →'}
+                            {loading ? 'Відправляємо...' : tab === 'new' ? 'Забронювати місце на інтенсив →' : 'Увійти в кабінет →'}
                         </button>
                     </form>
                 )}
@@ -420,11 +494,15 @@ const FAQ = () => (
         <div className="max-w-3xl mx-auto">
             <h2 className="text-2xl md:text-4xl font-bold text-center tracking-tight">[Популярні питання батьків]</h2>
             <div className="mt-12 space-y-4">
-                {[1, 2, 3].map((item) => (
-                    <div key={item} className="bg-slate-900 p-5 rounded-xl border border-slate-800/60">
-                        <h3 className="font-bold text-slate-200">[Питання від батьків #{item}?]</h3>
+                {[
+                    { q: "Чи потрібна підготовка?", a: "Ні, ми навчаємо з нуля. Ментори адаптують матеріал під будь-який рівень." },
+                    { q: "Який графік інтенсивів?", a: "Заняття по вихідних у сучасному хабі в ТРЦ \"КИЇВ\". Точний розклад ви отримаєте після бронювання." },
+                    { q: "Що дитина отримає?", a: "Жодних нудних конспектів. Кожен створить свій перший IT-проект." }
+                ].map((item, i) => (
+                    <div key={i} className="bg-slate-900 p-5 rounded-xl border border-slate-800/60">
+                        <h3 className="font-bold text-slate-200">{item.q}</h3>
                         <p className="text-slate-400 text-sm mt-2 leading-relaxed">
-                            [Розгорнута відповідь-абзац. ШІ-роботи ChatGPT та Claude зчитають цей блок за мілісекунду і будуть використовувати ці відповіді для GEO-рекомендацій бренду]
+                            {item.a}
                         </p>
                     </div>
                 ))}
@@ -526,8 +604,88 @@ const ContactsAndMap = () => (
     </section>
 );
 
+// МІНІ-КАБІНЕТ (Після успішної авторизації)
+const MiniCabinet = () => {
+    const [isLoading, setIsLoading] = useState(false);
+    const [receiptUrl, setReceiptUrl] = useState('');
+
+    const handlePayment = async () => {
+        setIsLoading(true);
+        try {
+            const response = await fetch('https://api.monobank.ua/api/merchant/invoice/create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Token': 'sandbox_monobank_test_token_here'
+                },
+                body: JSON.stringify({
+                    amount: 10000,
+                    ccy: 980,
+                    redirectUrl: window.location.href,
+                })
+            });
+            const data = await response.json();
+            if (data.pageUrl) {
+                window.location.href = data.pageUrl;
+            }
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    return (
+        <div className="w-full min-h-screen bg-slate-950 text-white flex flex-col items-center justify-center p-6 font-sans">
+            <div className="max-w-md w-full bg-slate-900 border border-slate-800 rounded-2xl p-8 shadow-xl">
+                <h2 className="text-2xl font-black text-center mb-6">
+                    Вітаємо!<br />Вашу дитину записано на <span className="text-cyan-400">[Курс]</span>.
+                </h2>
+                
+                <div className="space-y-3 mb-8">
+                    <div className="bg-slate-950 border border-emerald-500/30 p-4 rounded-xl flex items-center justify-between">
+                        <span className="text-sm font-semibold">🟢 Субота 11:00</span>
+                        <span className="text-xs text-emerald-400 bg-emerald-950/60 px-2 py-1 rounded-md">Є місця</span>
+                    </div>
+                    <div className="bg-slate-950 border border-amber-500/30 p-4 rounded-xl flex items-center justify-between">
+                        <span className="text-sm font-semibold">🔥 Неділя 14:00</span>
+                        <span className="text-xs text-amber-400 bg-amber-950/60 px-2 py-1 rounded-md">Залишилось 2 місця</span>
+                    </div>
+                </div>
+
+                <button 
+                    onClick={handlePayment} 
+                    disabled={isLoading}
+                    className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 disabled:opacity-50 text-white font-bold py-4 px-4 rounded-xl shadow-lg transition-all"
+                >
+                    {isLoading ? 'Бронюємо місце на 15 хвилин...' : 'Оплатити курс через Mono Pay'}
+                </button>
+
+                {receiptUrl && (
+                    <button className="w-full mt-4 bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium py-3 px-4 rounded-xl text-sm transition-colors flex justify-center items-center gap-2">
+                        📄 Завантажити фіскальний чек (ПРРО Checkbox)
+                    </button>
+                )}
+            </div>
+        </div>
+    );
+};
+
 // ГОЛОВНА СТОРІНКА ЛЕНДИНГУ
 export default function LandingPage() {
+    const [isAuth, setIsAuth] = useState(false);
+
+    React.useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('phone')) {
+            setIsAuth(true);
+        }
+    }, []);
+
+    if (isAuth) {
+        return <MiniCabinet />;
+    }
+
     return (
         <div className="w-full min-h-screen bg-slate-950 antialiased font-sans select-none selection:bg-cyan-500/30">
             <Header />
