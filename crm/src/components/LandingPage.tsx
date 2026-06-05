@@ -521,6 +521,29 @@ const RegisterForm = ({ onAuthSuccess, slotsData, fetchSlots }: { onAuthSuccess?
         : (!isPhoneValid(loginPhone));
 
     React.useEffect(() => {
+        // Логіка автозаповнення для лідів з Telegram-бота
+        const urlParams = new URLSearchParams(window.location.search);
+        const phoneParam = urlParams.get('phone');
+        const nameParam = urlParams.get('name');
+
+        let initialName = formData.name;
+        let initialPhone = formData.phone;
+
+        if (phoneParam) {
+            const digits = phoneParam.replace(/\D/g, '');
+            const formattedPhone = '+' + (digits.startsWith('380') ? digits : `380${digits.replace(/^0/, '')}`);
+            initialPhone = formattedPhone;
+            localStorage.setItem('user_phone', formattedPhone);
+        }
+        if (nameParam) {
+            initialName = decodeURIComponent(nameParam);
+            localStorage.setItem('user_name', initialName);
+        }
+
+        if (phoneParam || nameParam) {
+            setFormData(prev => ({ ...prev, name: initialName, phone: initialPhone }));
+        }
+
         const handleCourseSelect = (e: CustomEvent) => {
             setFormData(prev => ({ ...prev, course: e.detail.course }));
             setTab('new');
@@ -1137,8 +1160,14 @@ export default function LandingPage() {
                         .single();
 
                     if (!error && data) {
-                        setAuthData({ name: data.name || '', course: data.course || '', phone, chosenTime: data.chosen_time });
-                        localStorage.setItem('kiberUserPhone', phone);
+                        // Показуємо кабінет ТІЛЬКИ якщо користувач вже обрав курс
+                        if (data.course) {
+                            setAuthData({ name: data.name || '', course: data.course || '', phone, chosenTime: data.chosen_time });
+                            localStorage.setItem('kiberUserPhone', phone);
+                        } else {
+                            // Якщо курсу немає (прийшов з бота), просто зберігаємо телефон для автозаповнення
+                            localStorage.setItem('kiberUserPhone', phone);
+                        }
                     } else if (savedPhone && !urlPhone) {
                         localStorage.removeItem('kiberUserPhone');
                     }
