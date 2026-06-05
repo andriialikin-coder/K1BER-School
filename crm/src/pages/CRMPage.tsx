@@ -26,6 +26,8 @@ interface Lead {
   phone: string | null;
   status: string;
   source: string | null;
+  course: string | null;
+  chosen_time: string | null;
 }
 
 // ═══════════════════════════════════════════════
@@ -44,8 +46,8 @@ const STATUS_OPTIONS = [
 const LEGACY_CONFIG: Record<string, { label: string; badge: string; dot: string }> = {
   new:            { label: 'Новий (сист.)',  badge: 'bg-blue-50 text-blue-600 ring-1 ring-blue-500/20',  dot: 'bg-blue-400' },
   in_progress:    { label: 'В діалозі',      badge: 'bg-yellow-50 text-yellow-700 ring-1 ring-yellow-500/20', dot: 'bg-yellow-400' },
-  phone_captured: { label: '📱 Телефон',    badge: 'bg-teal-50 text-teal-700 ring-1 ring-teal-500/20',  dot: 'bg-teal-500' },
-  time_confirmed: { label: '🗓️ Час обрано', badge: 'bg-purple-50 text-purple-700 ring-1 ring-purple-500/20', dot: 'bg-purple-500' },
+  phone_captured: { label: 'Новий',    badge: 'bg-blue-50 text-blue-700 ring-1 ring-blue-600/20',  dot: 'bg-blue-500' },
+  time_confirmed: { label: 'Новий',    badge: 'bg-blue-50 text-blue-700 ring-1 ring-blue-600/20',  dot: 'bg-blue-500' },
 };
 
 const getStatusConfig = (status: string) => {
@@ -138,7 +140,11 @@ function SkeletonRow() {
 //  CRM DASHBOARD
 // ═══════════════════════════════════════════════
 export default function CRMPage() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    const expires = localStorage.getItem('crm_auth_expires');
+    // Force boolean conversion, check if valid
+    return expires ? parseInt(expires) > Date.now() : false;
+  });
   const [leads, setLeads] = useState<Lead[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -149,27 +155,26 @@ export default function CRMPage() {
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
 
   useEffect(() => {
-    const checkAuth = () => {
-      const expires = sessionStorage.getItem('crm_auth_expires');
-      if (expires && parseInt(expires) > Date.now()) {
-        setIsAuthenticated(true);
-        // Refresh the session timer for another 30 mins
-        sessionStorage.setItem('crm_auth_expires', (Date.now() + 30 * 60 * 1000).toString());
-        return;
-      }
+    if (isAuthenticated) {
+      localStorage.setItem('crm_auth_expires', (Date.now() + 30 * 60 * 1000).toString());
+      return;
+    }
 
+    const checkAuth = () => {
       const password = prompt("Введіть секретний ключ доступу до CRM:");
       if (password === "K1berAdmin2026!") {
         setIsAuthenticated(true);
-        sessionStorage.setItem('crm_auth_expires', (Date.now() + 30 * 60 * 1000).toString());
+        localStorage.setItem('crm_auth_expires', (Date.now() + 30 * 60 * 1000).toString());
       } else {
         alert("Доступ заборонено!");
         window.location.href = "/"; // Викидаємо на лендинг
       }
     };
     
-    checkAuth();
-  }, []);
+    // Timeout to ensure initial render completes before blocking UI with prompt
+    const timeout = setTimeout(checkAuth, 50);
+    return () => clearTimeout(timeout);
+  }, [isAuthenticated]);
 
   const fetchLeads = useCallback(async () => {
     if (!isAuthenticated) return;
@@ -334,6 +339,7 @@ export default function CRMPage() {
                   <th className="text-left px-6 py-3.5 text-[11px] font-semibold text-slate-500 uppercase tracking-widest">
                     <span className="flex items-center gap-1.5"><Phone size={11} />Телефон</span>
                   </th>
+                  <th className="text-left px-6 py-3.5 text-[11px] font-semibold text-slate-500 uppercase tracking-widest">Курс / Час</th>
                   <th className="text-left px-6 py-3.5 text-[11px] font-semibold text-slate-500 uppercase tracking-widest">Поточний статус</th>
                   <th className="text-left px-6 py-3.5 text-[11px] font-semibold text-slate-500 uppercase tracking-widest">Змінити статус</th>
                 </tr>
@@ -343,7 +349,7 @@ export default function CRMPage() {
                   Array.from({ length: 7 }).map((_, i) => <SkeletonRow key={i} />)
                 ) : filtered.length === 0 ? (
                   <tr>
-                    <td colSpan={5} className="text-center py-20 text-slate-400">
+                    <td colSpan={6} className="text-center py-20 text-slate-400">
                       <Users size={36} className="mx-auto mb-3 opacity-20" strokeWidth={1.5} />
                       <p className="text-sm font-medium">Лідів не знайдено</p>
                       <p className="text-xs mt-1 text-slate-300">Спробуйте змінити фільтри</p>
@@ -370,7 +376,21 @@ export default function CRMPage() {
                           <span className="text-sm text-slate-200 select-none">—</span>
                         )}
                       </td>
-                      <td className="px-6 py-4"><StatusBadge status={lead.status} /></td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        {lead.course ? (
+                          <div className="flex flex-col gap-1.5 items-start">
+                            <span className="text-[11px] font-semibold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-md border border-blue-100">{lead.course}</span>
+                            {lead.chosen_time ? (
+                              <span className="text-[11px] font-semibold text-purple-700 bg-purple-50 px-2 py-0.5 rounded-md border border-purple-100 flex items-center gap-1">🗓️ {lead.chosen_time}</span>
+                            ) : (
+                              <span className="text-[11px] font-medium text-slate-400 bg-slate-50 px-2 py-0.5 rounded-md border border-slate-100">Час не обрано</span>
+                            )}
+                          </div>
+                        ) : (
+                          <span className="text-sm text-slate-300">—</span>
+                        )}
+                      </td>
+                      <td className="px-6 py-4"><StatusBadge status={lead.status || 'new'} /></td>
                       <td className="px-6 py-4"><StatusSelect lead={lead} onUpdate={updateStatus} isUpdating={updatingIds.has(lead.id)} /></td>
                     </tr>
                   ))
