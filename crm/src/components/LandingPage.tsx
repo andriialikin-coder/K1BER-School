@@ -270,7 +270,7 @@ const COURSES = [
         image: '/placeholder.jpg',
         tag: 'Gamedev',
         title: 'Minecraft: Архітектори реальності',
-        desc: 'Програмуємо портали та механізми. Вчимо логіку та алгоритми у грі.',
+        desc: 'Minecraft перетворюється на навчальне середовище, де діти проектують світи, створюють портали та механізми. Освоюють логіку, алгоритми та основи програмування. Діти вчаться шукати помилки та розробляти альтернативи – чудовий міст до усвідомленого ІТ-мислення.',
         ages: '8+',
         tagColor: 'text-emerald-400 bg-emerald-950/80 border-emerald-500/50',
         btnBorder: 'border-emerald-500/30 hover:border-emerald-400 hover:bg-emerald-950/40',
@@ -280,7 +280,7 @@ const COURSES = [
         image: '/placeholder.jpg',
         tag: 'Gamedev',
         title: 'Geometry Dash: 2D-платформер',
-        desc: 'Створюємо гру з мультяшною графікою, музикою та перешкодами.',
+        desc: 'Дитина створить 2D-платформер у стилі Geometry Dash із мультяшною графікою, музикою та перешкодами. Розбере алгоритми справжніх хітових ігор: рух, зіткнення, ритм. Навчиться не просто грати, а розуміти, як ігри влаштовані зсередини, та створювати свої.',
         ages: '11+',
         tagColor: 'text-blue-400 bg-blue-950/80 border-blue-500/50',
         btnBorder: 'border-blue-500/30 hover:border-blue-400 hover:bg-blue-950/40',
@@ -290,7 +290,7 @@ const COURSES = [
         image: '/placeholder.jpg',
         tag: 'Gamedev',
         title: 'Construct: Лабораторія ігор зі Стічем',
-        desc: 'Створюємо свій мультсвіт, придумуємо персонажів, логіку та рівні.',
+        desc: 'Це не гра і не просто «розвага на канікулах». Це перша усвідомлена розробка цифрового продукту для дітей. Дитина створює гру: придумує персонажів, логіку, рівні, правила та ефекти. Що отримує: впевненість у своїх здібностях створювати перші проекти та розвиток інтересу до технологій без стресу.',
         ages: '8+',
         tagColor: 'text-violet-400 bg-violet-950/80 border-violet-500/50',
         btnBorder: 'border-violet-500/30 hover:border-violet-400 hover:bg-violet-950/40',
@@ -300,7 +300,7 @@ const COURSES = [
         image: '/placeholder.jpg',
         tag: 'Code',
         title: 'Python: Ферма-симулятор',
-        desc: 'Програмуємо гру як Stardew Valley. Освоюємо змінні, цикли та функції.',
+        desc: 'Дитина напише на Python власну ферму: садити, вирощувати, збирати врожай та добувати ресурси як у Stardew Valley, тільки вона не грає, а створює. Освоїть змінні, цикли, умови та функції на живому проекті. Кожен рядок коду дає видимий результат. До кінця тижня покаже вам свою ферму та пояснить, як вона працює.',
         ages: '11+',
         tagColor: 'text-yellow-400 bg-yellow-950/80 border-yellow-500/50',
         btnBorder: 'border-yellow-500/30 hover:border-yellow-400 hover:bg-yellow-950/40',
@@ -310,7 +310,7 @@ const COURSES = [
         image: '/placeholder.jpg',
         tag: 'Mobile & AI',
         title: 'ШІ та App Inventor: Мобільні додатки',
-        desc: 'Збираємо перший цифровий проект з елементами штучного інтелекту.',
+        desc: 'Збираємо перший цифровий проект, як справжні розробники. Діти створюють мобільний додаток з елементами штучного інтелекту: оформлення, логіка, функції. Розвивають підприємницьке мислення, творчість та навичку презентації продукту. Дитина проходить шлях: ідея -> продукт -> результат. Підсумок – гордість за створений цифровий проект.',
         ages: '8+',
         tagColor: 'text-pink-400 bg-pink-950/80 border-pink-500/50',
         btnBorder: 'border-pink-500/30 hover:border-pink-400 hover:bg-pink-950/40',
@@ -320,7 +320,7 @@ const COURSES = [
         image: '/placeholder.jpg',
         tag: 'Web & AI',
         title: 'Ідеальний сайт з нуля + ШІ',
-        desc: 'Вчимося використовувати ШІ для створення текстів, дизайну та коду.',
+        desc: 'Дитина сама збере справжній сайт: структура, дизайн, код. Навчиться використовувати штучний інтелект для створення текстів та прискорення роботи. Тема на вибір: улюблена гра, блог про себе або сторінка для події. На виході виходить готовий проект у портфоліо та навички, які знадобляться у будь-якій професії.',
         ages: '11+',
         tagColor: 'text-cyan-400 bg-cyan-950/80 border-cyan-500/50',
         btnBorder: 'border-cyan-500/30 hover:border-cyan-400 hover:bg-cyan-950/40',
@@ -330,7 +330,7 @@ const COURSES = [
         image: '/placeholder.jpg',
         tag: '3D & Print',
         title: '3D-моделювання та 3D-друк',
-        desc: 'Створюємо власні 3D-моделі та друкуємо їх на реальному 3D-принтері.',
+        desc: 'Дитина перейде від звичайного споживання до створення реальних об\'єктів. Освоїть роботу з тривимірним простором, навчиться проектувати власні моделі, іграшки чи персонажів у спеціальних програмах та підготує їх до друку. Підсумок інтенсиву — власноруч створена тривимірна фігура, надрукована на справжньому 3D-принтері.',
         ages: '7+',
         tagColor: 'text-orange-400 bg-orange-950/80 border-orange-500/50',
         btnBorder: 'border-orange-500/30 hover:border-orange-400 hover:bg-orange-950/40',
@@ -380,21 +380,21 @@ const Courses = () => {
             {/* Карусель курсів */}
             <div className="relative w-full pb-4">
                 {/* Кнопки-стрілки */}
-                <button 
-                    onClick={() => scroll('left')} 
+                <button
+                    onClick={() => scroll('left')}
                     className="hidden md:flex absolute left-4 lg:left-8 top-1/2 -translate-y-1/2 z-20 w-14 h-14 bg-slate-900/90 hover:bg-slate-800 text-white rounded-full items-center justify-center backdrop-blur-md border border-slate-700 shadow-2xl transition-all"
                 >
                     <svg className="w-6 h-6 pr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" /></svg>
                 </button>
 
-                <button 
-                    onClick={() => scroll('right')} 
+                <button
+                    onClick={() => scroll('right')}
                     className="hidden md:flex absolute right-4 lg:right-8 top-1/2 -translate-y-1/2 z-20 w-14 h-14 bg-slate-900/90 hover:bg-slate-800 text-cyan-400 rounded-full items-center justify-center backdrop-blur-md border border-slate-700 shadow-2xl transition-all hover:scale-105"
                 >
                     <svg className="w-6 h-6 pl-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" /></svg>
                 </button>
 
-                <div 
+                <div
                     ref={scrollRef}
                     className="flex flex-nowrap overflow-x-auto gap-6 pb-6 pt-2 px-6 lg:px-12 xl:px-[calc((100vw-1024px)/2)] snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
                 >
@@ -409,9 +409,9 @@ const Courses = () => {
                                 <svg className="w-12 h-12 text-slate-700 absolute" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                 </svg>
-                                <img 
-                                    src={course.image} 
-                                    alt="" 
+                                <img
+                                    src={course.image}
+                                    alt=""
                                     onError={(e) => { e.currentTarget.style.opacity = '0'; }}
                                     className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500 group-hover:scale-105 transform relative z-10"
                                 />
@@ -458,7 +458,7 @@ const RegisterForm = ({ onAuthSuccess }: { onAuthSuccess?: (name: string, course
     const [success, setSuccess] = useState(false);
     const [tab, setTab] = useState<'new' | 'existing'>('new');
     const [formData, setFormData] = useState({ name: '', phone: '+380', course: '' });
-    
+
     const [loginPhone, setLoginPhone] = useState('+380');
     const [loginError, setLoginError] = useState('');
 
@@ -481,7 +481,7 @@ const RegisterForm = ({ onAuthSuccess }: { onAuthSuccess?: (name: string, course
                 .select('name, course, chosen_time')
                 .eq('phone', loginPhone)
                 .single();
-            
+
             if (!error && data) {
                 localStorage.setItem('kiberUserPhone', loginPhone);
                 if (onAuthSuccess) {
@@ -509,7 +509,7 @@ const RegisterForm = ({ onAuthSuccess }: { onAuthSuccess?: (name: string, course
                 course: formData.course,
                 source: "website"
             };
-            
+
             console.log("Submitting payload to Supabase:", payload);
 
             const { data, error } = await supabase
@@ -558,16 +558,16 @@ const RegisterForm = ({ onAuthSuccess }: { onAuthSuccess?: (name: string, course
                 </p>
 
                 <div className="flex bg-slate-900 rounded-xl p-1 mb-6">
-                    <button 
+                    <button
                         type="button"
-                        onClick={() => setTab('new')} 
+                        onClick={() => setTab('new')}
                         className={`flex-1 text-sm font-bold py-2.5 rounded-lg transition-colors ${tab === 'new' ? 'bg-slate-800 text-white shadow' : 'text-slate-400 hover:text-slate-200'}`}
                     >
                         Новий запис
                     </button>
-                    <button 
+                    <button
                         type="button"
-                        onClick={() => setTab('existing')} 
+                        onClick={() => setTab('existing')}
                         className={`flex-1 text-sm font-bold py-2.5 rounded-lg transition-colors ${tab === 'existing' ? 'bg-slate-800 text-white shadow' : 'text-slate-400 hover:text-slate-200'}`}
                     >
                         Вже маю кабінет
@@ -583,9 +583,9 @@ const RegisterForm = ({ onAuthSuccess }: { onAuthSuccess?: (name: string, course
                         {tab === 'existing' && (
                             <div>
                                 <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Номер телефону</label>
-                                <input 
-                                    type="tel" 
-                                    required 
+                                <input
+                                    type="tel"
+                                    required
                                     value={loginPhone}
                                     onChange={e => {
                                         let val = e.target.value;
@@ -594,8 +594,8 @@ const RegisterForm = ({ onAuthSuccess }: { onAuthSuccess?: (name: string, course
                                         }
                                         setLoginPhone(val);
                                     }}
-                                    placeholder="+380 (__) ___-__-__" 
-                                    className="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-cyan-500 text-white" 
+                                    placeholder="+380 (__) ___-__-__"
+                                    className="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-cyan-500 text-white"
                                 />
                                 {loginError && <p className="text-red-400 text-xs mt-2">{loginError}</p>}
                             </div>
@@ -605,40 +605,40 @@ const RegisterForm = ({ onAuthSuccess }: { onAuthSuccess?: (name: string, course
                             <>
                                 <div>
                                     <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Ім&apos;я батька/матері</label>
-                                    <input 
-                                        type="text" 
-                                        required 
+                                    <input
+                                        type="text"
+                                        required
                                         value={formData.name}
-                                        onChange={e => setFormData({...formData, name: e.target.value})}
-                                        placeholder="Наприклад, Сергій" 
-                                        className="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-cyan-500 text-white" 
+                                        onChange={e => setFormData({ ...formData, name: e.target.value })}
+                                        placeholder="Наприклад, Сергій"
+                                        className="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-cyan-500 text-white"
                                     />
                                 </div>
-                                
+
                                 <div>
                                     <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Номер телефону</label>
-                                    <input 
-                                        type="tel" 
-                                        required 
+                                    <input
+                                        type="tel"
+                                        required
                                         value={formData.phone}
                                         onChange={e => {
                                             let val = e.target.value;
                                             if (!val.startsWith('+380')) {
                                                 val = val.startsWith('+38') ? '+380' : '+380' + val.replace(/\D/g, '');
                                             }
-                                            setFormData({...formData, phone: val});
+                                            setFormData({ ...formData, phone: val });
                                         }}
-                                        placeholder="+380 (__) ___-__-__" 
-                                        className="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-cyan-500 text-white" 
+                                        placeholder="+380 (__) ___-__-__"
+                                        className="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-cyan-500 text-white"
                                     />
                                 </div>
 
                                 <div>
                                     <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Вибір напрямку</label>
-                                    <select 
-                                        required 
+                                    <select
+                                        required
                                         value={formData.course}
-                                        onChange={e => setFormData({...formData, course: e.target.value})}
+                                        onChange={e => setFormData({ ...formData, course: e.target.value })}
                                         className="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-cyan-500 text-white appearance-none"
                                     >
                                         <option value="" disabled>Оберіть напрямок...</option>
@@ -791,13 +791,13 @@ const MiniCabinet = ({ clientName, registeredCourse, phone, initialTime }: { cli
                 .from('leads')
                 .update({ chosen_time: selectedTime, status: 'time_confirmed' })
                 .eq('phone', phone);
-            
+
             if (!error) {
                 setIsConfirmed(true);
             } else {
                 console.error("Помилка збереження часу:", error.message);
             }
-        } catch(e) {
+        } catch (e) {
             console.error("Критична помилка при підтвердженні:", e);
         } finally {
             setIsConfirming(false);
@@ -834,7 +834,7 @@ const MiniCabinet = ({ clientName, registeredCourse, phone, initialTime }: { cli
     return (
         <div className="w-full min-h-screen bg-slate-950 text-white flex flex-col items-center justify-center p-6 font-sans">
             <div className="max-w-md w-full bg-slate-900 border border-slate-800 rounded-2xl p-8 shadow-xl">
-                
+
                 {isConfirmed ? (
                     <div className="mb-8">
                         <div className="text-center mb-6">
@@ -872,7 +872,7 @@ const MiniCabinet = ({ clientName, registeredCourse, phone, initialTime }: { cli
                 )}
 
                 <div className="space-y-3 mb-8">
-                    <button 
+                    <button
                         onClick={() => !isConfirmed && setSelectedTime('Субота 11:00')}
                         disabled={isConfirmed}
                         className={`w-full text-left bg-slate-950 border ${selectedTime === 'Субота 11:00' ? 'border-cyan-400 shadow-[0_0_15px_rgba(34,211,238,0.3)]' : 'border-emerald-500/30'} ${!isConfirmed && selectedTime !== 'Субота 11:00' ? 'hover:border-emerald-500/60' : ''} p-4 rounded-xl flex items-center justify-between transition-all disabled:opacity-90 disabled:cursor-default`}
@@ -880,7 +880,7 @@ const MiniCabinet = ({ clientName, registeredCourse, phone, initialTime }: { cli
                         <span className="text-sm font-semibold">🟢 Субота 11:00</span>
                         <span className="text-xs text-emerald-400 bg-emerald-950/60 px-2 py-1 rounded-md">Є місця</span>
                     </button>
-                    <button 
+                    <button
                         onClick={() => !isConfirmed && setSelectedTime('Неділя 14:00')}
                         disabled={isConfirmed}
                         className={`w-full text-left bg-slate-950 border ${selectedTime === 'Неділя 14:00' ? 'border-cyan-400 shadow-[0_0_15px_rgba(34,211,238,0.3)]' : 'border-amber-500/30'} ${!isConfirmed && selectedTime !== 'Неділя 14:00' ? 'hover:border-amber-500/60' : ''} p-4 rounded-xl flex items-center justify-between transition-all disabled:opacity-90 disabled:cursor-default`}
@@ -891,7 +891,7 @@ const MiniCabinet = ({ clientName, registeredCourse, phone, initialTime }: { cli
                 </div>
 
                 {!isConfirmed && (
-                    <button 
+                    <button
                         onClick={handleConfirm}
                         disabled={!selectedTime || isConfirming}
                         className="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 disabled:opacity-50 text-white font-bold py-4 px-4 rounded-xl shadow-lg transition-all mb-8"
@@ -905,8 +905,8 @@ const MiniCabinet = ({ clientName, registeredCourse, phone, initialTime }: { cli
                     <p className="text-center text-slate-400 text-xs mb-4">
                         🎁 Бажаєте викупити повний курс заздалегідь та зафіксувати знижку? (Необов'язково)
                     </p>
-                    <button 
-                        onClick={handlePayment} 
+                    <button
+                        onClick={handlePayment}
                         disabled={isLoading}
                         className="w-full bg-[#111111] hover:bg-black disabled:opacity-50 text-white font-bold py-3.5 px-4 rounded-xl text-sm transition-all hover:shadow-[0_0_15px_rgba(255,255,255,0.1)] flex items-center justify-center gap-2"
                     >
@@ -918,7 +918,7 @@ const MiniCabinet = ({ clientName, registeredCourse, phone, initialTime }: { cli
                             </div>
                         )}
                     </button>
-                    
+
                     {receiptUrl && (
                         <button className="w-full mt-4 bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium py-3 px-4 rounded-xl text-sm transition-colors flex justify-center items-center gap-2">
                             📄 Завантажити фіскальний чек (ПРРО Checkbox)
@@ -927,7 +927,7 @@ const MiniCabinet = ({ clientName, registeredCourse, phone, initialTime }: { cli
                 </div>
 
                 {isConfirmed && (
-                    <button 
+                    <button
                         onClick={() => {
                             localStorage.removeItem('kiberUserPhone');
                             window.location.href = window.location.pathname;
@@ -945,7 +945,7 @@ const MiniCabinet = ({ clientName, registeredCourse, phone, initialTime }: { cli
 
 // ГОЛОВНА СТОРІНКА ЛЕНДИНГУ
 export default function LandingPage() {
-    const [authData, setAuthData] = useState<{name: string, course: string, phone: string, chosenTime?: string} | null>(null);
+    const [authData, setAuthData] = useState<{ name: string, course: string, phone: string, chosenTime?: string } | null>(null);
     const [isLoadingAuth, setIsLoadingAuth] = useState(true);
 
     React.useEffect(() => {
@@ -962,7 +962,7 @@ export default function LandingPage() {
                         .select('name, course, chosen_time')
                         .eq('phone', phone)
                         .single();
-                    
+
                     if (!error && data) {
                         setAuthData({ name: data.name || '', course: data.course || '', phone, chosenTime: data.chosen_time });
                         localStorage.setItem('kiberUserPhone', phone);
