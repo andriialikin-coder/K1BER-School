@@ -797,11 +797,11 @@ const ContactsAndMap = () => (
                             📍
                         </div>
                         <div>
-                            <h4 className="text-sm font-bold text-slate-200 mb-0.5">Наша адреса</h4>
-                            <p className="text-slate-400 text-sm leading-relaxed">
+                            <h4 className="text-base md:text-lg font-bold text-slate-200 mb-0.5">Наша адреса</h4>
+                            <p className="text-slate-300 text-base md:text-lg leading-relaxed">
                                 м. Суми, вул. Нижньовоскресенська, 1
                                 <br />
-                                <span className="text-slate-500 text-xs">(ТРЦ «КИЇВ»)</span>
+                                <span className="text-slate-400 text-sm">(ТРЦ «КИЇВ»)</span>
                             </p>
                         </div>
                     </div>
@@ -815,7 +815,7 @@ const ContactsAndMap = () => (
                             <h4 className="text-xs font-bold uppercase tracking-wider text-emerald-400/80 mb-1">Зателефонувати нам</h4>
                             <a 
                                 href="tel:+380502828029" 
-                                className="inline-block text-2xl md:text-3xl font-black text-white hover:text-emerald-400 tracking-tight transition-colors duration-300 drop-shadow-md"
+                                className="inline-block text-xl md:text-2xl font-black text-white hover:text-emerald-400 tracking-tight transition-colors duration-300 drop-shadow-md"
                             >
                                 +38 050 282 80 29
                             </a>
