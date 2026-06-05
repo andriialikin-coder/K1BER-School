@@ -631,9 +631,32 @@ const ContactsAndMap = () => (
 );
 
 // МІНІ-КАБІНЕТ (Після успішної авторизації)
-const MiniCabinet = ({ clientName, registeredCourse }: { clientName: string, registeredCourse: string }) => {
+const MiniCabinet = ({ clientName, registeredCourse, phone }: { clientName: string, registeredCourse: string, phone: string }) => {
     const [isLoading, setIsLoading] = useState(false);
+    const [isConfirming, setIsConfirming] = useState(false);
+    const [selectedTime, setSelectedTime] = useState('');
+    const [isConfirmed, setIsConfirmed] = useState(false);
     const [receiptUrl] = useState('');
+
+    const handleConfirm = async () => {
+        setIsConfirming(true);
+        try {
+            const { error } = await supabase
+                .from('leads')
+                .update({ chosen_time: selectedTime, status: 'time_confirmed' })
+                .eq('phone', phone);
+            
+            if (!error) {
+                setIsConfirmed(true);
+            } else {
+                console.error("Помилка збереження часу:", error.message);
+            }
+        } catch(e) {
+            console.error("Критична помилка при підтвердженні:", e);
+        } finally {
+            setIsConfirming(false);
+        }
+    };
 
     const handlePayment = async () => {
         setIsLoading(true);
@@ -665,35 +688,71 @@ const MiniCabinet = ({ clientName, registeredCourse }: { clientName: string, reg
     return (
         <div className="w-full min-h-screen bg-slate-950 text-white flex flex-col items-center justify-center p-6 font-sans">
             <div className="max-w-md w-full bg-slate-900 border border-slate-800 rounded-2xl p-8 shadow-xl">
-                <h2 className="text-2xl font-black text-center mb-6">
-                    {clientName ? `Вітаємо, ${clientName}!` : 'Вітаємо!'}
-                    <br />Вашу дитину записано на <span className="text-cyan-400">{registeredCourse || 'обраний курс'}</span>.
-                </h2>
                 
-                <div className="space-y-3 mb-8">
-                    <div className="bg-slate-950 border border-emerald-500/30 p-4 rounded-xl flex items-center justify-between">
-                        <span className="text-sm font-semibold">🟢 Субота 11:00</span>
-                        <span className="text-xs text-emerald-400 bg-emerald-950/60 px-2 py-1 rounded-md">Є місця</span>
+                {isConfirmed ? (
+                    <div className="text-center mb-8">
+                        <div className="text-5xl mb-4">🎉</div>
+                        <h2 className="text-xl font-bold text-emerald-400 mb-4">Місце успішно заброньовано!</h2>
+                        <p className="text-slate-300 text-sm leading-relaxed">
+                            Чекаємо на вас у сучасному IT-хабі в ТРЦ 'КИЇВ'. Менеджер Ірина вже готує перепустку для вашої дитини.
+                        </p>
                     </div>
-                    <div className="bg-slate-950 border border-amber-500/30 p-4 rounded-xl flex items-center justify-between">
-                        <span className="text-sm font-semibold">🔥 Неділя 14:00</span>
-                        <span className="text-xs text-amber-400 bg-amber-950/60 px-2 py-1 rounded-md">Залишилось 2 місця</span>
-                    </div>
+                ) : (
+                    <>
+                        <h2 className="text-2xl font-black text-center mb-6">
+                            {clientName ? `Вітаємо, ${clientName}!` : 'Вітаємо!'}
+                            <br />Вашу дитину записано на <span className="text-cyan-400">{registeredCourse || 'обраний курс'}</span>.
+                        </h2>
+                        
+                        <p className="text-center text-slate-400 text-sm mb-4">Оберіть зручний час для першого заняття:</p>
+
+                        <div className="space-y-3 mb-8">
+                            <button 
+                                onClick={() => setSelectedTime('Субота 11:00')}
+                                className={`w-full text-left bg-slate-950 border ${selectedTime === 'Субота 11:00' ? 'border-cyan-400 shadow-[0_0_15px_rgba(34,211,238,0.3)]' : 'border-emerald-500/30 hover:border-emerald-500/60'} p-4 rounded-xl flex items-center justify-between transition-all`}
+                            >
+                                <span className="text-sm font-semibold">🟢 Субота 11:00</span>
+                                <span className="text-xs text-emerald-400 bg-emerald-950/60 px-2 py-1 rounded-md">Є місця</span>
+                            </button>
+                            <button 
+                                onClick={() => setSelectedTime('Неділя 14:00')}
+                                className={`w-full text-left bg-slate-950 border ${selectedTime === 'Неділя 14:00' ? 'border-cyan-400 shadow-[0_0_15px_rgba(34,211,238,0.3)]' : 'border-amber-500/30 hover:border-amber-500/60'} p-4 rounded-xl flex items-center justify-between transition-all`}
+                            >
+                                <span className="text-sm font-semibold">🔥 Неділя 14:00</span>
+                                <span className="text-xs text-amber-400 bg-amber-950/60 px-2 py-1 rounded-md">Залишилось 2 місця</span>
+                            </button>
+                        </div>
+
+                        <button 
+                            onClick={handleConfirm}
+                            disabled={!selectedTime || isConfirming}
+                            className="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 disabled:opacity-50 text-white font-bold py-4 px-4 rounded-xl shadow-lg transition-all mb-8"
+                        >
+                            {isConfirming ? 'Бронюємо...' : '👉 Підтвердити безкоштовне бронювання'}
+                        </button>
+                    </>
+                )}
+
+                {/* Опціональний Upsell */}
+                <div className="pt-6 border-t border-slate-800">
+                    <p className="text-center text-slate-400 text-xs mb-4">
+                        🎁 Бажаєте викупити повний курс заздалегідь та зафіксувати знижку? (Необов'язково)
+                    </p>
+                    <button 
+                        onClick={handlePayment} 
+                        disabled={isLoading}
+                        className="w-full bg-slate-800 hover:bg-slate-700 disabled:opacity-50 text-slate-300 font-medium py-3 px-4 rounded-xl text-sm transition-colors"
+                    >
+                        {isLoading ? 'Генеруємо інвойс...' : 'Оплатити курс через Mono Pay'}
+                    </button>
+                    
+                    {receiptUrl && (
+                        <button className="w-full mt-4 bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium py-3 px-4 rounded-xl text-sm transition-colors flex justify-center items-center gap-2">
+                            📄 Завантажити фіскальний чек (ПРРО Checkbox)
+                        </button>
+                    )}
                 </div>
 
-                <button 
-                    onClick={handlePayment} 
-                    disabled={isLoading}
-                    className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 disabled:opacity-50 text-white font-bold py-4 px-4 rounded-xl shadow-lg transition-all"
-                >
-                    {isLoading ? 'Бронюємо місце на 15 хвилин...' : 'Оплатити курс через Mono Pay'}
-                </button>
-
-                {receiptUrl && (
-                    <button className="w-full mt-4 bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium py-3 px-4 rounded-xl text-sm transition-colors flex justify-center items-center gap-2">
-                        📄 Завантажити фіскальний чек (ПРРО Checkbox)
-                    </button>
-                )}
             </div>
         </div>
     );
@@ -733,7 +792,7 @@ export default function LandingPage() {
     }
 
     if (authData) {
-        return <MiniCabinet clientName={authData.name} registeredCourse={authData.course} />;
+        return <MiniCabinet clientName={authData.name} registeredCourse={authData.course} phone={authData.phone} />;
     }
 
     return (
