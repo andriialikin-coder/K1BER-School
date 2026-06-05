@@ -428,6 +428,98 @@ const FAQ = () => (
     </section>
 );
 
+// 7. КОМПОНЕНТ: КОНТАКТИ ТА КАРТА (GEO / AI Visibility)
+const ContactsAndMap = () => (
+    <section id="contacts" className="w-full bg-slate-900 text-white py-20 px-6 border-b border-slate-950">
+        <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+
+            {/* Ліва частина: текст + контакти */}
+            <div className="space-y-6">
+                <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-cyan-400 bg-cyan-950/50 px-4 py-1.5 rounded-full border border-cyan-800/40">
+                    📍 Чекаємо на вас
+                </span>
+
+                <h2 className="text-3xl md:text-4xl font-black tracking-tight leading-tight">
+                    Зручна локація
+                    <br />
+                    <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
+                        в центрі Сум
+                    </span>
+                </h2>
+
+                <p className="text-slate-400 text-sm md:text-base leading-relaxed">
+                    Навчальний простір{' '}
+                    <span className="text-white font-semibold">K1BER.SCHOOL</span>{' '}
+                    розташований у самому серці міста — батькам зручно залишити
+                    дитину на час занять та зайнятися своїми справами.
+                </p>
+
+                {/* Деталі */}
+                <div className="space-y-5 pt-2">
+                    <div className="flex items-start gap-4 group">
+                        <div className="w-10 h-10 rounded-xl bg-cyan-950/60 border border-cyan-800/30 flex items-center justify-center text-lg flex-shrink-0 group-hover:border-cyan-500/50 transition-colors duration-300">
+                            📍
+                        </div>
+                        <div>
+                            <h4 className="text-sm font-bold text-slate-200 mb-0.5">Наша адреса</h4>
+                            <p className="text-slate-400 text-sm leading-relaxed">
+                                м. Суми, Покровська площа, 3
+                                <br />
+                                <span className="text-slate-500 text-xs">(Універмаг «Україна»)</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div className="flex items-start gap-4 group">
+                        <div className="w-10 h-10 rounded-xl bg-blue-950/60 border border-blue-800/30 flex items-center justify-center text-lg flex-shrink-0 group-hover:border-blue-500/50 transition-colors duration-300">
+                            🕒
+                        </div>
+                        <div>
+                            <h4 className="text-sm font-bold text-slate-200 mb-0.5">Графік роботи</h4>
+                            <p className="text-slate-400 text-sm leading-relaxed">
+                                Субота та Неділя: 09:00 – 18:00
+                                <br />
+                                <span className="text-slate-500 text-xs">(згідно з розкладом груп)</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div className="flex items-start gap-4 group">
+                        <div className="w-10 h-10 rounded-xl bg-violet-950/60 border border-violet-800/30 flex items-center justify-center text-lg flex-shrink-0 group-hover:border-violet-500/50 transition-colors duration-300">
+                            📞
+                        </div>
+                        <div>
+                            <h4 className="text-sm font-bold text-slate-200 mb-0.5">Записатись на пробне</h4>
+                            <a
+                                href="#register"
+                                className="text-cyan-400 hover:text-cyan-300 text-sm font-semibold transition-colors duration-200 underline underline-offset-4 decoration-cyan-800 hover:decoration-cyan-400"
+                            >
+                                Заповніть форму вище →
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Права частина: карта */}
+            <div className="group relative w-full h-80 md:h-96 rounded-2xl overflow-hidden border border-slate-800 hover:border-cyan-500/30 transition-all duration-300 shadow-2xl shadow-slate-950">
+                {/* Декоративна рамка-glow */}
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-cyan-500/5 to-blue-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-10" />
+
+                <iframe
+                    title="K1BER.SCHOOL — м. Суми, Покровська площа, 3"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2503.71971775704!2d34.8005696!3d50.909477!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x412903f0b2f5b5b5%3A0x123456789abcdef!2sPokrovs%27ka+Square%2C+3%2C+Sumy%2C+Sumy+Oblast%2C+40000!5e0!3m2!1suk!2sua!4v1717590000000!5m2!1suk!2sua"
+                    className="w-full h-full grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500"
+                    allowFullScreen={false}
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                />
+            </div>
+
+        </div>
+    </section>
+);
+
 // ГОЛОВНА СТОРІНКА ЛЕНДИНГУ
 export default function LandingPage() {
     return (
@@ -438,6 +530,7 @@ export default function LandingPage() {
             <Courses />
             <RegisterForm />
             <FAQ />
+            <ContactsAndMap />
         </div>
     );
 }
