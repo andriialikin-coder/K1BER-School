@@ -48,7 +48,7 @@ const Header = () => {
                 {/* CTA кнопка */}
                 <div className="hidden md:flex items-center gap-4">
                     <a
-                        href="#register"
+                        href="#booking-form"
                         className="relative inline-flex items-center gap-2 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold py-2.5 px-5 rounded-xl text-sm shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 transition-all duration-300 hover:-translate-y-px"
                     >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -77,7 +77,7 @@ const Header = () => {
                     <a href="#courses" onClick={() => setMenuOpen(false)} className="text-slate-300 hover:text-cyan-400 transition-colors py-1">Курси</a>
                     <a href="#faq" onClick={() => setMenuOpen(false)} className="text-slate-300 hover:text-cyan-400 transition-colors py-1">FAQ</a>
                     <a href="#contacts" onClick={() => setMenuOpen(false)} className="text-slate-300 hover:text-cyan-400 transition-colors py-1">📍 Контакти</a>
-                    <a href="#register" onClick={() => setMenuOpen(false)} className="mt-2 text-center bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold py-2.5 px-4 rounded-xl text-sm">
+                    <a href="#booking-form" onClick={() => setMenuOpen(false)} className="mt-2 text-center bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold py-2.5 px-4 rounded-xl text-sm">
                         Записатись на пробне
                     </a>
                 </nav>
@@ -462,6 +462,15 @@ const RegisterForm = ({ onAuthSuccess }: { onAuthSuccess?: (name: string, course
     const [loginPhone, setLoginPhone] = useState('+380');
     const [loginError, setLoginError] = useState('');
 
+    const isPhoneValid = (phone: string) => {
+        const digits = phone.replace(/\D/g, '');
+        return digits.length === 12 && digits.startsWith('380');
+    };
+
+    const isFormInvalid = tab === 'new'
+        ? (!formData.name.trim() || !formData.course || !isPhoneValid(formData.phone))
+        : (!isPhoneValid(loginPhone));
+
     React.useEffect(() => {
         const handleCourseSelect = (e: CustomEvent) => {
             setFormData(prev => ({ ...prev, course: e.detail.course }));
@@ -650,7 +659,7 @@ const RegisterForm = ({ onAuthSuccess }: { onAuthSuccess?: (name: string, course
                             </>
                         )}
 
-                        <button type="submit" disabled={loading} className="w-full mt-2 bg-gradient-to-r from-cyan-500 to-blue-600 hover:opacity-90 disabled:opacity-50 text-white font-bold py-3.5 px-4 rounded-xl text-sm transition">
+                        <button type="submit" disabled={loading || isFormInvalid} className="w-full mt-2 bg-gradient-to-r from-cyan-500 to-blue-600 hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold py-3.5 px-4 rounded-xl text-sm transition">
                             {loading ? 'Відправляємо...' : tab === 'new' ? 'Забронювати місце на інтенсив →' : 'Увійти в кабінет →'}
                         </button>
                     </form>
@@ -747,7 +756,7 @@ const ContactsAndMap = () => (
                         <div>
                             <h4 className="text-sm font-bold text-slate-200 mb-0.5">Записатись на пробне</h4>
                             <a
-                                href="#register"
+                                href="#booking-form"
                                 className="text-cyan-400 hover:text-cyan-300 text-sm font-semibold transition-colors duration-200 underline underline-offset-4 decoration-cyan-800 hover:decoration-cyan-400"
                             >
                                 Заповніть форму вище →
