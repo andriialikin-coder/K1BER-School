@@ -373,41 +373,67 @@ const RegisterForm = ({ onAuthSuccess }: { onAuthSuccess?: (name: string, course
     const [success, setSuccess] = useState(false);
     const [tab, setTab] = useState<'new' | 'existing'>('new');
     const [formData, setFormData] = useState({ name: '', phone: '', course: '' });
+    
+    const [loginPhone, setLoginPhone] = useState('');
+    const [loginError, setLoginError] = useState('');
+
+    const handleLogin = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setLoginError('');
+        setLoading(true);
+        try {
+            const { data, error } = await supabase
+                .from('leads')
+                .select('name, course')
+                .eq('phone', loginPhone)
+                .single();
+            
+            if (!error && data) {
+                localStorage.setItem('kiberUserPhone', loginPhone);
+                if (onAuthSuccess) {
+                    onAuthSuccess(data.name || '', data.course || '', loginPhone);
+                }
+            } else {
+                setLoginError('Кабінет не знайдено. Перевірте номер або зареєструйтесь.');
+            }
+        } catch (err) {
+            console.error(err);
+            setLoginError('Помилка сервера. Спробуйте пізніше.');
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
 
         try {
-            if (tab === 'new') {
-                // Тільки необхідні поля, згідно зі структурою таблиці
-                const payload = {
-                    name: formData.name,
-                    phone: formData.phone,
-                    course: formData.course,
-                    source: "website"
-                };
-                
-                console.log("Submitting payload to Supabase:", payload);
+            const payload = {
+                name: formData.name,
+                phone: formData.phone,
+                course: formData.course,
+                source: "website"
+            };
+            
+            console.log("Submitting payload to Supabase:", payload);
 
-                const { data, error } = await supabase
-                    .from('leads')
-                    .insert([payload]);
+            const { data, error } = await supabase
+                .from('leads')
+                .insert([payload]);
 
-                if (error) {
-                    console.error("КРИТИЧНА ПОМИЛКА SUPABASE:", error.message, error.details, error.hint);
-                    setLoading(false);
-                    return;
-                }
-
-                console.log("Успішне збереження в БД:", data);
-                if (onAuthSuccess) {
-                    onAuthSuccess(formData.name, formData.course, formData.phone);
-                }
-                setSuccess(true);
-            } else {
-                window.location.href = `?phone=${encodeURIComponent(formData.phone)}`;
+            if (error) {
+                console.error("КРИТИЧНА ПОМИЛКА SUPABASE:", error.message, error.details, error.hint);
+                setLoading(false);
+                return;
             }
+
+            console.log("Успішне збереження в БД:", data);
+            localStorage.setItem('kiberUserPhone', formData.phone);
+            if (onAuthSuccess) {
+                onAuthSuccess(formData.name, formData.course, formData.phone);
+            }
+            setSuccess(true);
         } catch (err) {
             console.error("КРИТИЧНА ПОМИЛКА CATCH (Supabase):", err);
         } finally {
@@ -459,50 +485,65 @@ const RegisterForm = ({ onAuthSuccess }: { onAuthSuccess?: (name: string, course
                         🎉 [Успішно! Дані вже миттєво з&apos;явилися в нашій CRM-панелі]
                     </div>
                 ) : (
-                    <form onSubmit={handleSubmit} className="space-y-4">
-                        {tab === 'new' && (
+                    <form onSubmit={tab === 'new' ? handleSubmit : handleLogin} className="space-y-4">
+                        {tab === 'existing' && (
                             <div>
-                                <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Ім&apos;я батька/матері</label>
+                                <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Номер телефону</label>
                                 <input 
-                                    type="text" 
+                                    type="tel" 
                                     required 
-                                    value={formData.name}
-                                    onChange={e => setFormData({...formData, name: e.target.value})}
-                                    placeholder="Наприклад, Сергій" 
+                                    value={loginPhone}
+                                    onChange={e => setLoginPhone(e.target.value)}
+                                    placeholder="+380 (__) ___-__-__" 
                                     className="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-cyan-500 text-white" 
                                 />
+                                {loginError && <p className="text-red-400 text-xs mt-2">{loginError}</p>}
                             </div>
                         )}
-                        
-                        <div>
-                            <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Номер телефону</label>
-                            <input 
-                                type="tel" 
-                                required 
-                                value={formData.phone}
-                                onChange={e => setFormData({...formData, phone: e.target.value})}
-                                placeholder="+380 (__) ___-__-__" 
-                                className="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-cyan-500 text-white" 
-                            />
-                        </div>
 
                         {tab === 'new' && (
-                            <div>
-                                <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Вибір напрямку</label>
-                                <select 
-                                    required 
-                                    value={formData.course}
-                                    onChange={e => setFormData({...formData, course: e.target.value})}
-                                    className="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-cyan-500 text-white appearance-none"
-                                >
-                                    <option value="" disabled>Оберіть напрямок...</option>
-                                    <option value="Minecraft: Програмуємо портал (8+)">Minecraft: Програмуємо портал (8+)</option>
-                                    <option value="Geometry Dash: Створюємо 2D-платформер (11+)">Geometry Dash: Створюємо 2D-платформер (11+)</option>
-                                    <option value="Геніальні додатки з ШІ & App Inventor (8+)">Геніальні додатки з ШІ &amp; App Inventor (8+)</option>
-                                    <option value="Ферма на Python: Гра-симулятор (11+)">Ферма на Python: Гра-симулятор (11+)</option>
-                                    <option value="Ідеальний сайт з нуля & ШІ-помічник (11+)">Ідеальний сайт з нуля &amp; ШІ-помічник (11+)</option>
-                                </select>
-                            </div>
+                            <>
+                                <div>
+                                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Ім&apos;я батька/матері</label>
+                                    <input 
+                                        type="text" 
+                                        required 
+                                        value={formData.name}
+                                        onChange={e => setFormData({...formData, name: e.target.value})}
+                                        placeholder="Наприклад, Сергій" 
+                                        className="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-cyan-500 text-white" 
+                                    />
+                                </div>
+                                
+                                <div>
+                                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Номер телефону</label>
+                                    <input 
+                                        type="tel" 
+                                        required 
+                                        value={formData.phone}
+                                        onChange={e => setFormData({...formData, phone: e.target.value})}
+                                        placeholder="+380 (__) ___-__-__" 
+                                        className="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-cyan-500 text-white" 
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Вибір напрямку</label>
+                                    <select 
+                                        required 
+                                        value={formData.course}
+                                        onChange={e => setFormData({...formData, course: e.target.value})}
+                                        className="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-cyan-500 text-white appearance-none"
+                                    >
+                                        <option value="" disabled>Оберіть напрямок...</option>
+                                        <option value="Minecraft: Програмуємо портал (8+)">Minecraft: Програмуємо портал (8+)</option>
+                                        <option value="Geometry Dash: Створюємо 2D-платформер (11+)">Geometry Dash: Створюємо 2D-платформер (11+)</option>
+                                        <option value="Геніальні додатки з ШІ & App Inventor (8+)">Геніальні додатки з ШІ &amp; App Inventor (8+)</option>
+                                        <option value="Ферма на Python: Гра-симулятор (11+)">Ферма на Python: Гра-симулятор (11+)</option>
+                                        <option value="Ідеальний сайт з нуля & ШІ-помічник (11+)">Ідеальний сайт з нуля &amp; ШІ-помічник (11+)</option>
+                                    </select>
+                                </div>
+                            </>
                         )}
 
                         <button type="submit" disabled={loading} className="w-full mt-2 bg-gradient-to-r from-cyan-500 to-blue-600 hover:opacity-90 disabled:opacity-50 text-white font-bold py-3.5 px-4 rounded-xl text-sm transition">
@@ -783,7 +824,10 @@ const MiniCabinet = ({ clientName, registeredCourse, phone, initialTime }: { cli
 
                 {isConfirmed && (
                     <button 
-                        onClick={() => window.location.href = window.location.pathname}
+                        onClick={() => {
+                            localStorage.removeItem('kiberUserPhone');
+                            window.location.href = window.location.pathname;
+                        }}
                         className="w-full mt-5 text-center text-slate-400 hover:text-white transition-colors text-sm py-2 font-medium"
                     >
                         ← Повернутися на головну
@@ -803,7 +847,10 @@ export default function LandingPage() {
     React.useEffect(() => {
         const fetchUserData = async () => {
             const params = new URLSearchParams(window.location.search);
-            const phone = params.get('phone');
+            const urlPhone = params.get('phone');
+            const savedPhone = localStorage.getItem('kiberUserPhone');
+            const phone = urlPhone || savedPhone;
+
             if (phone) {
                 try {
                     const { data, error } = await supabase
@@ -814,6 +861,9 @@ export default function LandingPage() {
                     
                     if (!error && data) {
                         setAuthData({ name: data.name || '', course: data.course || '', phone, chosenTime: data.chosen_time });
+                        localStorage.setItem('kiberUserPhone', phone);
+                    } else if (savedPhone && !urlPhone) {
+                        localStorage.removeItem('kiberUserPhone');
                     }
                 } catch (e) {
                     console.error("Error fetching lead:", e);
