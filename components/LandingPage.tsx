@@ -406,7 +406,7 @@ const RegisterForm = () => {
                             <input type="tel" required placeholder="+380 (__) ___-__-__" className="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-cyan-500 text-white" />
                         </div>
                         <button type="submit" disabled={loading} className="w-full mt-2 bg-gradient-to-r from-cyan-500 to-blue-600 hover:opacity-90 disabled:opacity-50 text-white font-bold py-3.5 px-4 rounded-xl text-sm transition">
-                            {loading ? '[Запис до бази даних...]' : '[Підтвердити запис]'}
+                            {loading ? 'Відправляємо...' : 'Забронювати місце на інтенсив →'}
                         </button>
                     </form>
                 )}
@@ -446,18 +446,19 @@ const ContactsAndMap = () => (
                 </span>
 
                 <h2 className="text-3xl md:text-4xl font-black tracking-tight leading-tight">
-                    Зручна локація
+                    Сучасний хаб
                     <br />
                     <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
-                        в центрі Сум
+                        у ТРЦ «КИЇВ»
                     </span>
                 </h2>
 
                 <p className="text-slate-400 text-sm md:text-base leading-relaxed">
                     Навчальний простір{' '}
                     <span className="text-white font-semibold">K1BER.SCHOOL</span>{' '}
-                    розташований у самому серці міста — батькам зручно залишити
-                    дитину на час занять та зайнятися своїми справами.
+                    розташований у ТРЦ «КИЇВ». Поки дитина
+                    створює свої перші IT-проекти під наглядом менторів — батьки можуть
+                    комфортно зайнятися шопінгом або відпочити в кафе.
                 </p>
 
                 {/* Деталі */}
@@ -469,9 +470,9 @@ const ContactsAndMap = () => (
                         <div>
                             <h4 className="text-sm font-bold text-slate-200 mb-0.5">Наша адреса</h4>
                             <p className="text-slate-400 text-sm leading-relaxed">
-                                м. Суми, Покровська площа, 3
+                                м. Суми, вул. Нижньовоскресенська, 1
                                 <br />
-                                <span className="text-slate-500 text-xs">(Універмаг «Україна»)</span>
+                                <span className="text-slate-500 text-xs">(ТРЦ «КИЇВ»)</span>
                             </p>
                         </div>
                     </div>
@@ -513,9 +514,9 @@ const ContactsAndMap = () => (
                 <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-cyan-500/5 to-blue-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-10" />
 
                 <iframe
-                    title="K1BER.SCHOOL — м. Суми, Покровська площа, 3"
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2503.71971775704!2d34.8005696!3d50.909477!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x412903f0b2f5b5b5%3A0x123456789abcdef!2sPokrovs%27ka+Square%2C+3%2C+Sumy%2C+Sumy+Oblast%2C+40000!5e0!3m2!1suk!2sua!4v1717590000000!5m2!1suk!2sua"
-                    className="w-full h-full grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500"
+                    title="K1BER.SCHOOL — м. Суми, ТРЦ КИЇВ, вул. Нижньовоскресенська, 1"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2511.970146039578!2d34.80164297693574!3d50.90575305452285!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x412903e1b7db5b6f%3A0xe23bf04f8b9cb68b!2z0KLQoNCmICLQmtC40ZfQkiI!5e0!3m2!1suk!2sua!4v1717592400000!5m2!1suk!2sua"
+                    className="w-full h-full grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500"
                     allowFullScreen={false}
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
