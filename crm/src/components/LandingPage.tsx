@@ -425,9 +425,9 @@ const RegisterForm = ({ onAuthSuccess }: { onAuthSuccess?: (name: string, course
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [tab, setTab] = useState<'new' | 'existing'>('new');
-    const [formData, setFormData] = useState({ name: '', phone: '', course: '' });
+    const [formData, setFormData] = useState({ name: '', phone: '+380', course: '' });
     
-    const [loginPhone, setLoginPhone] = useState('');
+    const [loginPhone, setLoginPhone] = useState('+380');
     const [loginError, setLoginError] = useState('');
 
     React.useEffect(() => {
@@ -555,7 +555,13 @@ const RegisterForm = ({ onAuthSuccess }: { onAuthSuccess?: (name: string, course
                                     type="tel" 
                                     required 
                                     value={loginPhone}
-                                    onChange={e => setLoginPhone(e.target.value)}
+                                    onChange={e => {
+                                        let val = e.target.value;
+                                        if (!val.startsWith('+380')) {
+                                            val = val.startsWith('+38') ? '+380' : '+380' + val.replace(/\D/g, '');
+                                        }
+                                        setLoginPhone(val);
+                                    }}
                                     placeholder="+380 (__) ___-__-__" 
                                     className="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-cyan-500 text-white" 
                                 />
@@ -583,7 +589,13 @@ const RegisterForm = ({ onAuthSuccess }: { onAuthSuccess?: (name: string, course
                                         type="tel" 
                                         required 
                                         value={formData.phone}
-                                        onChange={e => setFormData({...formData, phone: e.target.value})}
+                                        onChange={e => {
+                                            let val = e.target.value;
+                                            if (!val.startsWith('+380')) {
+                                                val = val.startsWith('+38') ? '+380' : '+380' + val.replace(/\D/g, '');
+                                            }
+                                            setFormData({...formData, phone: val});
+                                        }}
                                         placeholder="+380 (__) ___-__-__" 
                                         className="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-cyan-500 text-white" 
                                     />
