@@ -691,12 +691,28 @@ const MiniCabinet = ({ clientName, registeredCourse, phone }: { clientName: stri
             <div className="max-w-md w-full bg-slate-900 border border-slate-800 rounded-2xl p-8 shadow-xl">
                 
                 {isConfirmed ? (
-                    <div className="text-center mb-8">
-                        <div className="text-5xl mb-4">🎉</div>
-                        <h2 className="text-xl font-bold text-emerald-400 mb-4">Місце успішно заброньовано!</h2>
-                        <p className="text-slate-300 text-sm leading-relaxed">
-                            Чекаємо на вас у сучасному IT-хабі в ТРЦ 'КИЇВ'. Менеджер Ірина вже готує перепустку для вашої дитини.
-                        </p>
+                    <div className="mb-8">
+                        <div className="text-center mb-6">
+                            <div className="text-5xl mb-4">🎉</div>
+                            <h2 className="text-2xl font-black text-emerald-400 tracking-tight">Місце успішно заброньовано!</h2>
+                        </div>
+                        <div className="bg-slate-950 border border-emerald-500/30 rounded-xl p-6 space-y-4 shadow-inner">
+                            <div>
+                                <span className="block text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-1">Курс</span>
+                                <span className="text-slate-200 font-medium text-sm">{registeredCourse || 'обраний курс'}</span>
+                            </div>
+                            <div>
+                                <span className="block text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-1">Дата та час</span>
+                                <span className="text-cyan-400 font-bold text-lg">{selectedTime}</span>
+                            </div>
+                            <div>
+                                <span className="block text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-1">Адреса</span>
+                                <span className="text-slate-300 text-sm leading-relaxed block">
+                                    IT школа K1BER School, ТРЦ "КИЇВ",<br />
+                                    Нижньовоскресенська 1 (м. Суми)
+                                </span>
+                            </div>
+                        </div>
                     </div>
                 ) : (
                     <>
