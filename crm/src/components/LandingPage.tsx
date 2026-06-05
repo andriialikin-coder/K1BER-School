@@ -275,28 +275,150 @@ const COURSES = [
         tagColor: 'text-emerald-400 bg-emerald-950/60 border-emerald-800/40',
         btnBorder: 'border-emerald-500/30 hover:border-emerald-400 hover:bg-emerald-950/40',
         cardBorder: 'hover:border-emerald-500/40',
-                            {/* Вік + кнопка */}
-                            <div className="mt-6 pt-5 border-t border-slate-800 flex items-center justify-between gap-3">
-                                <span className="text-xs text-slate-500 font-medium">
-                                    👤 {course.ages}
+        emojiGlow: 'from-emerald-500/20 to-green-600/20',
+    },
+    {
+        emoji: '🟦',
+        tag: 'Gamedev',
+        title: 'Geometry Dash: 2D-платформер',
+        desc: 'Створюємо гру з мультяшною графікою, музикою та перешкодами.',
+        ages: '11+',
+        tagColor: 'text-blue-400 bg-blue-950/60 border-blue-800/40',
+        btnBorder: 'border-blue-500/30 hover:border-blue-400 hover:bg-blue-950/40',
+        cardBorder: 'hover:border-blue-500/40',
+        emojiGlow: 'from-blue-500/20 to-cyan-600/20',
+    },
+    {
+        emoji: '👾',
+        tag: 'Gamedev',
+        title: 'Construct: Лабораторія ігор зі Стічем',
+        desc: 'Створюємо свій мультсвіт, придумуємо персонажів, логіку та рівні.',
+        ages: '8+',
+        tagColor: 'text-violet-400 bg-violet-950/60 border-violet-800/40',
+        btnBorder: 'border-violet-500/30 hover:border-violet-400 hover:bg-violet-950/40',
+        cardBorder: 'hover:border-violet-500/40',
+        emojiGlow: 'from-violet-500/20 to-purple-600/20',
+    },
+    {
+        emoji: '🐍',
+        tag: 'Code',
+        title: 'Python: Ферма-симулятор',
+        desc: 'Програмуємо гру як Stardew Valley. Освоюємо змінні, цикли та функції.',
+        ages: '11+',
+        tagColor: 'text-yellow-400 bg-yellow-950/60 border-yellow-800/40',
+        btnBorder: 'border-yellow-500/30 hover:border-yellow-400 hover:bg-yellow-950/40',
+        cardBorder: 'hover:border-yellow-500/40',
+        emojiGlow: 'from-yellow-500/20 to-amber-600/20',
+    },
+    {
+        emoji: '📱',
+        tag: 'Mobile & AI',
+        title: 'ШІ та App Inventor: Мобільні додатки',
+        desc: 'Збираємо перший цифровий проект з елементами штучного інтелекту.',
+        ages: '8+',
+        tagColor: 'text-pink-400 bg-pink-950/60 border-pink-800/40',
+        btnBorder: 'border-pink-500/30 hover:border-pink-400 hover:bg-pink-950/40',
+        cardBorder: 'hover:border-pink-500/40',
+        emojiGlow: 'from-pink-500/20 to-rose-600/20',
+    },
+    {
+        emoji: '🌐',
+        tag: 'Web & AI',
+        title: 'Ідеальний сайт з нуля + ШІ',
+        desc: 'Вчимося використовувати ШІ для створення текстів, дизайну та коду.',
+        ages: '11+',
+        tagColor: 'text-cyan-400 bg-cyan-950/60 border-cyan-800/40',
+        btnBorder: 'border-cyan-500/30 hover:border-cyan-400 hover:bg-cyan-950/40',
+        cardBorder: 'hover:border-cyan-500/40',
+        emojiGlow: 'from-cyan-500/20 to-teal-600/20',
+    },
+    {
+        emoji: '🖨️',
+        tag: '3D & Print',
+        title: '3D-моделювання та 3D-друк',
+        desc: 'Створюємо власні 3D-моделі та друкуємо їх на реальному 3D-принтері.',
+        ages: '7+',
+        tagColor: 'text-orange-400 bg-orange-950/60 border-orange-800/40',
+        btnBorder: 'border-orange-500/30 hover:border-orange-400 hover:bg-orange-950/40',
+        cardBorder: 'hover:border-orange-500/40',
+        emojiGlow: 'from-orange-500/20 to-red-600/20',
+    }
+];
+
+const Courses = () => {
+    const handleSelectCourse = (e: React.MouseEvent, courseTitle: string) => {
+        e.preventDefault();
+        const event = new CustomEvent('selectCourse', { detail: { course: courseTitle } });
+        window.dispatchEvent(event);
+        document.getElementById('booking-form')?.scrollIntoView({ behavior: 'smooth' });
+    };
+
+    return (
+        <section id="courses" className="w-full bg-slate-950 text-white py-20 px-6 border-b border-slate-900">
+            <div className="max-w-5xl mx-auto">
+
+                {/* Заголовок */}
+                <div className="text-center mb-14">
+                    <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-blue-400 bg-blue-950/50 px-4 py-1.5 rounded-full border border-blue-800/40 mb-4">
+                        Програми навчання
+                    </span>
+                    <h2 className="text-3xl md:text-4xl font-black tracking-tight">
+                        Літні IT-інтенсиви
+                        <br />
+                        <span className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
+                            для дітей 7–15 років
+                        </span>
+                    </h2>
+                </div>
+
+                {/* Картки курсів */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {COURSES.map((course) => (
+                        <div
+                            key={course.title}
+                            className={`group bg-slate-900 rounded-2xl border border-slate-800 ${course.cardBorder} transition-all duration-300 flex flex-col overflow-hidden`}
+                        >
+                            {/* Верхня частина — іконка + тег */}
+                            <div className={`relative h-44 bg-gradient-to-br ${course.emojiGlow} bg-slate-950 flex items-center justify-center border-b border-slate-800 group-hover:border-slate-700 transition-colors`}>
+                                <span className="text-6xl group-hover:scale-110 transition-transform duration-300 drop-shadow-lg">
+                                    {course.emoji}
                                 </span>
-                                <a
-                                    href="#register"
-                                    className={`inline-flex items-center gap-1.5 text-sm font-bold text-white py-2 px-4 rounded-xl border ${course.btnBorder} transition-all duration-200`}
-                                >
-                                    Забронювати
-                                    <svg className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                                    </svg>
-                                </a>
+                                <span className={`absolute top-4 right-4 text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full border ${course.tagColor}`}>
+                                    {course.tag}
+                                </span>
+                            </div>
+
+                            {/* Контент */}
+                            <div className="p-6 flex flex-col flex-1">
+                                <div className="flex items-start justify-between gap-2 mb-3">
+                                    <h3 className="text-xl font-black text-slate-100 leading-tight">{course.title}</h3>
+                                </div>
+                                <p className="text-slate-400 text-sm leading-relaxed flex-1">{course.desc}</p>
+
+                                {/* Вік + кнопка */}
+                                <div className="mt-6 pt-5 border-t border-slate-800 flex items-center justify-between gap-3">
+                                    <span className="text-xs text-slate-500 font-medium">
+                                        👤 {course.ages}
+                                    </span>
+                                    <a
+                                        href="#booking-form"
+                                        onClick={(e) => handleSelectCourse(e, course.title)}
+                                        className={`inline-flex items-center gap-1.5 text-sm font-bold text-white py-2 px-4 rounded-xl border ${course.btnBorder} transition-all duration-200`}
+                                    >
+                                        Забронювати
+                                        <svg className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                        </svg>
+                                    </a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                ))}
+                    ))}
+                </div>
             </div>
-        </div>
-    </section>
-);
+        </section>
+    );
+};
 
 // 5. КОМПОНЕНТ: ФОРМА ЗАХВАТУ ЛІДІВ (Форма -> Наша CRM)
 const RegisterForm = ({ onAuthSuccess }: { onAuthSuccess?: (name: string, course: string, phone: string) => void }) => {
