@@ -957,7 +957,7 @@ const ContactsAndMap = () => (
 );
 
 // МІНІ-КАБІНЕТ (Після успішної авторизації)
-const MiniCabinet = ({ clientName, registeredCourse, phone, initialTime }: { clientName: string, registeredCourse: string, phone: string, initialTime?: string }) => {
+const MiniCabinet = ({ clientName, registeredCourse, phone, initialTime, coursePrices }: { clientName: string, registeredCourse: string, phone: string, initialTime?: string, coursePrices?: Record<string, number> }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [isConfirming, setIsConfirming] = useState(false);
     const [selectedTime, setSelectedTime] = useState(initialTime || '');
@@ -965,7 +965,7 @@ const MiniCabinet = ({ clientName, registeredCourse, phone, initialTime }: { cli
     const [receiptUrl] = useState('');
 
     const courseData = COURSES.find(c => c.title === registeredCourse);
-    const fullPrice = courseData?.price || 5000;
+    const fullPrice = (courseData && coursePrices && coursePrices[courseData.slug]) ? coursePrices[courseData.slug] : (courseData?.price || 5000);
     const discount = Math.round(fullPrice * 0.15);
     const discountedPrice = fullPrice - discount;
 
@@ -1433,7 +1433,7 @@ export default function LandingPage() {
     }
 
     if (authData) {
-        return <MiniCabinet clientName={authData.name} registeredCourse={authData.course} phone={authData.phone} initialTime={authData.chosenTime} />;
+        return <MiniCabinet clientName={authData.name} registeredCourse={authData.course} phone={authData.phone} initialTime={authData.chosenTime} coursePrices={coursePrices} />;
     }
 
     return (
