@@ -376,7 +376,7 @@ const COURSES = [
     }
 ];
 
-const Courses = ({ slotsData, coursePrices }: { slotsData: Record<string, number>, coursePrices?: Record<string, number> }) => {
+const Courses = ({ slotsData, coursePrices, onOpenProgram }: { slotsData: Record<string, number>, coursePrices?: Record<string, number>, onOpenProgram?: (slug: string) => void }) => {
     const scrollRef = React.useRef<HTMLDivElement>(null);
 
     const scroll = (direction: 'left' | 'right') => {
@@ -480,7 +480,13 @@ const Courses = ({ slotsData, coursePrices }: { slotsData: Record<string, number
                                 </div>
 
                                 {/* Кнопка */}
-                                <div className="mt-4 pt-4 border-t border-slate-800/50">
+                                <div className="mt-4 pt-4 border-t border-slate-800/50 flex flex-col gap-2">
+                                    <button
+                                        onClick={(e) => { e.preventDefault(); onOpenProgram && onOpenProgram(course.slug); }}
+                                        className="w-full inline-flex items-center justify-center gap-2 text-sm font-bold text-slate-300 hover:text-white py-2.5 px-4 rounded-xl border border-slate-700 hover:border-slate-500 hover:bg-slate-800 transition-all duration-200"
+                                    >
+                                        Подивитись програму навчань
+                                    </button>
                                     <a
                                         href="#booking-form"
                                         onClick={(e) => handleSelectCourse(e, course.title)}
@@ -1219,15 +1225,63 @@ const FloatingChat = () => {
     );
 };
 
+const ProgramModal = ({ course, modules, onClose }: { course: any, modules: any[], onClose: () => void }) => {
+    return (
+        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-[9999] flex items-center justify-center p-4">
+            <div className="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-2xl max-h-[85vh] flex flex-col shadow-2xl relative overflow-hidden">
+                <div className="p-6 border-b border-slate-800/60 bg-slate-900/80 flex justify-between items-center z-10 relative">
+                    <div>
+                        <h3 className="text-[11px] text-cyan-400 font-bold uppercase tracking-widest mb-1 flex items-center gap-2">
+                            <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+                            Програма інтенсиву
+                        </h3>
+                        <h2 className="text-2xl font-black text-white">{course?.title}</h2>
+                    </div>
+                    <button onClick={onClose} className="p-2 bg-slate-800 hover:bg-slate-700 rounded-xl text-slate-400 transition-colors">
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
+                
+                <div className="p-6 overflow-y-auto flex-1 space-y-4 bg-slate-950/30 z-10 relative custom-scrollbar">
+                    {modules && modules.length > 0 ? (
+                        modules.map((m: any, i: number) => (
+                            <div key={i} className="bg-slate-900/80 border border-slate-800/80 p-5 rounded-2xl shadow-sm hover:border-cyan-500/30 hover:bg-slate-800/50 transition-all group relative overflow-hidden">
+                                <div className="absolute top-0 left-0 w-1 h-full bg-slate-800 group-hover:bg-cyan-500 transition-colors"></div>
+                                <h4 className="text-xs font-bold text-cyan-400 uppercase tracking-widest mb-2 flex items-center gap-2">
+                                    <span className="bg-cyan-950 text-cyan-400 w-6 h-6 rounded-md flex items-center justify-center border border-cyan-800/50">{i + 1}</span>
+                                    Модуль
+                                </h4>
+                                <h3 className="text-lg font-bold text-white mb-2">{m.title}</h3>
+                                <p className="text-slate-400 text-sm leading-relaxed">{m.desc}</p>
+                            </div>
+                        ))
+                    ) : (
+                        <div className="flex flex-col items-center justify-center py-12 text-center">
+                            <span className="text-5xl mb-4 opacity-50">🚧</span>
+                            <p className="text-slate-400 font-medium">Програма курсу ще формується.<br/>Деталі з'являться незабаром!</p>
+                        </div>
+                    )}
+                </div>
+
+                <div className="p-5 border-t border-slate-800/60 bg-slate-900/80 flex justify-end z-10 relative">
+                    <button onClick={onClose} className="px-6 py-2.5 text-sm font-bold text-slate-900 bg-cyan-400 hover:bg-cyan-300 rounded-xl shadow-lg shadow-cyan-500/20 transition-all">Зрозуміло</button>
+                </div>
+            </div>
+        </div>
+    );
+};
+
 // ГОЛОВНА СТОРІНКА ЛЕНДИНГУ
 export default function LandingPage() {
     const [authData, setAuthData] = useState<{ name: string, course: string, phone: string, chosenTime?: string } | null>(null);
     const [isLoadingAuth, setIsLoadingAuth] = useState(true);
     const [slotsData, setSlotsData] = useState<Record<string, number>>({});
     const [coursePrices, setCoursePrices] = useState<Record<string, number>>({});
+    const [courseModules, setCourseModules] = useState<Record<string, any[]>>({});
+    const [viewingProgramFor, setViewingProgramFor] = useState<string | null>(null);
 
     const fetchSlots = async () => {
-        const { data, error } = await supabase.from('course_slots').select('course_slug, available_slots, price');
+        const { data, error } = await supabase.from('course_slots').select('course_slug, available_slots, price, modules');
         if (data && !error) {
             const slotsMap = data.reduce((acc: Record<string, number>, item) => {
                 acc[item.course_slug] = item.available_slots;
@@ -1237,8 +1291,13 @@ export default function LandingPage() {
                 acc[item.course_slug] = item.price;
                 return acc;
             }, {});
+            const modulesMap = data.reduce((acc: Record<string, any[]>, item) => {
+                acc[item.course_slug] = item.modules || [];
+                return acc;
+            }, {});
             setSlotsData(slotsMap);
             setCoursePrices(pricesMap);
+            setCourseModules(modulesMap);
         }
     };
 
@@ -1292,7 +1351,7 @@ export default function LandingPage() {
             <Header />
             <Hero />
             <PainPoints />
-            <Courses slotsData={slotsData} coursePrices={coursePrices} />
+            <Courses slotsData={slotsData} coursePrices={coursePrices} onOpenProgram={setViewingProgramFor} />
             <RegisterForm
                 onAuthSuccess={(name, course, phone, chosenTime) => setAuthData({ name, course, phone, chosenTime })}
                 slotsData={slotsData}
@@ -1307,6 +1366,13 @@ export default function LandingPage() {
             </footer>
 
             <FloatingChat />
+            {viewingProgramFor && (
+                <ProgramModal 
+                    course={COURSES.find(c => c.slug === viewingProgramFor)} 
+                    modules={courseModules[viewingProgramFor]} 
+                    onClose={() => setViewingProgramFor(null)} 
+                />
+            )}
         </div>
     );
 }

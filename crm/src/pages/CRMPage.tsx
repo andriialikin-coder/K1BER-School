@@ -208,6 +208,46 @@ function ModulesModal({ slug, slot, onClose, onSave }: any) {
 }
 
 // ═══════════════════════════════════════════════
+//  PRICE EDITOR COMPONENT
+// ═══════════════════════════════════════════════
+function PriceEditor({ slot, onSave }: { slot: CourseSlot, onSave: (price: number) => Promise<void> }) {
+  const [price, setPrice] = useState(slot.price || 0);
+  const [isSaving, setIsSaving] = useState(false);
+  
+  useEffect(() => {
+    setPrice(slot.price || 0);
+  }, [slot.price]);
+
+  return (
+    <div className="flex flex-col gap-2 mb-3">
+      <div className="flex items-center gap-2">
+        <span className="text-[10px] font-semibold text-slate-500">ЦІНА:</span>
+        <input 
+          type="number"
+          value={price}
+          onChange={(e) => setPrice(parseInt(e.target.value) || 0)}
+          className="w-full text-sm font-bold text-slate-800 border-b border-slate-200 focus:outline-none focus:border-blue-400 py-1"
+        />
+        <span className="text-xs text-slate-400 font-bold">₴</span>
+      </div>
+      {price !== (slot.price || 0) && (
+        <button 
+          onClick={async () => {
+             setIsSaving(true);
+             await onSave(price);
+             setIsSaving(false);
+          }}
+          disabled={isSaving}
+          className="w-full py-1.5 text-[11px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 hover:bg-emerald-100 rounded border border-emerald-200 transition-colors"
+        >
+          {isSaving ? "Збереження..." : "Зберегти ціну"}
+        </button>
+      )}
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════
 //  CRM DASHBOARD
 // ═══════════════════════════════════════════════
 export default function CRMPage() {
@@ -448,16 +488,12 @@ export default function CRMPage() {
                     <button onClick={() => updateSlot(slot.course_slug, 1)} className="w-7 h-7 flex items-center justify-center bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg transition-colors font-bold text-lg leading-none active:bg-slate-300">+</button>
                   </div>
 
-                  <div className="flex items-center gap-2 mb-3">
-                    <span className="text-[10px] font-semibold text-slate-500">ЦІНА:</span>
-                    <input 
-                      type="number"
-                      value={slot.price || 0}
-                      onChange={(e) => updateCourseData(slot.course_slug, { price: parseInt(e.target.value) || 0 })}
-                      className="w-full text-sm font-bold text-slate-800 border-b border-slate-200 focus:outline-none focus:border-blue-400 py-1"
-                    />
-                    <span className="text-xs text-slate-400 font-bold">₴</span>
-                  </div>
+                  <PriceEditor 
+                    slot={slot} 
+                    onSave={async (newPrice) => {
+                      await updateCourseData(slot.course_slug, { price: newPrice });
+                    }} 
+                  />
 
                   <button 
                     onClick={() => setEditingModulesFor(slot.course_slug)}
