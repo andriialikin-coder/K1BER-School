@@ -4,7 +4,7 @@ import {
   Users, Phone, TrendingUp, Star, Search, RefreshCw,
   ChevronDown, Calendar, Database, Loader2, AlertCircle,
   X, PhoneCall, UserCheck, Archive, PhoneMissed, Clock,
-  CheckCircle2, XCircle, LayoutDashboard, Component, Edit3, Save, Settings
+  CheckCircle2, XCircle, LayoutDashboard, Component, Edit3, Save, Settings, Sparkles
 } from 'lucide-react';
 
 // ═══════════════════════════════════════════════
@@ -28,6 +28,7 @@ interface Lead {
   source: string | null;
   course: string | null;
   chosen_time: string | null;
+  behavior_log?: any;
 }
 
 interface CourseSlot {
@@ -320,6 +321,41 @@ export default function CRMPage() {
   const [updatingIds, setUpdatingIds] = useState<Set<number>>(new Set());
   const [dbConnected, setDbConnected] = useState(false);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
+
+  const [analyzingId, setAnalyzingId] = useState<number | null>(null);
+  const [aiPortraits, setAiPortraits] = useState<Record<number, string>>({});
+
+  const handleFetchAI = async (lead: Lead) => {
+      if (!lead.behavior_log || Object.keys(lead.behavior_log).length === 0) return;
+      if (aiPortraits[lead.id]) return; 
+      setAnalyzingId(lead.id);
+      try {
+          const prompt = `Ты — циничный и гениальный EdTech-маркетолог. Проанализируй лог времени проведенного пользователем на секциях Landing Page. Выдай жесткий, точечный анализ на украинском языке до 3 предложений с инсайтом (что его зацепило) и советом как продать курс. Лог (ключи=секции, значения=секунды): ${JSON.stringify(lead.behavior_log)}`;
+          const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+              method: "POST",
+              headers: {
+                  "Authorization": `Bearer ${import.meta.env.VITE_GROQ_API_KEY}`,
+                  "Content-Type": "application/json"
+              },
+              body: JSON.stringify({
+                  model: "llama3-70b-8192",
+                  messages: [{ role: "user", content: prompt }]
+              })
+          });
+          const data = await res.json();
+          if (data.choices && data.choices[0]) {
+              setAiPortraits(prev => ({ ...prev, [lead.id]: data.choices[0].message.content }));
+          } else {
+              setAiPortraits(prev => ({ ...prev, [lead.id]: "Помилка аналізу. AI не дав відповідь." }));
+          }
+      } catch (err) {
+          console.error(err);
+          setAiPortraits(prev => ({ ...prev, [lead.id]: "Помилка з'єднання з AI." }));
+      } finally {
+          setAnalyzingId(null);
+      }
+  };
+
   useEffect(() => {
     if (isAuthenticated) {
       localStorage.setItem('crm_auth_expires', (Date.now() + 30 * 60 * 1000).toString());
@@ -564,6 +600,29 @@ export default function CRMPage() {
                       <div>
                         <p className="text-sm font-semibold text-slate-800 leading-none">{lead.name || <span className="text-slate-300 font-normal">Без імені</span>}</p>
                         <p className="text-[11px] text-slate-400 mt-1 font-mono">tg: {lead.telegram_id}</p>
+                        {lead.behavior_log && Object.keys(lead.behavior_log).length > 0 && (
+                            <div className="mt-2">
+                                {!aiPortraits[lead.id] && analyzingId !== lead.id && (
+                                    <button onClick={() => handleFetchAI(lead)} className="text-[10px] flex items-center w-fit gap-1 font-bold text-violet-600 bg-violet-50 px-2 py-1 rounded border border-violet-100 hover:bg-violet-100 transition-colors shadow-sm">
+                                        <Sparkles size={10} /> Поглянути AI-портрет ліда ✨
+                                    </button>
+                                )}
+                                {analyzingId === lead.id && (
+                                    <div className="text-[10px] flex items-center w-fit gap-1 font-bold text-violet-500 bg-violet-50 px-2 py-1 rounded border border-violet-100">
+                                        <Loader2 size={10} className="animate-spin" /> Аналізую...
+                                    </div>
+                                )}
+                                {aiPortraits[lead.id] && (
+                                    <div className="mt-1.5 p-2 bg-gradient-to-br from-violet-50 to-fuchsia-50 border border-violet-100 rounded-md shadow-sm relative overflow-hidden min-w-[200px] max-w-sm">
+                                        <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-violet-500 to-fuchsia-500"></div>
+                                        <div className="pl-1">
+                                            <p className="text-[11px] font-bold text-violet-800 mb-1 flex items-center gap-1"><Sparkles size={10}/> AI-Інсайт:</p>
+                                            <p className="text-[11px] text-slate-700 leading-snug">{aiPortraits[lead.id]}</p>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        )}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">

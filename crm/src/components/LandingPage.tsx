@@ -88,7 +88,7 @@ const Header = () => {
 
 // 2. КОМПОНЕНТ: ГОЛОВНИЙ ЕКРАН (Hero Section)
 const Hero = () => (
-    <section className="relative w-full bg-slate-950 text-white pt-32 pb-24 px-6 flex flex-col items-center text-center overflow-hidden">
+    <section id="hero" className="relative w-full bg-slate-950 text-white pt-32 pb-24 px-6 flex flex-col items-center text-center overflow-hidden">
 
         {/* Фоновий неон-ефект */}
         <div className="absolute inset-0 pointer-events-none">
@@ -523,7 +523,7 @@ const Courses = ({ slotsData, coursePrices, courseDetails, onOpenProgram }: { sl
 };
 
 // 5. КОМПОНЕНТ: ФОРМА ЗАХВАТУ ЛІДІВ (Форма -> Наша CRM)
-const RegisterForm = ({ onAuthSuccess, slotsData, fetchSlots }: { onAuthSuccess?: (name: string, course: string, phone: string, chosenTime?: string) => void; slotsData: Record<string, number>; fetchSlots: () => void; }) => {
+const RegisterForm = ({ onAuthSuccess, slotsData, fetchSlots, behaviorLogRef }: { onAuthSuccess?: (name: string, course: string, phone: string, chosenTime?: string) => void; slotsData: Record<string, number>; fetchSlots: () => void; behaviorLogRef?: React.MutableRefObject<Record<string, number>>; }) => {
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [tab, setTab] = useState<'new' | 'existing'>('new');
@@ -609,7 +609,8 @@ const RegisterForm = ({ onAuthSuccess, slotsData, fetchSlots }: { onAuthSuccess?
                 name: formData.name,
                 phone: formData.phone,
                 course: formData.course,
-                source: "website"
+                source: "website",
+                behavior_log: behaviorLogRef ? behaviorLogRef.current : {}
             };
 
             console.log("Submitting payload to Supabase:", payload);
@@ -1296,6 +1297,17 @@ export default function LandingPage() {
     const [courseDetails, setCourseDetails] = useState<Record<string, any>>({});
     const [viewingProgramFor, setViewingProgramFor] = useState<string | null>(null);
 
+    const behaviorLogRef = React.useRef<Record<string, number>>({
+        hero: 0,
+        about: 0,
+        courses: 0,
+        "booking-form": 0,
+        faq: 0,
+        contacts: 0
+    });
+    const activeSectionRef = React.useRef<string | null>(null);
+    const lastTickRef = React.useRef<number>(Date.now());
+
     const fetchSlots = async () => {
         const { data, error } = await supabase.from('course_slots').select('course_slug, available_slots, price, modules, details');
         if (data && !error) {
@@ -1357,6 +1369,63 @@ export default function LandingPage() {
             setIsLoadingAuth(false);
         };
         fetchUserData();
+
+        // BEHAVIOR LOG TRACKING
+        let idleTimer: ReturnType<typeof setTimeout>;
+        let isIdle = false;
+
+        const resetIdle = () => {
+            isIdle = false;
+            clearTimeout(idleTimer);
+            lastTickRef.current = Date.now();
+            idleTimer = setTimeout(() => { isIdle = true; }, 30000); // 30s idle timeout
+        };
+
+        const events = ['mousemove', 'scroll', 'keydown', 'touchstart'];
+        events.forEach(e => window.addEventListener(e, resetIdle, { passive: true }));
+        resetIdle();
+
+        const interval = setInterval(() => {
+            const now = Date.now();
+            const delta = now - lastTickRef.current;
+            lastTickRef.current = now;
+
+            if (!isIdle && !document.hidden && activeSectionRef.current) {
+                const section = activeSectionRef.current;
+                if (behaviorLogRef.current[section] !== undefined) {
+                    behaviorLogRef.current[section] += delta / 1000;
+                }
+            }
+        }, 1000);
+
+        const observer = new IntersectionObserver((entries) => {
+            let maxRatio = 0;
+            let currentActive: string | null = null;
+            entries.forEach(entry => {
+                if (entry.isIntersecting && entry.intersectionRatio > maxRatio) {
+                    maxRatio = entry.intersectionRatio;
+                    currentActive = entry.target.id;
+                }
+            });
+            if (currentActive) {
+                activeSectionRef.current = currentActive;
+            }
+        }, { threshold: [0.1, 0.5, 0.8] });
+
+        const sections = ['hero', 'about', 'courses', 'booking-form', 'faq', 'contacts'];
+        setTimeout(() => {
+            sections.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) observer.observe(el);
+            });
+        }, 500);
+
+        return () => {
+            clearInterval(interval);
+            observer.disconnect();
+            events.forEach(e => window.removeEventListener(e, resetIdle));
+            clearTimeout(idleTimer);
+        };
     }, []);
 
     if (isLoadingAuth) {
@@ -1377,6 +1446,7 @@ export default function LandingPage() {
                 onAuthSuccess={(name, course, phone, chosenTime) => setAuthData({ name, course, phone, chosenTime })}
                 slotsData={slotsData}
                 fetchSlots={fetchSlots}
+                behaviorLogRef={behaviorLogRef}
             />
             <FAQ />
             <ContactsAndMap />
