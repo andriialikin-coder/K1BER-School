@@ -644,7 +644,7 @@ export default function CRMPage() {
                             <p className="text-slate-400 text-sm leading-relaxed flex-1 line-clamp-4">{course.desc}</p>
                             
                             <div className="mt-4 flex items-baseline gap-2">
-                                <span className="text-2xl font-black text-white">{slot.price || def.price} ₴</span>
+                                <span className="text-2xl font-black text-white">{slot.price || defCourse.price} ₴</span>
                                 <span className="text-sm font-medium text-slate-500">/ інтенсив</span>
                             </div>
                             
