@@ -1126,6 +1126,65 @@ const MiniCabinet = ({ clientName, registeredCourse, phone, initialTime }: { cli
     );
 };
 
+// 8. ПЛАВАЮЧИЙ ВІДЖЕТ ЧАТУ (Floating Chat)
+const FloatingChat = () => {
+    const [isOpen, setIsOpen] = useState(false);
+
+    return (
+        <div className="fixed bottom-6 right-6 z-[9999] flex flex-col items-end gap-3">
+            <div 
+                className={`flex flex-col items-end gap-3 transition-all duration-300 origin-bottom ${
+                    isOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-90 pointer-events-none'
+                }`}
+            >
+                <a href="#" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center w-12 h-12 rounded-full bg-slate-900 text-white hover:scale-110 transition-transform shadow-lg border border-slate-700">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19.589 6.686a4.793 4.793 0 0 1-3.97-1.561 4.755 4.755 0 0 1-1.358-3.608h-3.268v15.671a3.62 3.62 0 1 1-3.62-3.62c.382 0 .749.06 1.096.17v-3.32a6.85 6.85 0 1 0 5.808 6.77V8.583a7.994 7.994 0 0 0 5.312 2.016V6.686z" />
+                    </svg>
+                </a>
+                
+                <a href="#" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center w-12 h-12 rounded-full bg-[#1877F2] text-white hover:scale-110 transition-transform shadow-lg">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                    </svg>
+                </a>
+
+                <a href="#" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center w-12 h-12 rounded-full bg-black text-white hover:scale-110 transition-transform shadow-lg border border-slate-700">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M14.07 10.669c-.067-.542-.317-1.127-.788-1.526-.481-.408-1.161-.564-1.808-.475-.85.116-1.517.76-1.782 1.58-.22.684-.187 1.488.164 2.115.352.63.987 1.05 1.706 1.15.823.115 1.63-.16 2.164-.78.472-.549.65-1.298.544-2.064h-3.41c-.048.24-.047.514.09.73.125.195.347.305.584.316.326.015.626-.184.739-.488.083-.223.056-.47-.058-.673-.133-.238-.396-.36-.665-.347-.393.018-.748.272-.88.636-.12.333-.08.723.1 1.026.177.297.498.483.845.513.565.049 1.137-.25 1.436-.732.257-.417.306-.922.213-1.398zm8.681.332c-.057-2.616-1.077-5.068-2.83-6.938-1.727-1.842-4.103-2.91-6.666-2.91-2.527 0-4.887 1.05-6.6 2.872C4.945 5.836 3.933 8.245 3.933 10.8c0 2.52 1.006 4.904 2.705 6.721 1.688 1.805 4.025 2.834 6.516 2.834 1.76 0 3.424-.51 4.845-1.42.217-.139.31-.418.204-.647-.116-.25-.42-.323-.654-.183-1.28.766-2.775 1.185-4.395 1.185-2.26 0-4.382-.938-5.918-2.58-1.527-1.631-2.438-3.79-2.438-6.082 0-2.316.916-4.5 2.45-6.141C8.784 2.84 10.916 1.9 13.193 1.9c2.314 0 4.462.969 5.996 2.607 1.517 1.623 2.422 3.793 2.422 6.096v3.29c0 1.258-.934 2.146-2.112 2.146-1.082 0-2.02-.734-2.144-1.807-.066-.566.012-1.157.248-1.693-1.002 1.458-2.697 2.222-4.468 1.986-1.424-.19-2.628-1.12-3.14-2.443-.454-1.171-.358-2.553.29-3.645.748-1.26 2.148-1.996 3.633-1.942 1.543.056 2.906.945 3.553 2.336v-1.742c0-.288.232-.52.518-.52s.517.232.517.52v5.626c.036 1.597 1.34 2.793 2.893 2.793 1.758 0 3.125-1.413 3.125-3.176v-3.32z" />
+                    </svg>
+                </a>
+
+                <a href="#" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-tr from-[#f09433] via-[#e6683c] to-[#bc1888] text-white hover:scale-110 transition-transform shadow-lg">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                    </svg>
+                </a>
+            </div>
+
+            <button 
+                onClick={() => setIsOpen(!isOpen)}
+                className={`flex items-center justify-center w-14 h-14 rounded-full text-white shadow-xl hover:scale-105 transition-all duration-300 z-50 ${isOpen ? 'bg-slate-800 rotate-90' : 'bg-gradient-to-r from-cyan-500 to-blue-600'}`}
+                aria-label="Задати питання"
+            >
+                <div className={`transition-all duration-300 absolute ${isOpen ? 'opacity-0 scale-50' : 'opacity-100 scale-100'}`}>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                    </svg>
+                </div>
+                <div className={`transition-all duration-300 absolute ${isOpen ? 'opacity-100 scale-100 -rotate-90' : 'opacity-0 scale-50 rotate-90'}`}>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </div>
+            </button>
+        </div>
+    );
+};
+
 // ГОЛОВНА СТОРІНКА ЛЕНДИНГУ
 export default function LandingPage() {
     const [authData, setAuthData] = useState<{ name: string, course: string, phone: string, chosenTime?: string } | null>(null);
@@ -1206,6 +1265,8 @@ export default function LandingPage() {
                     © {new Date().getFullYear()} K1BER.SCHOOL · Суми
                 </p>
             </footer>
+
+            <FloatingChat />
         </div>
     );
 }
