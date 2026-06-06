@@ -376,7 +376,7 @@ const COURSES = [
     }
 ];
 
-const Courses = ({ slotsData, coursePrices, onOpenProgram }: { slotsData: Record<string, number>, coursePrices?: Record<string, number>, onOpenProgram?: (slug: string) => void }) => {
+const Courses = ({ slotsData, coursePrices, courseDetails, onOpenProgram }: { slotsData: Record<string, number>, coursePrices?: Record<string, number>, courseDetails?: Record<string, any>, onOpenProgram?: (slug: string) => void }) => {
     const scrollRef = React.useRef<HTMLDivElement>(null);
 
     const scroll = (direction: 'left' | 'right') => {
@@ -436,9 +436,23 @@ const Courses = ({ slotsData, coursePrices, onOpenProgram }: { slotsData: Record
                     ref={scrollRef}
                     className="flex flex-nowrap overflow-x-auto gap-6 pb-6 pt-2 px-6 md:px-16 lg:px-24 snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
                 >
-                    {COURSES.map((course) => (
+                    {COURSES.map((defCourse) => {
+                        const details = courseDetails?.[defCourse.slug] || {};
+                        const course = {
+                            title: details.title || defCourse.title,
+                            desc: details.desc || defCourse.desc,
+                            image: details.image || defCourse.image,
+                            ages: details.ages || defCourse.ages,
+                            tag: details.tag || defCourse.tag,
+                            tagColor: details.tagColor || defCourse.tagColor,
+                            btnBorder: details.btnBorder || defCourse.btnBorder,
+                            cardBorder: details.cardBorder || defCourse.cardBorder,
+                            slug: defCourse.slug,
+                            price: defCourse.price,
+                        };
+                        return (
                         <div
-                            key={course.title}
+                            key={course.slug}
                             className={`group bg-slate-900 rounded-2xl border border-slate-800 ${course.cardBorder} transition-all duration-300 flex flex-col overflow-hidden w-[85vw] sm:w-[320px] shrink-0 snap-center`}
                         >
                             {/* Блок для картинки */}
@@ -471,7 +485,7 @@ const Courses = ({ slotsData, coursePrices, onOpenProgram }: { slotsData: Record
                                     </div>
                                     <h3 className="text-xl font-black text-slate-100 leading-tight">{course.title}</h3>
                                 </div>
-                                <p className="text-slate-400 text-sm leading-relaxed flex-1">{course.desc}</p>
+                                <p className="text-slate-400 text-sm leading-relaxed flex-1 line-clamp-5">{course.desc}</p>
 
                                 {/* Ціна */}
                                 <div className="mt-4 flex items-baseline gap-2">
@@ -500,7 +514,8 @@ const Courses = ({ slotsData, coursePrices, onOpenProgram }: { slotsData: Record
                                 </div>
                             </div>
                         </div>
-                    ))}
+                        );
+                    })}
                 </div>
             </div>
         </section>
@@ -1278,10 +1293,11 @@ export default function LandingPage() {
     const [slotsData, setSlotsData] = useState<Record<string, number>>({});
     const [coursePrices, setCoursePrices] = useState<Record<string, number>>({});
     const [courseModules, setCourseModules] = useState<Record<string, any[]>>({});
+    const [courseDetails, setCourseDetails] = useState<Record<string, any>>({});
     const [viewingProgramFor, setViewingProgramFor] = useState<string | null>(null);
 
     const fetchSlots = async () => {
-        const { data, error } = await supabase.from('course_slots').select('course_slug, available_slots, price, modules');
+        const { data, error } = await supabase.from('course_slots').select('course_slug, available_slots, price, modules, details');
         if (data && !error) {
             const slotsMap = data.reduce((acc: Record<string, number>, item) => {
                 acc[item.course_slug] = item.available_slots;
@@ -1295,9 +1311,14 @@ export default function LandingPage() {
                 acc[item.course_slug] = item.modules || [];
                 return acc;
             }, {});
+            const detailsMap = data.reduce((acc: Record<string, any>, item) => {
+                acc[item.course_slug] = item.details || {};
+                return acc;
+            }, {});
             setSlotsData(slotsMap);
             setCoursePrices(pricesMap);
             setCourseModules(modulesMap);
+            setCourseDetails(detailsMap);
         }
     };
 
@@ -1351,7 +1372,7 @@ export default function LandingPage() {
             <Header />
             <Hero />
             <PainPoints />
-            <Courses slotsData={slotsData} coursePrices={coursePrices} onOpenProgram={setViewingProgramFor} />
+            <Courses slotsData={slotsData} coursePrices={coursePrices} courseDetails={courseDetails} onOpenProgram={setViewingProgramFor} />
             <RegisterForm
                 onAuthSuccess={(name, course, phone, chosenTime) => setAuthData({ name, course, phone, chosenTime })}
                 slotsData={slotsData}
