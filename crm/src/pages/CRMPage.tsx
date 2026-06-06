@@ -299,7 +299,7 @@ export default function CRMPage() {
   const [courseSlots, setCourseSlots] = useState<CourseSlot[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadingSlots, setLoadingSlots] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState<string | null>(null);
 
   const builderScrollRef = useRef<HTMLDivElement>(null);
 
