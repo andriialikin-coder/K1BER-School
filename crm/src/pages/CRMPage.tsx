@@ -395,7 +395,10 @@ export default function CRMPage() {
   const updateCourseData = async (slug: string, updates: Partial<CourseSlot>) => {
     // Optimistic UI update
     setCourseSlots(prev => prev.map(s => s.course_slug === slug ? { ...s, ...updates } : s));
-    const { error } = await supabase.from('course_slots').update(updates).eq('course_slug', slug);
+    const { error } = await supabase.from('course_slots').upsert({
+      course_slug: slug,
+      ...updates
+    }, { onConflict: 'course_slug' });
     if (error) {
       console.error(error);
       fetchSlots(); // revert on error
@@ -425,11 +428,12 @@ export default function CRMPage() {
      } : s));
      
      // To DB
-     await supabase.from('course_slots').update({
+     await supabase.from('course_slots').upsert({
+        course_slug: slug,
         price: formData.price,
         available_slots: formData.available_slots,
         details: newDetails
-     }).eq('course_slug', slug);
+     }, { onConflict: 'course_slug' });
      
      setEditingCourseFor(null);
   };
@@ -595,27 +599,27 @@ export default function CRMPage() {
              </div>
          ) : (
              <div className="flex flex-wrap gap-8 justify-center relative z-10">
-                {courseSlots.map(slot => {
-                   const def = DEFAULT_COURSES.find(c => c.slug === slot.course_slug) || DEFAULT_COURSES[0];
+                {DEFAULT_COURSES.map(defCourse => {
+                   const slot = courseSlots.find(c => c.course_slug === defCourse.slug) || { course_slug: defCourse.slug, available_slots: 10, price: defCourse.price };
                    const details = slot.details || {};
                    const course = {
-                      title: details.title || def.title,
-                      desc: details.desc || def.desc,
-                      image: details.image || def.image,
-                      ages: details.ages || def.ages,
-                      tag: details.tag || def.tag,
-                      tagColor: details.tagColor || def.tagColor,
-                      btnBorder: details.btnBorder || def.btnBorder,
-                      cardBorder: details.cardBorder || def.cardBorder,
+                      title: details.title || defCourse.title,
+                      desc: details.desc || defCourse.desc,
+                      image: details.image || defCourse.image,
+                      ages: details.ages || defCourse.ages,
+                      tag: details.tag || defCourse.tag,
+                      tagColor: details.tagColor || defCourse.tagColor,
+                      btnBorder: details.btnBorder || defCourse.btnBorder,
+                      cardBorder: details.cardBorder || defCourse.cardBorder,
                    };
       
                    return (
-                     <div key={slot.course_slug} className={`group relative bg-slate-900 rounded-2xl border border-slate-800 ${course.cardBorder} transition-all duration-300 flex flex-col overflow-hidden w-[320px] shrink-0`}>
+                     <div key={defCourse.slug} className={`group relative bg-slate-900 rounded-2xl border border-slate-800 ${course.cardBorder} transition-all duration-300 flex flex-col overflow-hidden w-[320px] shrink-0`}>
                         
                         {/* EDIT OVERLAY */}
                         <div className="absolute inset-0 bg-slate-950/70 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity z-30 flex flex-col items-center justify-center gap-3">
-                           <button onClick={() => setEditingCourseFor(slot.course_slug)} className="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl shadow-[0_0_20px_rgba(37,99,235,0.4)] flex items-center gap-2 transition-transform hover:scale-105"><Edit3 size={16}/> Редагувати картку</button>
-                           <button onClick={() => setEditingModulesFor(slot.course_slug)} className="px-5 py-2.5 bg-cyan-600 hover:bg-cyan-500 text-white font-bold rounded-xl shadow-[0_0_20px_rgba(8,145,178,0.4)] flex items-center gap-2 transition-transform hover:scale-105"><Component size={16}/> Модулі програми</button>
+                           <button onClick={() => setEditingCourseFor(defCourse.slug)} className="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl shadow-[0_0_20px_rgba(37,99,235,0.4)] flex items-center gap-2 transition-transform hover:scale-105"><Edit3 size={16}/> Редагувати картку</button>
+                           <button onClick={() => setEditingModulesFor(defCourse.slug)} className="px-5 py-2.5 bg-cyan-600 hover:bg-cyan-500 text-white font-bold rounded-xl shadow-[0_0_20px_rgba(8,145,178,0.4)] flex items-center gap-2 transition-transform hover:scale-105"><Component size={16}/> Модулі програми</button>
                         </div>
       
                         <div className="h-48 w-full bg-slate-800 relative overflow-hidden border-b border-slate-800">
