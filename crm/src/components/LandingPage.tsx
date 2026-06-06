@@ -1137,31 +1137,68 @@ const FloatingChat = () => {
                     isOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-90 pointer-events-none'
                 }`}
             >
-                <a href="#" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center w-12 h-12 rounded-full bg-slate-900 text-white hover:scale-110 transition-transform shadow-lg border border-slate-700">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M19.589 6.686a4.793 4.793 0 0 1-3.97-1.561 4.755 4.755 0 0 1-1.358-3.608h-3.268v15.671a3.62 3.62 0 1 1-3.62-3.62c.382 0 .749.06 1.096.17v-3.32a6.85 6.85 0 1 0 5.808 6.77V8.583a7.994 7.994 0 0 0 5.312 2.016V6.686z" />
-                    </svg>
-                </a>
-                
-                <a href="#" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center w-12 h-12 rounded-full bg-[#1877F2] text-white hover:scale-110 transition-transform shadow-lg">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
-                    </svg>
-                </a>
-
-                <a href="#" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center w-12 h-12 rounded-full bg-black text-white hover:scale-110 transition-transform shadow-lg border border-slate-700">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M14.07 10.669c-.067-.542-.317-1.127-.788-1.526-.481-.408-1.161-.564-1.808-.475-.85.116-1.517.76-1.782 1.58-.22.684-.187 1.488.164 2.115.352.63.987 1.05 1.706 1.15.823.115 1.63-.16 2.164-.78.472-.549.65-1.298.544-2.064h-3.41c-.048.24-.047.514.09.73.125.195.347.305.584.316.326.015.626-.184.739-.488.083-.223.056-.47-.058-.673-.133-.238-.396-.36-.665-.347-.393.018-.748.272-.88.636-.12.333-.08.723.1 1.026.177.297.498.483.845.513.565.049 1.137-.25 1.436-.732.257-.417.306-.922.213-1.398zm8.681.332c-.057-2.616-1.077-5.068-2.83-6.938-1.727-1.842-4.103-2.91-6.666-2.91-2.527 0-4.887 1.05-6.6 2.872C4.945 5.836 3.933 8.245 3.933 10.8c0 2.52 1.006 4.904 2.705 6.721 1.688 1.805 4.025 2.834 6.516 2.834 1.76 0 3.424-.51 4.845-1.42.217-.139.31-.418.204-.647-.116-.25-.42-.323-.654-.183-1.28.766-2.775 1.185-4.395 1.185-2.26 0-4.382-.938-5.918-2.58-1.527-1.631-2.438-3.79-2.438-6.082 0-2.316.916-4.5 2.45-6.141C8.784 2.84 10.916 1.9 13.193 1.9c2.314 0 4.462.969 5.996 2.607 1.517 1.623 2.422 3.793 2.422 6.096v3.29c0 1.258-.934 2.146-2.112 2.146-1.082 0-2.02-.734-2.144-1.807-.066-.566.012-1.157.248-1.693-1.002 1.458-2.697 2.222-4.468 1.986-1.424-.19-2.628-1.12-3.14-2.443-.454-1.171-.358-2.553.29-3.645.748-1.26 2.148-1.996 3.633-1.942 1.543.056 2.906.945 3.553 2.336v-1.742c0-.288.232-.52.518-.52s.517.232.517.52v5.626c.036 1.597 1.34 2.793 2.893 2.793 1.758 0 3.125-1.413 3.125-3.176v-3.32z" />
-                    </svg>
-                </a>
-
-                <a href="#" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-tr from-[#f09433] via-[#e6683c] to-[#bc1888] text-white hover:scale-110 transition-transform shadow-lg">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-                    </svg>
-                </a>
+                {[
+                    {
+                        name: 'Instagram',
+                        url: '#',
+                        bg: 'bg-gradient-to-tr from-[#f09433] via-[#e6683c] to-[#bc1888]',
+                        border: '',
+                        icon: (
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                            </svg>
+                        )
+                    },
+                    {
+                        name: 'Threads',
+                        url: '#',
+                        bg: 'bg-black',
+                        border: 'border border-slate-700',
+                        icon: (
+                            <svg viewBox="0 0 192 192" width="20" height="20" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+                                <path d="M141.537 88.9883C140.71 88.5919 139.87 88.2104 139.019 87.8451C137.537 60.5382 122.616 44.905 97.5619 44.745C97.4484 44.7443 97.3355 44.7443 97.222 44.7443C82.2364 44.7443 69.7731 51.1409 62.102 62.7807L75.881 72.2328C81.6116 63.5383 90.6052 61.6848 97.2286 61.6848C97.3051 61.6848 97.3819 61.6848 97.4576 61.6855C105.707 61.7381 111.932 64.1366 115.961 68.814C118.893 72.2193 120.854 76.925 121.825 82.8638C114.511 81.6207 106.601 81.2385 98.145 81.7233C74.3247 83.0954 59.0111 96.9879 60.0396 116.292C60.5615 126.084 65.4397 134.508 73.775 140.011C80.8224 144.663 89.899 146.938 99.3323 146.423C111.79 145.74 121.563 140.987 128.381 132.296C133.559 125.696 136.834 117.143 138.28 106.366C144.217 109.949 148.617 114.664 151.047 120.332C155.179 130.014 151.43 142.222 143.518 152.052C137.986 158.932 130.702 163.639 122.257 165.861C115.111 167.742 107.502 168.046 99.9806 166.74C82.1643 163.636 67.8763 153.308 59.6192 137.28C51.6423 121.794 51.5833 103.354 59.4449 87.892C66.8647 73.3005 80.4578 63.4687 97.2662 61.6865C97.3486 61.6775 97.4326 61.6744 97.5183 61.6744C106.591 61.6744 114.767 64.1354 121.365 68.8091L131.258 54.8115C122.585 48.6369 111.455 44.7444 97.5183 44.7444C97.3915 44.7444 97.2625 44.7451 97.1357 44.7466C76.2629 46.9622 59.1867 59.3512 49.8052 77.7846C40.0935 96.8687 40.1652 119.539 50.0076 138.706C60.2039 158.513 77.8344 171.282 99.8043 175.1C109.117 176.717 118.521 176.339 127.352 173.992C137.892 171.18 146.974 165.253 153.868 156.685C163.784 144.364 168.799 128.536 163.443 116.096C159.576 107.123 152.073 100.864 141.537 88.9883ZM98.4405 129.507C88.0005 130.095 77.1544 125.409 76.6185 115.353C76.1564 106.697 86.8118 99.0435 99.5303 98.1187C104.99 97.7206 110.849 97.9427 116.326 98.7175C114.619 113.882 108.682 128.932 98.4405 129.507Z" />
+                            </svg>
+                        )
+                    },
+                    {
+                        name: 'Facebook',
+                        url: '#',
+                        bg: 'bg-[#1877F2]',
+                        border: '',
+                        icon: (
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                            </svg>
+                        )
+                    },
+                    {
+                        name: 'TikTok',
+                        url: '#',
+                        bg: 'bg-slate-900',
+                        border: 'border border-slate-700',
+                        icon: (
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M19.589 6.686a4.793 4.793 0 0 1-3.97-1.561 4.755 4.755 0 0 1-1.358-3.608h-3.268v15.671a3.62 3.62 0 1 1-3.62-3.62c.382 0 .749.06 1.096.17v-3.32a6.85 6.85 0 1 0 5.808 6.77V8.583a7.994 7.994 0 0 0 5.312 2.016V6.686z" />
+                            </svg>
+                        )
+                    }
+                ].map((link) => (
+                    <div key={link.name} className="flex items-center gap-3">
+                        <span className="text-white text-[13px] font-medium px-3 py-1.5 rounded-lg bg-slate-900/90 shadow-lg backdrop-blur-sm border border-slate-800">
+                            {link.name}
+                        </span>
+                        <a 
+                            href={link.url} 
+                            target="_blank" 
+                            rel="noopener noreferrer" 
+                            className={`flex items-center justify-center w-12 h-12 rounded-full ${link.bg} text-white hover:scale-110 transition-transform shadow-lg ${link.border}`}
+                        >
+                            {link.icon}
+                        </a>
+                    </div>
+                ))}
             </div>
 
             <button 
