@@ -211,7 +211,7 @@ function ModulesModal({ slug, slot, onClose, onSave }: any) {
 //  PRICE EDITOR COMPONENT
 // ═══════════════════════════════════════════════
 function PriceEditor({ slot, onSave }: { slot: CourseSlot, onSave: (price: number) => Promise<void> }) {
-  const [price, setPrice] = useState(slot.price || 0);
+  const [price, setPrice] = useState<number | ''>(slot.price || 0);
   const [isSaving, setIsSaving] = useState(false);
   
   useEffect(() => {
@@ -225,24 +225,26 @@ function PriceEditor({ slot, onSave }: { slot: CourseSlot, onSave: (price: numbe
         <input 
           type="number"
           value={price}
-          onChange={(e) => setPrice(parseInt(e.target.value) || 0)}
+          onChange={(e) => setPrice(e.target.value === '' ? '' : parseInt(e.target.value))}
           className="w-full text-sm font-bold text-slate-800 border-b border-slate-200 focus:outline-none focus:border-blue-400 py-1"
         />
         <span className="text-xs text-slate-400 font-bold">₴</span>
       </div>
-      {price !== (slot.price || 0) && (
-        <button 
-          onClick={async () => {
-             setIsSaving(true);
-             await onSave(price);
-             setIsSaving(false);
-          }}
-          disabled={isSaving}
-          className="w-full py-1.5 text-[11px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 hover:bg-emerald-100 rounded border border-emerald-200 transition-colors"
-        >
-          {isSaving ? "Збереження..." : "Зберегти ціну"}
-        </button>
-      )}
+      <button 
+        onClick={async () => {
+           setIsSaving(true);
+           await onSave(price === '' ? 0 : price);
+           setIsSaving(false);
+        }}
+        disabled={isSaving}
+        className={`w-full py-1.5 text-[11px] font-bold uppercase tracking-wider rounded border transition-colors ${
+          price === slot.price 
+            ? "text-slate-400 bg-slate-50 border-slate-200" 
+            : "text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border-emerald-200 shadow-sm"
+        }`}
+      >
+        {isSaving ? "Збереження..." : (price === slot.price ? "Збережено" : "Зберегти ціну")}
+      </button>
     </div>
   );
 }
