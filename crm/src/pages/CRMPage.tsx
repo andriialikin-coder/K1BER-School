@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { createClient } from '@supabase/supabase-js';
 import {
   Users, Phone, TrendingUp, Star, Search, RefreshCw,
@@ -299,15 +299,27 @@ export default function CRMPage() {
   const [courseSlots, setCourseSlots] = useState<CourseSlot[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadingSlots, setLoadingSlots] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState('');
+
+  const builderScrollRef = useRef<HTMLDivElement>(null);
+
+  const scrollBuilder = (direction: 'left' | 'right') => {
+    if (builderScrollRef.current) {
+        const scrollAmount = window.innerWidth > 768 ? 364 : 300;
+        builderScrollRef.current.scrollBy({
+            left: direction === 'left' ? -scrollAmount : scrollAmount,
+            behavior: 'smooth'
+        });
+    }
+  };
+
+  const [editingModulesFor, setEditingModulesFor] = useState<string | null>(null);
+  const [editingCourseFor, setEditingCourseFor] = useState<string | null>(null);
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
   const [updatingIds, setUpdatingIds] = useState<Set<number>>(new Set());
   const [dbConnected, setDbConnected] = useState(false);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
-  const [editingModulesFor, setEditingModulesFor] = useState<string | null>(null);
-  const [editingCourseFor, setEditingCourseFor] = useState<string | null>(null);
-
   useEffect(() => {
     if (isAuthenticated) {
       localStorage.setItem('crm_auth_expires', (Date.now() + 30 * 60 * 1000).toString());
@@ -598,7 +610,26 @@ export default function CRMPage() {
                  <p className="text-slate-400">Завантаження карток...</p>
              </div>
          ) : (
-             <div className="flex flex-wrap gap-8 justify-center relative z-10">
+             <div className="relative w-full pb-4">
+                {/* Кнопки-стрілки */}
+                <button
+                    onClick={() => scrollBuilder('left')}
+                    className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 z-40 w-12 h-12 bg-slate-900/90 hover:bg-slate-800 text-white rounded-full items-center justify-center backdrop-blur-md border border-slate-700 shadow-2xl transition-all"
+                >
+                    <svg className="w-5 h-5 pr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" /></svg>
+                </button>
+
+                <button
+                    onClick={() => scrollBuilder('right')}
+                    className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 z-40 w-12 h-12 bg-slate-900/90 hover:bg-slate-800 text-cyan-400 rounded-full items-center justify-center backdrop-blur-md border border-slate-700 shadow-2xl transition-all hover:scale-105"
+                >
+                    <svg className="w-5 h-5 pl-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" /></svg>
+                </button>
+
+                <div
+                    ref={builderScrollRef}
+                    className="flex flex-nowrap overflow-x-auto gap-6 pb-6 pt-2 px-12 snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+                >
                 {DEFAULT_COURSES.map(defCourse => {
                    const slot = courseSlots.find(c => c.course_slug === defCourse.slug) || { course_slug: defCourse.slug, available_slots: 10, price: defCourse.price };
                    const details = slot.details || {};
@@ -614,7 +645,7 @@ export default function CRMPage() {
                    };
       
                    return (
-                     <div key={defCourse.slug} className={`group relative bg-slate-900 rounded-2xl border border-slate-800 ${course.cardBorder} transition-all duration-300 flex flex-col overflow-hidden w-[320px] shrink-0`}>
+                     <div key={defCourse.slug} className={`group relative bg-slate-900 rounded-2xl border border-slate-800 ${course.cardBorder} transition-all duration-300 flex flex-col overflow-hidden w-[85vw] sm:w-[320px] shrink-0 snap-center`}>
                         
                         {/* EDIT OVERLAY */}
                         <div className="absolute inset-0 bg-slate-950/70 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity z-30 flex flex-col items-center justify-center gap-3">
@@ -660,6 +691,7 @@ export default function CRMPage() {
                      </div>
                    );
                 })}
+                </div>
              </div>
          )}
       </div>
