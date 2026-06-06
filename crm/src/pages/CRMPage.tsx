@@ -324,6 +324,7 @@ export default function CRMPage() {
 
   const [analyzingId, setAnalyzingId] = useState<number | null>(null);
   const [aiPortraits, setAiPortraits] = useState<Record<number, string>>({});
+  const [activeModel, setActiveModel] = useState<string | null>(null);
 
   const handleFetchAI = async (lead: Lead) => {
       if (!lead.behavior_log || Object.keys(lead.behavior_log).length === 0) return;
@@ -337,6 +338,21 @@ export default function CRMPage() {
 
       setAnalyzingId(lead.id);
       try {
+          let modelToUse = activeModel;
+          if (!modelToUse) {
+              const modelsRes = await fetch("https://api.groq.com/openai/v1/models", {
+                  headers: { "Authorization": `Bearer ${apiKey.trim()}` }
+              });
+              const modelsData = await modelsRes.json();
+              if (modelsRes.ok && modelsData.data && modelsData.data.length > 0) {
+                  const llamaModels = modelsData.data.filter((m: any) => m.id.toLowerCase().includes("llama") && !m.id.toLowerCase().includes("vision"));
+                  modelToUse = llamaModels.length > 0 ? llamaModels[0].id : modelsData.data[0].id;
+                  setActiveModel(modelToUse);
+              } else {
+                  modelToUse = "llama3-8b-8192";
+              }
+          }
+
           const prompt = `Ты — циничный и гениальный EdTech-маркетолог. Проанализируй лог времени проведенного пользователем на секциях Landing Page. Выдай жесткий, точечный анализ на украинском языке до 3 предложений с инсайтом (что его зацепило) и советом как продать курс. Лог (ключи=секции, значения=секунды): ${JSON.stringify(lead.behavior_log)}`;
           const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
               method: "POST",
@@ -345,7 +361,7 @@ export default function CRMPage() {
                   "Content-Type": "application/json"
               },
               body: JSON.stringify({
-                  model: "llama-3.1-70b-versatile",
+                  model: modelToUse,
                   messages: [{ role: "user", content: prompt }]
               })
           });
