@@ -346,8 +346,9 @@ export default function CRMPage() {
               });
               const modelsData = await modelsRes.json();
               if (modelsRes.ok && modelsData.data && modelsData.data.length > 0) {
-                  const llamaModels = modelsData.data.filter((m: any) => m.id.toLowerCase().includes("llama") && !m.id.toLowerCase().includes("vision"));
-                  modelToUse = llamaModels.length > 0 ? llamaModels[0].id : modelsData.data[0].id;
+                  const llamaModels = modelsData.data.filter((m: any) => m.id.toLowerCase().includes("llama") && !m.id.toLowerCase().includes("vision") && !m.id.toLowerCase().includes("guard"));
+                  const preferredModel = llamaModels.find((m: any) => m.id.includes("3.3-70b")) || llamaModels.find((m: any) => m.id.includes("70b")) || llamaModels[0];
+                  modelToUse = preferredModel ? preferredModel.id : modelsData.data[0].id;
                   setActiveModel(modelToUse);
               } else {
                   modelToUse = "llama3-8b-8192";
