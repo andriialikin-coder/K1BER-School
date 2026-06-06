@@ -220,7 +220,7 @@ const PainPoints = () => (
                 <div className="md:col-span-2 group relative bg-white/5 backdrop-blur-md p-8 md:p-10 rounded-3xl border border-white/20 hover:border-cyan-500/50 shadow-lg shadow-black/20 transition-all duration-300 overflow-hidden flex flex-col justify-center">
                     {/* Hover Glow */}
                     <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-0" />
-                    
+
                     <div className="relative z-10 flex flex-col-reverse md:flex-row items-center justify-between w-full gap-8">
                         <div className="space-y-4 max-w-md text-center md:text-left">
                             <h3 className="text-2xl font-bold text-white tracking-tight group-hover:text-cyan-300 transition-colors duration-300">
@@ -242,7 +242,7 @@ const PainPoints = () => (
                 {/* Card 2: 1 column (Vertical stack, icon top right, text bottom) */}
                 <div className="md:col-span-1 group relative bg-white/5 backdrop-blur-md p-8 md:p-10 rounded-3xl border border-white/20 hover:border-violet-500/50 shadow-lg shadow-black/20 transition-all duration-300 overflow-hidden min-h-[260px] flex flex-col justify-between">
                     <div className="absolute inset-0 bg-gradient-to-br from-violet-500/10 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-0" />
-                    
+
                     <div className="relative z-10 w-full flex justify-center md:justify-end mb-6">
                         <div className="relative w-fit">
                             <div className="absolute inset-0 rounded-full blur-2xl opacity-40 group-hover:opacity-70 transition-opacity duration-300 bg-violet-500" />
@@ -264,7 +264,7 @@ const PainPoints = () => (
                 {/* Card 3: 3 columns (Wide banner, Icon left, Text right) */}
                 <div className="md:col-span-3 group relative bg-white/5 backdrop-blur-md p-8 md:p-10 rounded-3xl border border-white/20 hover:border-emerald-500/50 shadow-lg shadow-black/20 transition-all duration-300 overflow-hidden flex flex-col justify-center">
                     <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-0" />
-                    
+
                     <div className="relative z-10 flex flex-col md:flex-row items-center justify-start w-full gap-8 md:gap-12">
                         <div className="relative w-fit flex-shrink-0 mb-4 md:mb-0">
                             <div className="absolute inset-0 rounded-full blur-3xl opacity-40 group-hover:opacity-70 transition-opacity duration-300 bg-emerald-500" />
@@ -792,8 +792,8 @@ const FAQ = () => {
                     {faqs.map((item, i) => {
                         const isOpen = openIndex === i;
                         return (
-                            <div 
-                                key={i} 
+                            <div
+                                key={i}
                                 onClick={() => toggleFaq(i)}
                                 className={`cursor-pointer bg-white/5 backdrop-blur-md border rounded-2xl transition-all duration-300 p-5 md:p-6 ${isOpen ? 'border-blue-500/50 bg-white/10' : 'border-white/10 hover:border-white/20'}`}
                             >
@@ -850,7 +850,7 @@ const ContactsAndMap = () => (
 
                 {/* Деталі */}
                 <div className="space-y-6 pt-2">
-                    
+
                     {/* 1. Адреса */}
                     <div className="flex items-start gap-4 group">
                         <div className="w-10 h-10 rounded-xl bg-cyan-950/60 border border-cyan-800/30 flex items-center justify-center text-lg flex-shrink-0 group-hover:border-cyan-500/50 transition-colors duration-300">
@@ -873,8 +873,8 @@ const ContactsAndMap = () => (
                         </div>
                         <div className="pt-0.5">
                             <h4 className="text-xs font-bold uppercase tracking-wider text-emerald-400/80 mb-1">Зателефонувати нам</h4>
-                            <a 
-                                href="tel:+380502828029" 
+                            <a
+                                href="tel:+380502828029"
                                 className="inline-block text-xl md:text-2xl font-black text-white hover:text-emerald-400 tracking-tight transition-colors duration-300 drop-shadow-md"
                             >
                                 +38 050 282 80 29
@@ -1068,11 +1068,11 @@ const MiniCabinet = ({ clientName, registeredCourse, phone, initialTime }: { cli
                     <div className="bg-gradient-to-br from-indigo-950/40 to-slate-900 border border-indigo-500/20 rounded-xl p-5 mb-4 relative overflow-hidden">
                         {/* Decorative glow */}
                         <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 blur-2xl rounded-full translate-x-1/2 -translate-y-1/2 pointer-events-none" />
-                        
+
                         <p className="text-center text-slate-300 text-sm mb-3 relative z-10 font-medium">
                             🎁 Бажаєте викупити повний курс заздалегідь та зафіксувати <span className="text-emerald-400 font-bold">знижку -15%</span>?
                         </p>
-                        
+
                         <div className="flex flex-col items-center justify-center gap-1 mb-4 relative z-10">
                             <div className="flex items-center gap-2 text-slate-400">
                                 <span className="line-through decoration-red-500/50">{fullPrice} ₴</span>
@@ -1132,15 +1132,14 @@ const FloatingChat = () => {
 
     return (
         <div className="fixed bottom-6 right-6 z-[9999] flex flex-col items-end gap-3">
-            <div 
-                className={`flex flex-col items-end gap-3 transition-all duration-300 origin-bottom ${
-                    isOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-90 pointer-events-none'
-                }`}
+            <div
+                className={`flex flex-col items-end gap-3 transition-all duration-300 origin-bottom ${isOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-90 pointer-events-none'
+                    }`}
             >
                 {[
                     {
                         name: 'Instagram',
-                        url: '#',
+                        url: 'https://www.instagram.com/kiberschool.it/',
                         bg: 'bg-gradient-to-tr from-[#f09433] via-[#e6683c] to-[#bc1888]',
                         border: '',
                         icon: (
@@ -1153,7 +1152,7 @@ const FloatingChat = () => {
                     },
                     {
                         name: 'Threads',
-                        url: '#',
+                        url: 'https://www.threads.com/@kiberschool.it?xmt=AQG0xw5HBdx2-BiOJFwVelXl8-XQipYC_aUMQYbcBX8LqqQ',
                         bg: 'bg-black',
                         border: 'border border-slate-700',
                         icon: (
@@ -1164,7 +1163,7 @@ const FloatingChat = () => {
                     },
                     {
                         name: 'Facebook',
-                        url: '#',
+                        url: 'https://www.facebook.com/k1berschool.sumy/?ref=PROFILE_EDIT_xav_ig_profile_page_web#',
                         bg: 'bg-[#1877F2]',
                         border: '',
                         icon: (
@@ -1175,7 +1174,7 @@ const FloatingChat = () => {
                     },
                     {
                         name: 'TikTok',
-                        url: '#',
+                        url: 'https://www.tiktok.com/@kiberschool.it?_t=8osFnGqnEHt&_r=1&fbclid=PAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQPOTM2NjE5NzQzMzkyNDU5AAGnkdtSEjNPT-bnGd90n_LW_N-xiS0c1KiDloEWzaNtsiUgk3kfcV03CG49T8U_aem_U93ujt0yBxKRwpW-rlR8Hw',
                         bg: 'bg-slate-900',
                         border: 'border border-slate-700',
                         icon: (
@@ -1189,10 +1188,10 @@ const FloatingChat = () => {
                         <span className="text-white text-[13px] font-medium px-3 py-1.5 rounded-lg bg-slate-900/90 shadow-lg backdrop-blur-sm border border-slate-800">
                             {link.name}
                         </span>
-                        <a 
-                            href={link.url} 
-                            target="_blank" 
-                            rel="noopener noreferrer" 
+                        <a
+                            href={link.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
                             className={`flex items-center justify-center w-12 h-12 rounded-full ${link.bg} text-white hover:scale-110 transition-transform shadow-lg ${link.border}`}
                         >
                             {link.icon}
@@ -1201,7 +1200,7 @@ const FloatingChat = () => {
                 ))}
             </div>
 
-            <button 
+            <button
                 onClick={() => setIsOpen(!isOpen)}
                 className={`flex items-center justify-center w-14 h-14 rounded-full text-white shadow-xl hover:scale-105 transition-all duration-300 z-50 ${isOpen ? 'bg-slate-800 rotate-90' : 'bg-gradient-to-r from-cyan-500 to-blue-600'}`}
                 aria-label="Задати питання"
@@ -1290,8 +1289,8 @@ export default function LandingPage() {
             <Hero />
             <PainPoints />
             <Courses slotsData={slotsData} />
-            <RegisterForm 
-                onAuthSuccess={(name, course, phone, chosenTime) => setAuthData({ name, course, phone, chosenTime })} 
+            <RegisterForm
+                onAuthSuccess={(name, course, phone, chosenTime) => setAuthData({ name, course, phone, chosenTime })}
                 slotsData={slotsData}
                 fetchSlots={fetchSlots}
             />
