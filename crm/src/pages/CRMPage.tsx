@@ -164,23 +164,7 @@ export default function CRMPage() {
   useEffect(() => {
     if (isAuthenticated) {
       localStorage.setItem('crm_auth_expires', (Date.now() + 30 * 60 * 1000).toString());
-      return;
     }
-
-    const checkAuth = () => {
-      const password = prompt("Введіть секретний ключ доступу до CRM:");
-      if (password === "K1berAdmin2026!") {
-        setIsAuthenticated(true);
-        localStorage.setItem('crm_auth_expires', (Date.now() + 30 * 60 * 1000).toString());
-      } else {
-        alert("Доступ заборонено!");
-        window.location.href = "/"; // Викидаємо на лендинг
-      }
-    };
-    
-    // Timeout to ensure initial render completes before blocking UI with prompt
-    const timeout = setTimeout(checkAuth, 50);
-    return () => clearTimeout(timeout);
   }, [isAuthenticated]);
 
   const fetchLeads = useCallback(async () => {
@@ -222,7 +206,46 @@ export default function CRMPage() {
     }
   }, [isAuthenticated, fetchLeads, fetchSlots]);
 
-  if (!isAuthenticated) return <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center font-sans">Перевірка доступу...</div>;
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center font-sans p-4">
+        <form 
+          className="bg-slate-900 p-8 rounded-2xl border border-slate-800 shadow-xl max-w-sm w-full"
+          onSubmit={(e) => {
+            e.preventDefault();
+            const formData = new FormData(e.currentTarget);
+            const pwd = formData.get('password');
+            if (pwd === "K1berAdmin2026!") {
+              setIsAuthenticated(true);
+              localStorage.setItem('crm_auth_expires', (Date.now() + 30 * 60 * 1000).toString());
+            } else {
+              alert("Невірний пароль!");
+            }
+          }}
+        >
+          <div className="flex justify-center mb-6">
+            <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-violet-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/30">
+              <Star size={24} className="text-white" fill="currentColor" />
+            </div>
+          </div>
+          <h2 className="text-xl font-bold text-center mb-6">Вхід до CRM</h2>
+          <input 
+            type="password" 
+            name="password"
+            placeholder="Секретний ключ" 
+            className="w-full bg-slate-950 border border-slate-700 rounded-lg px-4 py-3 mb-6 focus:outline-none focus:border-blue-500 text-sm transition-colors"
+            autoFocus
+          />
+          <button type="submit" className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-lg transition-colors text-sm">
+            Увійти
+          </button>
+          <button type="button" onClick={() => window.location.href = "/"} className="w-full mt-4 text-slate-400 hover:text-white text-sm transition-colors">
+            Повернутись на сайт
+          </button>
+        </form>
+      </div>
+    );
+  }
 
   const handleRefresh = () => {
     fetchLeads();
