@@ -33,6 +33,8 @@ interface Lead {
 interface CourseSlot {
   course_slug: string;
   available_slots: number;
+  price?: number;
+  modules?: any[];
 }
 
 // ═══════════════════════════════════════════════
@@ -141,6 +143,70 @@ function SkeletonRow() {
   );
 }
 
+function ModulesModal({ slug, slot, onClose, onSave }: any) {
+  const [modules, setModules] = useState<{title: string, desc: string}[]>(slot.modules || []);
+
+  const addModule = () => setModules([...modules, { title: 'Новий модуль', desc: '' }]);
+  const updateModule = (index: number, field: string, value: string) => {
+    const newMods = [...modules];
+    newMods[index] = { ...newMods[index], [field]: value } as any;
+    setModules(newMods);
+  };
+  const removeModule = (index: number) => {
+    const newMods = [...modules];
+    newMods.splice(index, 1);
+    setModules(newMods);
+  };
+
+  return (
+    <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-[9999] flex items-center justify-center p-4">
+      <div className="bg-white rounded-2xl w-full max-w-2xl max-h-[85vh] flex flex-col shadow-2xl">
+        <div className="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50 rounded-t-2xl">
+          <h3 className="font-bold text-slate-800">Модулі курсу: {slug}</h3>
+          <button onClick={onClose} className="p-2 hover:bg-slate-200 rounded-lg text-slate-500 transition-colors"><X size={18}/></button>
+        </div>
+        
+        <div className="p-5 overflow-y-auto flex-1 space-y-4 bg-slate-50">
+          {modules.length === 0 && (
+            <p className="text-center text-slate-400 py-8 text-sm">Модулів ще немає. Додайте перший!</p>
+          )}
+          {modules.map((m, i) => (
+            <div key={i} className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+              <div className="flex justify-between items-center mb-3">
+                <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest">Модуль {i + 1}</h4>
+                <button onClick={() => removeModule(i)} className="text-red-500 hover:text-red-700 text-xs font-semibold px-2 py-1 bg-red-50 rounded hover:bg-red-100 transition-colors">Видалити</button>
+              </div>
+              <input 
+                value={m.title}
+                onChange={e => updateModule(i, 'title', e.target.value)}
+                className="w-full text-sm font-bold text-slate-800 border border-slate-200 rounded-lg px-3 py-2 mb-3 focus:outline-none focus:border-blue-500"
+                placeholder="Назва модуля (наприклад: Вступ до Python)"
+              />
+              <textarea
+                value={m.desc}
+                onChange={e => updateModule(i, 'desc', e.target.value)}
+                className="w-full text-sm text-slate-600 border border-slate-200 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500 min-h-[80px]"
+                placeholder="Опис модуля..."
+              />
+            </div>
+          ))}
+          <button 
+            onClick={addModule}
+            className="w-full py-3 border-2 border-dashed border-blue-200 text-blue-600 font-semibold rounded-xl hover:bg-blue-50 hover:border-blue-300 transition-colors"
+          >
+            + Додати модуль
+          </button>
+        </div>
+
+        <div className="p-5 border-t border-slate-100 bg-white rounded-b-2xl flex justify-end gap-3">
+          <button onClick={onClose} className="px-5 py-2.5 text-sm font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors">Скасувати</button>
+          <button onClick={() => onSave(modules)} className="px-5 py-2.5 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-xl transition-colors shadow-lg shadow-blue-500/30">Зберегти модулі</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ═══════════════════════════════════════════════
 //  CRM DASHBOARD
 // ═══════════════════════════════════════════════
@@ -160,6 +226,7 @@ export default function CRMPage() {
   const [updatingIds, setUpdatingIds] = useState<Set<number>>(new Set());
   const [dbConnected, setDbConnected] = useState(false);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
+  const [editingModulesFor, setEditingModulesFor] = useState<string | null>(null);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -256,13 +323,16 @@ export default function CRMPage() {
     const slot = courseSlots.find(s => s.course_slug === slug);
     if (!slot) return;
     const newVal = Math.max(0, slot.available_slots + delta);
-    
+    await updateCourseData(slug, { available_slots: newVal });
+  };
+
+  const updateCourseData = async (slug: string, updates: Partial<CourseSlot>) => {
     // Optimistic UI update
-    setCourseSlots(prev => prev.map(s => s.course_slug === slug ? { ...s, available_slots: newVal } : s));
+    setCourseSlots(prev => prev.map(s => s.course_slug === slug ? { ...s, ...updates } : s));
 
     const { error } = await supabase
       .from('course_slots')
-      .update({ available_slots: newVal })
+      .update(updates)
       .eq('course_slug', slug);
 
     if (error) {
@@ -365,17 +435,36 @@ export default function CRMPage() {
             ) : (
               courseSlots.map(slot => (
                 <div key={slot.course_slug} className="bg-white rounded-xl border border-slate-200 p-3 flex flex-col justify-between shadow-sm hover:border-blue-300 hover:shadow-md transition-all">
-                  <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-3 truncate" title={slot.course_slug}>
+                  <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2 truncate" title={slot.course_slug}>
                     {slot.course_slug.replace(/-/g, ' ')}
                   </p>
-                  <div className="flex items-center justify-between mt-auto">
-                    <button onClick={() => updateSlot(slot.course_slug, -1)} className="w-8 h-8 flex items-center justify-center bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg transition-colors font-bold text-lg leading-none active:bg-slate-300">-</button>
+                  
+                  <div className="flex items-center justify-between mb-3">
+                    <button onClick={() => updateSlot(slot.course_slug, -1)} className="w-7 h-7 flex items-center justify-center bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg transition-colors font-bold text-lg leading-none active:bg-slate-300">-</button>
                     <div className="text-center">
-                      <span className="font-bold text-slate-800 text-xl tabular-nums leading-none block">{slot.available_slots}</span>
+                      <span className="font-bold text-slate-800 text-lg tabular-nums leading-none block">{slot.available_slots}</span>
                       <span className="text-[9px] font-medium text-slate-400 uppercase tracking-widest mt-0.5 block">місць</span>
                     </div>
-                    <button onClick={() => updateSlot(slot.course_slug, 1)} className="w-8 h-8 flex items-center justify-center bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg transition-colors font-bold text-lg leading-none active:bg-slate-300">+</button>
+                    <button onClick={() => updateSlot(slot.course_slug, 1)} className="w-7 h-7 flex items-center justify-center bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg transition-colors font-bold text-lg leading-none active:bg-slate-300">+</button>
                   </div>
+
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="text-[10px] font-semibold text-slate-500">ЦІНА:</span>
+                    <input 
+                      type="number"
+                      value={slot.price || 0}
+                      onChange={(e) => updateCourseData(slot.course_slug, { price: parseInt(e.target.value) || 0 })}
+                      className="w-full text-sm font-bold text-slate-800 border-b border-slate-200 focus:outline-none focus:border-blue-400 py-1"
+                    />
+                    <span className="text-xs text-slate-400 font-bold">₴</span>
+                  </div>
+
+                  <button 
+                    onClick={() => setEditingModulesFor(slot.course_slug)}
+                    className="w-full py-1.5 text-xs font-semibold text-blue-600 bg-blue-50 hover:bg-blue-100 rounded border border-blue-200 transition-colors"
+                  >
+                    Налаштувати модулі
+                  </button>
                 </div>
               ))
             )}
@@ -516,6 +605,18 @@ export default function CRMPage() {
           </div>
         </div>
       </footer>
+
+      {editingModulesFor && (
+        <ModulesModal 
+          slug={editingModulesFor} 
+          slot={courseSlots.find(s => s.course_slug === editingModulesFor)!}
+          onClose={() => setEditingModulesFor(null)}
+          onSave={(modules: any) => {
+            updateCourseData(editingModulesFor, { modules });
+            setEditingModulesFor(null);
+          }}
+        />
+      )}
     </div>
   );
 }

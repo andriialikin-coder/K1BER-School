@@ -376,7 +376,7 @@ const COURSES = [
     }
 ];
 
-const Courses = ({ slotsData }: { slotsData: Record<string, number> }) => {
+const Courses = ({ slotsData, coursePrices }: { slotsData: Record<string, number>, coursePrices?: Record<string, number> }) => {
     const scrollRef = React.useRef<HTMLDivElement>(null);
 
     const scroll = (direction: 'left' | 'right') => {
@@ -475,7 +475,7 @@ const Courses = ({ slotsData }: { slotsData: Record<string, number> }) => {
 
                                 {/* Ціна */}
                                 <div className="mt-4 flex items-baseline gap-2">
-                                    <span className="text-2xl font-black text-white">{course.price} ₴</span>
+                                    <span className="text-2xl font-black text-white">{coursePrices?.[course.slug] || course.price} ₴</span>
                                     <span className="text-sm font-medium text-slate-500">/ інтенсив</span>
                                 </div>
 
@@ -1224,15 +1224,21 @@ export default function LandingPage() {
     const [authData, setAuthData] = useState<{ name: string, course: string, phone: string, chosenTime?: string } | null>(null);
     const [isLoadingAuth, setIsLoadingAuth] = useState(true);
     const [slotsData, setSlotsData] = useState<Record<string, number>>({});
+    const [coursePrices, setCoursePrices] = useState<Record<string, number>>({});
 
     const fetchSlots = async () => {
-        const { data, error } = await supabase.from('course_slots').select('course_slug, available_slots');
+        const { data, error } = await supabase.from('course_slots').select('course_slug, available_slots, price');
         if (data && !error) {
             const slotsMap = data.reduce((acc: Record<string, number>, item) => {
                 acc[item.course_slug] = item.available_slots;
                 return acc;
             }, {});
+            const pricesMap = data.reduce((acc: Record<string, number>, item) => {
+                acc[item.course_slug] = item.price;
+                return acc;
+            }, {});
             setSlotsData(slotsMap);
+            setCoursePrices(pricesMap);
         }
     };
 
@@ -1286,7 +1292,7 @@ export default function LandingPage() {
             <Header />
             <Hero />
             <PainPoints />
-            <Courses slotsData={slotsData} />
+            <Courses slotsData={slotsData} coursePrices={coursePrices} />
             <RegisterForm
                 onAuthSuccess={(name, course, phone, chosenTime) => setAuthData({ name, course, phone, chosenTime })}
                 slotsData={slotsData}
