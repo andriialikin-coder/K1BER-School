@@ -3,7 +3,8 @@ import { BentoGrid } from '../components/BentoGrid';
 
 export default function HomePage() {
   return (
-    <div className="relative w-full min-h-[calc(100vh-72px)] bg-slate-950 overflow-hidden flex flex-col items-center justify-center py-20 px-6">
+    <main className="w-full bg-slate-950 overflow-hidden">
+      <section className="relative w-full min-h-[calc(100vh-72px)] flex flex-col items-center justify-center py-20 px-6">
       
       {/* 1. Глобальный фон: Неоновые градиенты космоса */}
       <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-80 h-80 sm:w-[450px] sm:h-[450px] rounded-full bg-purple-600/[0.08] blur-[100px] sm:blur-[150px] pointer-events-none animate-drift-slow" />
@@ -162,9 +163,10 @@ export default function HomePage() {
         </div>
 
       </div>
+      </section>
 
       <BentoGrid />
       <RegisterForm sourceName="Академія" />
-    </div>
+    </main>
   );
 }
