@@ -164,6 +164,29 @@ export default function HomePage() {
 
       </div>
       </section>
+      {/* Статистика / Факты */}
+      <div className="w-full max-w-5xl mx-auto px-6 pb-4 pt-8 md:pt-16 z-20 relative flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
+        <div className="flex flex-col items-center text-center">
+          <span className="text-5xl md:text-6xl font-black text-orange-500 mb-2 drop-shadow-[0_0_15px_rgba(249,115,22,0.5)]" style={{ fontFamily: "'Outfit', sans-serif" }}>7+</span>
+          <span className="text-orange-400/90 font-bold text-sm md:text-base tracking-widest uppercase">років на ринку<br className="hidden md:block" />України</span>
+        </div>
+        
+        {/* Разделитель */}
+        <div className="hidden md:block w-px h-20 bg-gradient-to-b from-transparent via-orange-500/30 to-transparent"></div>
+
+        <div className="flex flex-col items-center text-center">
+          <span className="text-5xl md:text-6xl font-black text-orange-500 mb-2 drop-shadow-[0_0_15px_rgba(249,115,22,0.5)]" style={{ fontFamily: "'Outfit', sans-serif" }}>70+</span>
+          <span className="text-orange-400/90 font-bold text-sm md:text-base tracking-widest uppercase">навчальних<br className="hidden md:block" />модулів</span>
+        </div>
+
+        {/* Разделитель */}
+        <div className="hidden md:block w-px h-20 bg-gradient-to-b from-transparent via-orange-500/30 to-transparent"></div>
+
+        <div className="flex flex-col items-center text-center">
+          <span className="text-5xl md:text-6xl font-black text-orange-500 mb-2 drop-shadow-[0_0_15px_rgba(249,115,22,0.5)]" style={{ fontFamily: "'Outfit', sans-serif" }}>2000+</span>
+          <span className="text-orange-400/90 font-bold text-sm md:text-base tracking-widest uppercase">задоволених<br className="hidden md:block" />студентів</span>
+        </div>
+      </div>
 
       <BentoGrid />
       <RegisterForm sourceName="Академія" />
