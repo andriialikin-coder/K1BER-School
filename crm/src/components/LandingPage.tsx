@@ -64,9 +64,9 @@ const Hero = () => (
             </div>
 
             {/* Підзаголовок */}
-            <p className="text-slate-400 text-lg md:text-xl mt-8 max-w-2xl mx-auto leading-relaxed relative z-10">
+            <p className="text-orange-100/90 text-lg md:text-xl mt-8 max-w-2xl mx-auto leading-relaxed relative z-10">
                 Проведіть літо з максимальною користю! Ваша дитина не просто грає в ігри на канікулах — вона{' '}
-                <span className="text-slate-200 font-medium">створює їх сама, опановує IT-професії</span>{' '}
+                <span className="text-amber-400 font-bold">створює їх сама, опановує IT-професії</span>{' '}
                 та знаходить нових друзів у нашому літньому таборі.
             </p>
 
@@ -79,7 +79,7 @@ const Hero = () => (
                         <span className="text-3xl font-black bg-gradient-to-r from-orange-400 to-yellow-400 bg-clip-text text-transparent leading-none drop-shadow-sm">
                             {stat.value}
                         </span>
-                        <span className="text-slate-500 text-xs font-medium mt-1 uppercase tracking-wider">{stat.label}</span>
+                        <span className="text-orange-200/80 text-xs font-medium mt-1 uppercase tracking-wider drop-shadow-sm">{stat.label}</span>
                     </div>
                 ))}
             </div>
