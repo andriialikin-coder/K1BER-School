@@ -17,25 +17,25 @@ export default function HomePage() {
       />
 
       {/* Центральный Сатурн с орбитами (на фоне) */}
-      <div className="absolute top-[40%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] flex items-center justify-center opacity-[0.45] pointer-events-none z-0 mix-blend-screen hidden md:flex">
+      <div className="absolute top-[40%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] flex items-center justify-center opacity-[0.6] pointer-events-none z-0 mix-blend-screen hidden md:flex">
         {/* Само тело планеты */}
-        <div className="absolute w-[180px] h-[180px] rounded-full bg-gradient-to-br from-[#fb923c] via-[#ea580c] to-[#7c2d12] shadow-[inset_-25px_-25px_40px_rgba(0,0,0,0.8),0_0_80px_rgba(234,88,12,0.6)] z-10" />
+        <div className="absolute w-[360px] h-[360px] rounded-full bg-gradient-to-br from-[#fb923c] via-[#ea580c] to-[#7c2d12] shadow-[inset_-40px_-40px_60px_rgba(0,0,0,0.8),0_0_120px_rgba(234,88,12,0.6)] z-10" />
 
         {/* Плоскость колец */}
-        <div className="absolute w-[500px] h-[500px]" style={{ transformStyle: 'preserve-3d', transform: 'rotateX(75deg) rotateY(-15deg) rotateZ(10deg)' }}>
+        <div className="absolute w-[1000px] h-[1000px]" style={{ transformStyle: 'preserve-3d', transform: 'rotateX(75deg) rotateY(-15deg) rotateZ(10deg)' }}>
           {/* Вращающееся кольцо */}
-          <div className="w-full h-full border-[1.5px] border-cyan-500/30 rounded-full animate-[spin_25s_linear_infinite] relative shadow-[0_0_15px_rgba(6,182,212,0.2)]">
+          <div className="w-full h-full border-[2px] border-cyan-500/30 rounded-full animate-[spin_35s_linear_infinite] relative shadow-[0_0_20px_rgba(6,182,212,0.2)]">
             
             {/* Дополнительные кольца для объема */}
-            <div className="absolute inset-3 border-2 border-orange-500/20 rounded-full" />
-            <div className="absolute inset-8 border border-cyan-500/10 rounded-full" />
-            <div className="absolute -inset-4 border border-purple-500/20 rounded-full" />
+            <div className="absolute inset-6 border-[3px] border-orange-500/20 rounded-full" />
+            <div className="absolute inset-16 border-[1.5px] border-cyan-500/10 rounded-full" />
+            <div className="absolute -inset-8 border-[1.5px] border-purple-500/20 rounded-full" />
 
             {/* Орбитальные символы */}
-            <div className="absolute -top-4 left-1/2 -translate-x-1/2 text-cyan-400 font-mono text-xl font-bold drop-shadow-[0_0_8px_rgba(6,182,212,0.8)]">{'</>'}</div>
-            <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 text-orange-400 font-mono text-xl font-bold drop-shadow-[0_0_8px_rgba(249,115,22,0.8)]">{'{ }'}</div>
-            <div className="absolute top-1/2 -left-6 -translate-y-1/2 text-purple-400 font-mono text-xl font-bold drop-shadow-[0_0_8px_rgba(168,85,247,0.8)]">{'#01'}</div>
-            <div className="absolute top-1/2 -right-6 -translate-y-1/2 text-cyan-400 font-mono text-xl font-bold drop-shadow-[0_0_8px_rgba(6,182,212,0.8)]">{'<>'}</div>
+            <div className="absolute -top-6 left-1/2 -translate-x-1/2 text-cyan-400 font-mono text-3xl font-bold drop-shadow-[0_0_12px_rgba(6,182,212,0.9)]">{'</>'}</div>
+            <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-orange-400 font-mono text-3xl font-bold drop-shadow-[0_0_12px_rgba(249,115,22,0.9)]">{'{ }'}</div>
+            <div className="absolute top-1/2 -left-8 -translate-y-1/2 text-purple-400 font-mono text-3xl font-bold drop-shadow-[0_0_12px_rgba(168,85,247,0.9)]">{'#01'}</div>
+            <div className="absolute top-1/2 -right-8 -translate-y-1/2 text-cyan-400 font-mono text-3xl font-bold drop-shadow-[0_0_12px_rgba(6,182,212,0.9)]">{'<>'}</div>
           </div>
         </div>
       </div>
