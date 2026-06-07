@@ -331,30 +331,14 @@ export default function CRMPage() {
       if (!lead.behavior_log || Object.keys(lead.behavior_log).length === 0) return;
       if (aiPortraits[lead.id]) return; 
 
-      const apiKey = import.meta.env.VITE_GROQ_API_KEY;
+      const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
       if (!apiKey || apiKey === "undefined") {
-          setAiPortraits(prev => ({ ...prev, [lead.id]: "Помилка: Ключ VITE_GROQ_API_KEY не знайдено." }));
+          setAiPortraits(prev => ({ ...prev, [lead.id]: "Помилка: Ключ VITE_GEMINI_API_KEY не знайдено." }));
           return;
       }
 
       setAnalyzingId(lead.id);
       try {
-          let modelToUse = activeModel;
-          if (!modelToUse) {
-              const modelsRes = await fetch("https://api.groq.com/openai/v1/models", {
-                  headers: { "Authorization": `Bearer ${apiKey.trim()}` }
-              });
-              const modelsData = await modelsRes.json();
-              if (modelsRes.ok && modelsData.data && modelsData.data.length > 0) {
-                  const llamaModels = modelsData.data.filter((m: any) => m.id.toLowerCase().includes("llama") && !m.id.toLowerCase().includes("vision") && !m.id.toLowerCase().includes("guard"));
-                  const preferredModel = llamaModels.find((m: any) => m.id.includes("3.3-70b")) || llamaModels.find((m: any) => m.id.includes("70b")) || llamaModels[0];
-                  modelToUse = preferredModel ? preferredModel.id : modelsData.data[0].id;
-                  setActiveModel(modelToUse);
-              } else {
-                  modelToUse = "llama3-8b-8192";
-              }
-          }
-
           const prompt = `Ти — найкращий менеджер з продажу IT-курсів для дітей у Сумах (школа K1BER.SCHOOL, ТРЦ "КИЇВ"). Твоя задача — проаналізувати детальну аналітику поведінки користувача на сайті [behavior_log] і видати підказку для дзвінка.
 
 ДЕТАЛЬНА АНАЛІТИКА ПОВЕДІНКИ КЛІЄНТА:
@@ -372,23 +356,30 @@ ${JSON.stringify(lead.behavior_log, null, 2)}
 🛑 БІЛЬ: (Суть проблеми на основі faq, hero або courses).
 ⚡ ТРИГЕР: (Знижка, офлайн в центрі Сум, залишилося 1 місце).
 💬 СКРИПТ: (Готова фраза для дзвінка. Завжди починай з ПОДЯКИ за залишену заявку).`;
-          const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+
+          const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=${apiKey.trim()}`, {
               method: "POST",
               headers: {
-                  "Authorization": `Bearer ${apiKey.trim()}`,
                   "Content-Type": "application/json"
               },
               body: JSON.stringify({
-                  model: modelToUse,
-                  messages: [{ role: "user", content: prompt }]
+                  contents: [{
+                      parts: [{
+                          text: prompt
+                      }]
+                  }],
+                  generationConfig: {
+                      temperature: 0.5,
+                      maxOutputTokens: 400,
+                  }
               })
           });
           const data = await res.json();
-          if (res.ok && data.choices && data.choices[0]) {
-              setAiPortraits(prev => ({ ...prev, [lead.id]: data.choices[0].message.content }));
+          if (res.ok && data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts && data.candidates[0].content.parts[0]) {
+              setAiPortraits(prev => ({ ...prev, [lead.id]: data.candidates[0].content.parts[0].text }));
           } else {
-              console.error("Groq API Error:", data);
-              setAiPortraits(prev => ({ ...prev, [lead.id]: `Помилка: ${data.error?.message || "Невідома помилка Groq"}` }));
+              console.error("Gemini API Error:", data);
+              setAiPortraits(prev => ({ ...prev, [lead.id]: `Помилка: ${data.error?.message || "Невідома помилка Gemini"}` }));
           }
       } catch (err) {
           console.error("Network error:", err);
