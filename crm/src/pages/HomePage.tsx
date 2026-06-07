@@ -1,4 +1,5 @@
 import { RegisterForm } from '../components/LandingPage';
+import { BentoGrid } from '../components/BentoGrid';
 
 export default function HomePage() {
   return (
@@ -161,6 +162,8 @@ export default function HomePage() {
         </div>
 
       </div>
+
+      <BentoGrid />
       <RegisterForm sourceName="Академія" />
     </div>
   );
