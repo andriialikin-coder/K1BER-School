@@ -87,7 +87,7 @@ const Hero = () => (
             {/* CTA */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <a
-                    href="#booking-form"
+                    href="#register"
                     className="group relative inline-flex items-center gap-3 bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-400 hover:to-amber-500 text-white font-extrabold py-4 px-8 rounded-2xl text-lg shadow-2xl shadow-orange-500/30 hover:shadow-orange-500/50 transition-all duration-300 hover:-translate-y-0.5"
                 >
                     Записатись на пробне заняття
@@ -417,7 +417,7 @@ const Courses = ({ slotsData, coursePrices, courseDetails, onOpenProgram, onCour
                                         Подивитись програму навчань
                                     </button>
                                     <a
-                                        href="#booking-form"
+                                        href="#register"
                                         onClick={(e) => handleSelectCourse(e, course.title)}
                                         className={`w-full inline-flex items-center justify-center gap-2 text-sm font-bold text-white py-3 px-4 rounded-xl border ${course.btnBorder} transition-all duration-200`}
                                     >
@@ -439,6 +439,7 @@ const Courses = ({ slotsData, coursePrices, courseDetails, onOpenProgram, onCour
 
 // 5. КОМПОНЕНТ: ФОРМА ЗАХВАТУ ЛІДІВ (Форма -> Наша CRM)
 const RegisterForm = ({ onAuthSuccess, slotsData, fetchSlots, behaviorLogRef }: { onAuthSuccess?: (name: string, course: string, phone: string, chosenTime?: string) => void; slotsData: Record<string, number>; fetchSlots: () => void; behaviorLogRef?: React.MutableRefObject<any>; }) => {
+    const [isOpen, setIsOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [tab, setTab] = useState<'new' | 'existing'>('new');
@@ -478,15 +479,32 @@ const RegisterForm = ({ onAuthSuccess, slotsData, fetchSlots, behaviorLogRef }: 
 
         if (phoneParam || nameParam) {
             setFormData(prev => ({ ...prev, name: initialName, phone: initialPhone }));
+            window.location.hash = '#register';
         }
 
         const handleCourseSelect = (e: CustomEvent) => {
             setFormData(prev => ({ ...prev, course: e.detail.course }));
             setTab('new');
+            window.location.hash = '#register';
         };
         window.addEventListener('selectCourse', handleCourseSelect as EventListener);
-        return () => window.removeEventListener('selectCourse', handleCourseSelect as EventListener);
+
+        const handleHashChange = () => {
+            setIsOpen(window.location.hash === '#register');
+        };
+        handleHashChange();
+        window.addEventListener('hashchange', handleHashChange);
+
+        return () => {
+            window.removeEventListener('selectCourse', handleCourseSelect as EventListener);
+            window.removeEventListener('hashchange', handleHashChange);
+        };
     }, []);
+
+    const closeForm = () => {
+        window.history.pushState('', document.title, window.location.pathname + window.location.search);
+        setIsOpen(false);
+    };
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -572,9 +590,15 @@ const RegisterForm = ({ onAuthSuccess, slotsData, fetchSlots, behaviorLogRef }: 
         }
     };
 
+    if (!isOpen) return null;
+
     return (
-        <section id="booking-form" className="w-full bg-slate-900 text-white py-20 px-6 border-b border-slate-950">
-            <div className="max-w-md mx-auto bg-slate-950 p-8 rounded-2xl border border-slate-800 shadow-xl shadow-slate-950">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+            <div className="absolute inset-0 bg-slate-950/80 backdrop-blur-sm transition-opacity" onClick={closeForm}></div>
+            <div className="relative w-full max-w-md bg-slate-950 text-white p-8 rounded-3xl border border-slate-800 shadow-2xl max-h-[90vh] overflow-y-auto animate-in fade-in zoom-in duration-200">
+                <button onClick={closeForm} className="absolute top-4 right-4 p-2 text-slate-500 hover:text-white transition-colors bg-slate-900 rounded-full hover:bg-slate-800">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
                 {/* Urgent-бейдж */}
                 <div className="flex justify-center mb-5">
                     <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-amber-400 bg-amber-950/60 px-4 py-1.5 rounded-full border border-amber-800/40">
@@ -695,10 +719,14 @@ const RegisterForm = ({ onAuthSuccess, slotsData, fetchSlots, behaviorLogRef }: 
                         <button type="submit" disabled={loading || isFormInvalid} className="w-full mt-2 bg-gradient-to-r from-cyan-500 to-blue-600 hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold py-3.5 px-4 rounded-xl text-sm transition">
                             {loading ? 'Відправляємо...' : tab === 'new' ? 'Забронювати місце на інтенсив →' : 'Увійти в кабінет →'}
                         </button>
+                        
+                        <p className="mt-5 text-[11px] text-slate-500 text-center leading-relaxed px-2">
+                            Підтвердіть свою згоду на обробку персональних даних. Ми зобов'язуємося використовувати отриману інформацію тільки всередині нашої компанії, і не передавати третім особам. <a href="#!" className="text-cyan-500 hover:underline">Детальніше</a>
+                        </p>
                     </form>
                 )}
             </div>
-        </section>
+        </div>
     );
 };
 
@@ -857,7 +885,7 @@ const ContactsAndMap = () => (
                         <div>
                             <h4 className="text-sm font-bold text-slate-200 mb-0.5">Онлайн-запис</h4>
                             <a
-                                href="#booking-form"
+                                href="#register"
                                 className="text-cyan-400 hover:text-cyan-300 text-sm font-semibold transition-colors duration-200 underline underline-offset-4 decoration-cyan-800 hover:decoration-cyan-400"
                             >
                                 Заповніть форму вище →

@@ -52,7 +52,7 @@ const Header = () => {
                 {/* CTA кнопка */}
                 <div className="hidden md:flex items-center gap-4">
                     <a
-                        href="#!"
+                        href="#register"
                         className="relative inline-flex items-center gap-2 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold py-2.5 px-5 rounded-xl text-sm shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 transition-all duration-300 hover:-translate-y-px"
                     >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -86,7 +86,7 @@ const Header = () => {
                         <span className="text-slate-500 font-bold">/</span>
                         <Link to="/intensives" onClick={() => setMenuOpen(false)} className="text-orange-400 hover:text-orange-300 hover:bg-orange-500/10 transition-colors font-bold flex items-center gap-1.5 border border-orange-500/50 rounded-full px-3 py-1">🏖️ Літні Інтенсиви</Link>
                     </div>
-                    <a href="#!" onClick={() => setMenuOpen(false)} className="mt-2 text-center bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold py-2.5 px-4 rounded-xl text-sm">
+                    <a href="#register" onClick={() => setMenuOpen(false)} className="mt-2 text-center bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold py-2.5 px-4 rounded-xl text-sm">
                         Записатись на заняття
                     </a>
                 </nav>
