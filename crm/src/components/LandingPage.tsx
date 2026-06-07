@@ -57,8 +57,8 @@ const Hero = () => (
             </h1>
 
             {/* Неоновий акцент */}
-            <div className="mt-6 inline-block bg-slate-900/80 backdrop-blur-sm border border-slate-800 rounded-xl px-6 py-3 shadow-lg shadow-orange-900/20 relative z-10">
-                <p className="text-orange-400 font-bold text-sm md:text-base drop-shadow-md">
+            <div className="mt-6 inline-block bg-slate-900/80 backdrop-blur-sm border border-slate-800 rounded-xl px-6 py-3 shadow-lg shadow-sky-900/20 relative z-10">
+                <p className="text-sky-400 font-bold text-sm md:text-base drop-shadow-md">
                     🔥 Практика &gt;80% — мінімум теорії, максимум реальних проектів за комп&apos;ютером!
                 </p>
             </div>
@@ -66,7 +66,7 @@ const Hero = () => (
             {/* Підзаголовок */}
             <p className="text-orange-100/90 text-lg md:text-xl mt-8 max-w-2xl mx-auto leading-relaxed relative z-10">
                 Проведіть літо з максимальною користю! Ваша дитина не просто грає в ігри на канікулах — вона{' '}
-                <span className="text-amber-400 font-bold">створює їх сама, опановує IT-професії</span>{' '}
+                <span className="text-lime-400 font-bold">створює їх сама, опановує IT-професії</span>{' '}
                 та знаходить нових друзів у нашому літньому таборі.
             </p>
 
@@ -76,7 +76,7 @@ const Hero = () => (
                     { value: '8', label: 'унікальних літніх інтенсивів' },
                 ].map((stat) => (
                     <div key={stat.value} className="flex flex-col items-center">
-                        <span className="text-3xl font-black bg-gradient-to-r from-orange-400 to-yellow-400 bg-clip-text text-transparent leading-none drop-shadow-sm">
+                        <span className="text-3xl font-black bg-gradient-to-r from-lime-400 to-green-500 bg-clip-text text-transparent leading-none drop-shadow-sm">
                             {stat.value}
                         </span>
                         <span className="text-orange-200/80 text-xs font-medium mt-1 uppercase tracking-wider drop-shadow-sm">{stat.label}</span>
