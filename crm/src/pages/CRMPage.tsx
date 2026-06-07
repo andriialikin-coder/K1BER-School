@@ -324,7 +324,6 @@ export default function CRMPage() {
 
   const [analyzingId, setAnalyzingId] = useState<number | null>(null);
   const [aiPortraits, setAiPortraits] = useState<Record<number, string>>({});
-  const [activeModel, setActiveModel] = useState<string | null>(null);
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
 
   const handleFetchAI = async (lead: Lead) => {
