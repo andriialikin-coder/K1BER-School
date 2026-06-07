@@ -17,7 +17,7 @@ export default function HomePage() {
       />
 
       {/* Центральный Сатурн с орбитами (на фоне) */}
-      <div className="absolute top-[40%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] flex items-center justify-center opacity-[0.6] pointer-events-none z-0 mix-blend-screen hidden md:flex">
+      <div className="absolute top-[40%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] flex items-center justify-center opacity-[0.35] pointer-events-none z-0 mix-blend-screen hidden md:flex">
         {/* Само тело планеты */}
         <div className="absolute w-[360px] h-[360px] rounded-full bg-gradient-to-br from-[#fb923c] via-[#ea580c] to-[#7c2d12] shadow-[inset_-40px_-40px_60px_rgba(0,0,0,0.8),0_0_120px_rgba(234,88,12,0.6)] z-10" />
 
@@ -116,12 +116,6 @@ export default function HomePage() {
       {/* 3. Центральный текстовый блок */}
       <div className="relative max-w-4xl z-20 flex flex-col items-center text-center">
         
-        {/* Декоративный бейдж */}
-        <div className="inline-flex items-center gap-2.5 text-xs sm:text-sm font-bold uppercase tracking-widest text-cyan-400 bg-cyan-950/40 px-5 py-2.5 rounded-full border border-cyan-800/40 mb-8 shadow-lg shadow-cyan-900/10">
-          <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
-          Суми · Набір відкрито · Вік 6–15 років
-        </div>
-
         {/* Заголовок: Белый, Крупный, Благородный Sans-serif */}
         <h1 
           className="text-5xl sm:text-7xl md:text-8xl lg:text-[5.5rem] font-black tracking-tight leading-[1.05] mb-6 text-white"
