@@ -9,11 +9,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     if (!lead) return res.status(400).json({ error: 'Missing lead data' });
 
     // Безпечно беремо токени з серверних змінних оточення
-    const BOT_TOKEN = process.env.TG_BOT_TOKEN;
+    const BOT_TOKEN = process.env.BOT_TOKEN;
     const CHAT_IDS = [process.env.TG_USER_1, process.env.TG_USER_2].filter(Boolean);
 
     if (!BOT_TOKEN) {
-        console.error("No Telegram Bot Token found (TG_BOT_TOKEN).");
+        console.error("No Telegram Bot Token found (BOT_TOKEN).");
         return res.status(500).json({ error: 'Telegram bot credentials missing' });
     }
 
