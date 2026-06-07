@@ -12,9 +12,14 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 // 2. КОМПОНЕНТ: ГОЛОВНИЙ ЕКРАН (Hero Section)
 const Hero = () => (
     <section id="hero" className="relative w-full bg-slate-950 text-white pt-32 pb-24 px-6 flex flex-col items-center text-center overflow-hidden">
+        {/* Фоновий Image: summer.webp */}
+        <div className="absolute inset-0 z-0">
+            <div className="absolute inset-0 bg-[url('/summer.webp')] bg-cover bg-center opacity-40 mix-blend-luminosity" />
+            <div className="absolute inset-0 bg-gradient-to-b from-slate-950/60 via-slate-950/80 to-slate-950" />
+        </div>
 
         {/* Фоновий неон-ефект */}
-        <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute inset-0 pointer-events-none z-0">
             <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-cyan-500/[0.08] rounded-full blur-3xl" />
             <div className="absolute top-1/3 left-1/3 w-[300px] h-[300px] bg-blue-600/10 rounded-full blur-3xl" />
         </div>
@@ -66,17 +71,15 @@ const Hero = () => (
 
             {/* Підзаголовок */}
             <p className="text-slate-400 text-lg md:text-xl mt-8 max-w-2xl mx-auto leading-relaxed relative z-10">
-                Школа програмування для дітей у місті Суми. Ваша дитина не просто вчить теорію — вона{' '}
-                <span className="text-slate-200 font-medium">пише код і випускає власні проекти</span>{' '}
-                вже з першого місяця.
+                Проведіть літо з максимальною користю! Ваша дитина не просто грає в ігри на канікулах — вона{' '}
+                <span className="text-slate-200 font-medium">створює їх сама, опановує IT-професії</span>{' '}
+                та знаходить нових друзів у нашому літньому таборі.
             </p>
 
             {/* Статистика */}
             <div className="flex flex-wrap justify-center gap-8 mt-10 mb-10 text-center relative z-10">
                 {[
-                    { value: '200+', label: 'учнів у Сумах' },
-                    { value: '8', label: 'унікальних ІТ-інтенсивів' },
-                    { value: '1-е', label: 'заняття — безкоштовно' },
+                    { value: '8', label: 'унікальних літніх інтенсивів' },
                 ].map((stat) => (
                     <div key={stat.value} className="flex flex-col items-center">
                         <span className="text-3xl font-black bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent leading-none drop-shadow-sm">
