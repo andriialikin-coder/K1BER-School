@@ -627,6 +627,13 @@ const RegisterForm = ({ onAuthSuccess, slotsData, fetchSlots, behaviorLogRef }: 
 
             console.log("Успішне збереження в БД:", data);
 
+            // Відправка сповіщення через захищений бекенд (fire-and-forget, щоб не блокувати UI)
+            fetch('/api/telegram', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ lead: payload })
+            }).catch(e => console.error("Помилка відправки в Telegram:", e));
+
             // Крок 3: Списання місця
             const selectedCourseSlug = COURSES.find(c => c.title === formData.course)?.slug;
             if (selectedCourseSlug) {
