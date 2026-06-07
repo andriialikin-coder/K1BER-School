@@ -21,10 +21,17 @@ const Header = () => {
 
                 {/* Навігація — десктоп */}
                 <nav className="hidden md:flex items-center space-x-8 text-sm font-medium">
-                    <Link to="/intensives" className="text-cyan-400 hover:text-white transition-colors duration-200 relative group font-bold">
-                        Літні Інтенсиви
-                        <span className="absolute -bottom-0.5 left-0 w-full h-px bg-cyan-400 group-hover:w-full transition-all duration-300" />
-                    </Link>
+                    <div className="flex items-center space-x-1">
+                        <Link to="/" className="text-white hover:text-cyan-400 transition-colors duration-200 font-bold relative group">
+                            Академія
+                            <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-cyan-400 group-hover:w-full transition-all duration-300" />
+                        </Link>
+                        <span className="text-slate-500 font-bold">/</span>
+                        <Link to="/intensives" className="text-cyan-400 hover:text-white transition-colors duration-200 font-bold relative group">
+                            Літні Інтенсиви
+                            <span className="absolute -bottom-0.5 left-0 w-full h-px bg-cyan-400 group-hover:w-full transition-all duration-300" />
+                        </Link>
+                    </div>
                     <a href="/intensives#about" className="text-slate-400 hover:text-white transition-colors duration-200 relative group">
                         Про нас
                         <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-cyan-400 group-hover:w-full transition-all duration-300" />
@@ -71,7 +78,11 @@ const Header = () => {
             {/* Мобільне меню */}
             <div className={`md:hidden overflow-hidden transition-all duration-300 ${menuOpen ? 'max-h-80 border-t border-slate-800/60' : 'max-h-0'}`}>
                 <nav className="px-6 py-4 flex flex-col space-y-3 bg-slate-950/95">
-                    <Link to="/intensives" onClick={() => setMenuOpen(false)} className="text-cyan-400 hover:text-white transition-colors py-1 font-bold">Літні Інтенсиви</Link>
+                    <div className="flex items-center space-x-2 py-1">
+                        <Link to="/" onClick={() => setMenuOpen(false)} className="text-white hover:text-cyan-400 transition-colors font-bold">Академія</Link>
+                        <span className="text-slate-500 font-bold">/</span>
+                        <Link to="/intensives" onClick={() => setMenuOpen(false)} className="text-cyan-400 hover:text-white transition-colors font-bold">Літні Інтенсиви</Link>
+                    </div>
                     <a href="/intensives#about" onClick={() => setMenuOpen(false)} className="text-slate-300 hover:text-cyan-400 transition-colors py-1">Про нас</a>
                     <a href="/intensives#courses" onClick={() => setMenuOpen(false)} className="text-slate-300 hover:text-cyan-400 transition-colors py-1">Курси</a>
                     <a href="/intensives#faq" onClick={() => setMenuOpen(false)} className="text-slate-300 hover:text-cyan-400 transition-colors py-1">FAQ</a>
