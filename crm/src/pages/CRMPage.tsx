@@ -318,6 +318,7 @@ export default function CRMPage() {
   const [editingCourseFor, setEditingCourseFor] = useState<string | null>(null);
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
+  const [showEmptyLeads, setShowEmptyLeads] = useState(false);
   const [updatingIds, setUpdatingIds] = useState<Set<number>>(new Set());
   const [dbConnected, setDbConnected] = useState(false);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
@@ -533,6 +534,9 @@ ${JSON.stringify(lead.behavior_log, null, 2)}
 
   const q = search.toLowerCase();
   const filtered = leads.filter(l => {
+    const isEmptyBotLead = !l.phone && !l.name && !l.course;
+    if (!showEmptyLeads && isEmptyBotLead) return false;
+
     const matchSearch = !search
       || l.name?.toLowerCase().includes(q)
       || l.phone?.includes(search)
@@ -586,7 +590,19 @@ ${JSON.stringify(lead.behavior_log, null, 2)}
             </select>
             <ChevronDown size={13} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
           </div>
-          <span className="text-sm text-slate-400 flex-shrink-0 pl-1 hidden sm:inline-block">
+          <div className="flex items-center gap-2 flex-shrink-0 ml-1">
+            <input 
+              type="checkbox" 
+              id="showEmpty" 
+              checked={showEmptyLeads} 
+              onChange={e => setShowEmptyLeads(e.target.checked)}
+              className="w-4 h-4 text-blue-600 bg-slate-100 border-slate-300 rounded focus:ring-blue-500 cursor-pointer"
+            />
+            <label htmlFor="showEmpty" className="text-sm font-medium text-slate-600 cursor-pointer select-none">
+              Показувати пусті бот-ліди
+            </label>
+          </div>
+          <span className="text-sm text-slate-400 flex-shrink-0 pl-2 hidden lg:inline-block ml-auto">
             <span className="font-bold text-slate-700">{filtered.length}</span> / {leads.length}
           </span>
         </div>

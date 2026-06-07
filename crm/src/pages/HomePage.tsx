@@ -1,3 +1,5 @@
+import { RegisterForm } from '../components/LandingPage';
+
 export default function HomePage() {
   return (
     <div className="relative w-full min-h-[calc(100vh-72px)] bg-slate-950 overflow-hidden flex flex-col items-center justify-center py-20 px-6">
@@ -143,7 +145,7 @@ export default function HomePage() {
         >
           {/* Кнопка 1: Записатись (акцентная неоновая) */}
           <a
-            href="#!"
+            href="#register"
             className="w-full sm:w-auto text-center font-bold py-4.5 px-9 rounded-2xl text-base md:text-lg text-white transition-all duration-300 transform hover:scale-[1.03] hover:-translate-y-0.5 active:scale-95 bg-cyan-950/30 backdrop-blur-md border border-cyan-500/50 hover:border-cyan-400 shadow-[0_0_20px_rgba(6,182,212,0.2)] hover:shadow-[0_0_35px_rgba(6,182,212,0.5)] cursor-pointer"
           >
             Записатись на пробне заняття
@@ -151,7 +153,7 @@ export default function HomePage() {
 
           {/* Кнопка 2: Переглянути модулі (второстепенная с индиго-обводкой) */}
           <a
-            href="#!"
+            href="#register"
             className="w-full sm:w-auto text-center font-bold py-4.5 px-9 rounded-2xl text-base md:text-lg text-white transition-all duration-300 transform hover:scale-[1.03] hover:-translate-y-0.5 active:scale-95 bg-slate-900/30 backdrop-blur-md border border-slate-700 hover:border-purple-500/80 hover:bg-purple-950/10 shadow-[0_0_20px_rgba(168,85,247,0.05)] hover:shadow-[0_0_30px_rgba(168,85,247,0.2)] cursor-pointer"
           >
             Переглянути модулі
@@ -159,7 +161,7 @@ export default function HomePage() {
         </div>
 
       </div>
-
+      <RegisterForm sourceName="Академія" />
     </div>
   );
 }

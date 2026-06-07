@@ -204,7 +204,7 @@ const PainPoints = () => (
 );
 
 // 4. КОМПОНЕНТ: НАПРЯМКИ НАВЧАННЯ (Courses)
-const COURSES = [
+export const COURSES = [
     {
         slug: 'minecraft',
         price: 4500,
@@ -438,7 +438,7 @@ const Courses = ({ slotsData, coursePrices, courseDetails, onOpenProgram, onCour
 };
 
 // 5. КОМПОНЕНТ: ФОРМА ЗАХВАТУ ЛІДІВ (Форма -> Наша CRM)
-const RegisterForm = ({ onAuthSuccess, slotsData, fetchSlots, behaviorLogRef }: { onAuthSuccess?: (name: string, course: string, phone: string, chosenTime?: string) => void; slotsData: Record<string, number>; fetchSlots: () => void; behaviorLogRef?: React.MutableRefObject<any>; }) => {
+export const RegisterForm = ({ sourceName = 'Інтенсив', onAuthSuccess, slotsData, fetchSlots, behaviorLogRef }: { sourceName?: string; onAuthSuccess?: (name: string, course: string, phone: string, chosenTime?: string) => void; slotsData?: Record<string, number>; fetchSlots?: () => void; behaviorLogRef?: React.MutableRefObject<any>; }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
@@ -542,7 +542,7 @@ const RegisterForm = ({ onAuthSuccess, slotsData, fetchSlots, behaviorLogRef }: 
                 name: formData.name,
                 phone: formData.phone,
                 course: formData.course,
-                source: "website",
+                source: sourceName,
                 behavior_log: behaviorLogRef ? behaviorLogRef.current : {}
             };
 
@@ -569,7 +569,7 @@ const RegisterForm = ({ onAuthSuccess, slotsData, fetchSlots, behaviorLogRef }: 
 
             // Крок 3: Списання місця
             const selectedCourseSlug = COURSES.find(c => c.title === formData.course)?.slug;
-            if (selectedCourseSlug) {
+            if (selectedCourseSlug && slotsData && fetchSlots) {
                 const currentAvailable = slotsData[selectedCourseSlug] ?? 10;
                 await supabase
                     .from('course_slots')
