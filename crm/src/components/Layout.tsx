@@ -125,7 +125,7 @@ const FloatingChat = () => {
                         bg: 'bg-black',
                         border: 'border border-slate-700',
                         icon: (
-                            <img src="/threads.png" alt="Threads" className="w-[22px] h-[22px] object-contain invert brightness-0" />
+                            <img src="/threads.png" alt="Threads" className="w-[20px] h-[20px] object-cover rounded-full" />
                         )
                     },
                     {
