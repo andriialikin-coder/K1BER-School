@@ -105,8 +105,14 @@ export default function HomePage() {
         >
           IT-Академія <br />
           <span 
-            className="relative inline-block text-[#C4533F]"
-            style={{ filter: 'drop-shadow(0 0 45px rgba(196,83,63,0.35)) drop-shadow(0 0 80px rgba(196,83,63,0.25))' }}
+            className="relative inline-block"
+            style={{ 
+              filter: 'drop-shadow(0px 8px 24px rgba(196, 83, 63, 0.35))',
+              background: 'linear-gradient(180deg, #D96B57 0%, #C4533F 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              color: '#C4533F'
+            }}
           >
             K1BER School
           </span>
@@ -129,7 +135,7 @@ export default function HomePage() {
           {/* Кнопка 1: Записатись (акцентная неоновая) */}
           <a
             href="/intensives#booking-form"
-            className="w-full sm:w-auto text-center font-bold py-4.5 px-9 rounded-2xl text-base md:text-lg text-white transition-all duration-300 transform hover:scale-[1.03] hover:-translate-y-0.5 active:scale-95 bg-cyan-950/30 backdrop-blur-md border border-cyan-500/50 hover:border-cyan-400 shadow-[0_0_20px_rgba(6,182,212,0.2)] hover:shadow-[0_0_35px_rgba(6,182,212,0.5)] cursor-pointer"
+            className="w-full sm:w-auto text-center font-bold py-4.5 px-9 rounded-2xl text-base md:text-lg text-white transition-all duration-300 transform hover:scale-[1.03] hover:-translate-y-0.5 active:scale-95 bg-[#C4533F]/20 backdrop-blur-md border border-[#C4533F]/50 hover:border-[#D96B57] shadow-[0_0_20px_rgba(196,83,63,0.2)] hover:shadow-[0_0_35px_rgba(196,83,63,0.5)] cursor-pointer"
           >
             Записатись на пробне заняття
           </a>
@@ -137,7 +143,7 @@ export default function HomePage() {
           {/* Кнопка 2: Переглянути модулі (второстепенная с индиго-обводкой) */}
           <a
             href="/intensives#courses"
-            className="w-full sm:w-auto text-center font-bold py-4.5 px-9 rounded-2xl text-base md:text-lg text-white transition-all duration-300 transform hover:scale-[1.03] hover:-translate-y-0.5 active:scale-95 bg-slate-900/30 backdrop-blur-md border border-slate-700 hover:border-purple-500/80 hover:bg-purple-950/10 shadow-[0_0_20px_rgba(168,85,247,0.05)] hover:shadow-[0_0_30px_rgba(168,85,247,0.2)] cursor-pointer"
+            className="w-full sm:w-auto text-center font-bold py-4.5 px-9 rounded-2xl text-base md:text-lg text-white transition-all duration-300 transform hover:scale-[1.03] hover:-translate-y-0.5 active:scale-95 bg-slate-900/30 backdrop-blur-md border border-slate-700 hover:border-[#C4533F]/80 hover:bg-[#C4533F]/10 shadow-[0_0_20px_rgba(196,83,63,0.05)] hover:shadow-[0_0_30px_rgba(196,83,63,0.2)] cursor-pointer"
           >
             Переглянути модулі
           </a>
