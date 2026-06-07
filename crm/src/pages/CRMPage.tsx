@@ -534,7 +534,7 @@ ${JSON.stringify(lead.behavior_log, null, 2)}
 
   const q = search.toLowerCase();
   const filtered = leads.filter(l => {
-    const isEmptyBotLead = !l.phone && !l.name && !l.course;
+    const isEmptyBotLead = !l.phone && !l.course;
     if (!showEmptyLeads && isEmptyBotLead) return false;
 
     const matchSearch = !search
