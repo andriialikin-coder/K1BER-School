@@ -1,19 +1,26 @@
 export default function HomePage() {
   return (
-    <div className="relative w-full min-h-[calc(100vh-72px)] bg-slate-950 overflow-hidden flex items-center justify-center py-6 sm:py-12 md:py-16 px-4">
+    <div className="relative w-full min-h-[calc(100vh-72px)] bg-slate-950 overflow-hidden flex flex-col items-center justify-center py-20 px-6">
+      
       {/* 1. Глобальный фон: Неоновые градиенты космоса */}
-      <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-purple-600/10 blur-[80px] sm:blur-[120px] pointer-events-none animate-drift-slow" />
-      <div className="absolute bottom-1/4 right-1/4 translate-x-1/2 translate-y-1/2 w-[300px] h-[300px] sm:w-[500px] sm:h-[500px] rounded-full bg-cyan-500/10 blur-[90px] sm:blur-[140px] pointer-events-none animate-drift-fast" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] sm:w-[700px] sm:h-[700px] rounded-full bg-blue-600/5 blur-[100px] sm:blur-[180px] pointer-events-none" />
+      <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-80 h-80 sm:w-[450px] sm:h-[450px] rounded-full bg-purple-600/[0.08] blur-[100px] sm:blur-[150px] pointer-events-none animate-drift-slow" />
+      <div className="absolute bottom-1/4 right-1/4 translate-x-1/2 translate-y-1/2 w-80 h-80 sm:w-[500px] sm:h-[500px] rounded-full bg-cyan-500/[0.08] blur-[100px] sm:blur-[160px] pointer-events-none animate-drift-fast" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-blue-600/[0.04] blur-[180px] pointer-events-none" />
 
       {/* Космическая сетка */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#0f172a_1px,transparent_1px),linear-gradient(to_bottom,#0f172a_1px,transparent_1px)] bg-[size:3rem_3rem] sm:bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-30 pointer-events-none" />
+      <div 
+        className="absolute inset-0 opacity-[0.03] pointer-events-none"
+        style={{
+          backgroundImage: 'linear-gradient(rgba(6,182,212,1) 1px, transparent 1px), linear-gradient(90deg, rgba(6,182,212,1) 1px, transparent 1px)',
+          backgroundSize: '80px 80px',
+        }}
+      />
 
-      {/* 2. Декоративные геймифицированные элементы снаружи рамки (Плавают и создают 3D глубину) */}
+      {/* 2. Декоративные элементы снаружи (Парящие в космосе) */}
       
-      {/* Большая размытая планета (справа вверху) */}
-      <div className="absolute top-[8%] right-[2%] md:right-[10%] lg:right-[12%] z-10 animate-float-slow pointer-events-none blur-[1px] md:blur-[1.5px] opacity-75 md:opacity-90">
-        <svg viewBox="0 0 100 100" className="w-16 h-16 sm:w-24 sm:h-24 md:w-32 md:h-32 text-cyan-400 drop-shadow-[0_0_20px_rgba(6,182,212,0.4)]">
+      {/* Планета (справа вверху) */}
+      <div className="absolute top-[12%] right-[5%] md:right-[15%] z-10 animate-float-slow pointer-events-none blur-[0.5px] opacity-80">
+        <svg viewBox="0 0 100 100" className="w-20 h-20 sm:w-28 sm:h-28 md:w-36 md:h-36 text-cyan-400 drop-shadow-[0_0_20px_rgba(6,182,212,0.4)]">
           <defs>
             <radialGradient id="planetGrad" cx="30%" cy="30%" r="70%">
               <stop offset="0%" stopColor="#c084fc" />
@@ -27,9 +34,9 @@ export default function HomePage() {
         </svg>
       </div>
 
-      {/* Размытые VR-Очки (слева внизу) */}
-      <div className="absolute bottom-[6%] left-[2%] md:left-[8%] lg:left-[10%] z-10 animate-float-medium pointer-events-none blur-[1.5px] md:blur-[2px] opacity-70 md:opacity-85">
-        <svg viewBox="0 0 100 60" className="w-20 h-12 sm:w-28 sm:h-18 md:w-36 md:h-24 text-purple-400 drop-shadow-[0_0_25px_rgba(168,85,247,0.5)]">
+      {/* VR-Очки (слева внизу) */}
+      <div className="absolute bottom-[10%] left-[3%] md:left-[12%] z-10 animate-float-medium pointer-events-none blur-[0.8px] opacity-75">
+        <svg viewBox="0 0 100 60" className="w-24 h-16 sm:w-32 sm:h-20 md:w-40 md:h-26 text-purple-400 drop-shadow-[0_0_25px_rgba(168,85,247,0.5)]">
           <defs>
             <linearGradient id="vrGrad" x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" stopColor="#3b82f6" />
@@ -45,10 +52,10 @@ export default function HomePage() {
         </svg>
       </div>
 
-      {/* Неоновые цифровые глифы вокруг рамки */}
+      {/* Цифровые глифы */}
       {/* Атом слева вверху */}
-      <div className="absolute top-[15%] left-[5%] md:left-[12%] z-0 animate-float-fast opacity-40 md:opacity-60 pointer-events-none">
-        <svg viewBox="0 0 100 100" className="w-10 h-10 sm:w-14 sm:h-14 text-cyan-400 drop-shadow-[0_0_10px_rgba(34,211,238,0.3)]">
+      <div className="absolute top-[18%] left-[6%] md:left-[16%] z-0 animate-float-fast opacity-50 pointer-events-none">
+        <svg viewBox="0 0 100 100" className="w-12 h-12 sm:w-16 sm:h-16 text-cyan-400 drop-shadow-[0_0_10px_rgba(34,211,238,0.3)]">
           <circle cx="50" cy="50" r="5" fill="#22d3ee" />
           <ellipse cx="50" cy="50" rx="38" ry="11" fill="none" stroke="#22d3ee" strokeWidth="1.5" transform="rotate(30 50 50)" />
           <ellipse cx="50" cy="50" rx="38" ry="11" fill="none" stroke="#818cf8" strokeWidth="1.5" transform="rotate(90 50 50)" />
@@ -56,9 +63,9 @@ export default function HomePage() {
         </svg>
       </div>
 
-      {/* Тег Кода </> справа внизу */}
-      <div className="absolute bottom-[18%] right-[4%] md:right-[10%] z-0 animate-float-medium opacity-35 md:opacity-55 pointer-events-none">
-        <svg viewBox="0 0 24 24" className="w-8 h-8 sm:w-12 sm:h-12 text-blue-400 drop-shadow-[0_0_8px_rgba(96,165,250,0.3)]" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      {/* Тег Кода </> справа посередине */}
+      <div className="absolute top-[52%] right-[5%] md:right-[10%] z-0 animate-float-medium opacity-45 pointer-events-none">
+        <svg viewBox="0 0 24 24" className="w-10 h-10 sm:w-14 sm:h-14 text-blue-400" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
           <polyline points="16 18 22 12 16 6" />
           <polyline points="8 6 2 12 8 18" />
           <line x1="14" y1="4" x2="10" y2="20" />
@@ -66,80 +73,75 @@ export default function HomePage() {
       </div>
 
       {/* Фигурные скобки {} слева посередине */}
-      <div className="absolute top-[45%] left-[3%] md:left-[7%] z-0 animate-float-slow opacity-40 md:opacity-50 pointer-events-none">
-        <svg viewBox="0 0 24 24" className="w-8 h-8 sm:w-10 sm:h-10 text-purple-400 drop-shadow-[0_0_8px_rgba(192,132,252,0.3)]" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <div className="absolute top-[50%] left-[4%] md:left-[10%] z-0 animate-float-slow opacity-45 pointer-events-none">
+        <svg viewBox="0 0 24 24" className="w-10 h-10 sm:w-12 sm:h-12 text-purple-400" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
           <path d="M8 3H7a2 2 0 0 0-2 2v5a2 2 0 0 1-2 2 2 2 0 0 1 2 2v5a2 2 0 0 0 2 2h1" />
           <path d="M16 21h1a2 2 0 0 0 2-2v-5a2 2 0 0 1 2-2 2 2 0 0 1-2-2V5a2 2 0 0 0-2-2h-1" />
         </svg>
       </div>
 
-      {/* Космический геймпад справа вверху */}
-      <div className="absolute top-[25%] right-[5%] md:right-[14%] z-0 animate-float-fast opacity-30 md:opacity-50 pointer-events-none">
-        <svg viewBox="0 0 24 24" className="w-8 h-8 sm:w-12 sm:h-12 text-cyan-400" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      {/* Геймпад справа внизу */}
+      <div className="absolute bottom-[20%] right-[3%] md:right-[12%] z-0 animate-float-fast opacity-40 pointer-events-none">
+        <svg viewBox="0 0 24 24" className="w-10 h-10 sm:w-14 sm:h-14 text-cyan-400" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
           <line x1="6" y1="12" x2="10" y2="12" />
           <line x1="8" y1="10" x2="8" y2="14" />
-          <line x1="15" y1="13" x2="15.01" y2="13" />
-          <line x1="18" y1="11" x2="18.01" y2="11" />
           <rect x="2" y="6" width="20" height="12" rx="3" />
         </svg>
       </div>
 
-      {/* 3. Центральный блок: Контейнер с рамкой (main.webp) */}
-      <div className="relative w-full max-w-4xl z-20 mx-auto">
+      {/* 3. Центральный текстовый блок */}
+      <div className="relative max-w-4xl z-20 flex flex-col items-center text-center">
         
-        {/* Неоновый ореол за рамкой для эффекта парения */}
-        <div className="absolute inset-4 sm:inset-6 bg-gradient-to-r from-cyan-500/20 to-purple-600/20 rounded-[1.8rem] blur-2xl pointer-events-none animate-pulse" />
-
-        {/* Рамка-контейнер */}
-        <div 
-          className="w-full aspect-[4/3.1] sm:aspect-[16/11] md:aspect-[16/10] bg-[url('/main.webp')] bg-no-repeat bg-center bg-cover md:bg-contain rounded-[1.8rem] border border-cyan-500/15 overflow-hidden shadow-2xl relative flex items-center justify-center"
-        >
-          {/* Контентная зона: белое центральное поле рамки */}
-          {/* С помощью точных процентных отступов позиционируем контент строго по центру рамки */}
-          <div className="w-[78%] h-[74%] sm:w-[74%] sm:h-[72%] md:w-[70%] md:h-[68%] flex flex-col justify-center items-center text-center p-3 sm:p-6 md:p-8 select-text">
-            
-            {/* Заголовок: Gilroy/Outfit Bold, неоновый синий градиент */}
-            <h1 
-              style={{ fontFamily: "'Outfit', 'Gilroy', 'Inter', sans-serif" }}
-              className="text-lg xs:text-xl sm:text-3xl md:text-4xl lg:text-[2.75rem] font-black tracking-tight leading-tight mb-2 sm:mb-4 md:mb-5 bg-gradient-to-r from-blue-700 via-cyan-500 to-indigo-700 bg-clip-text text-transparent drop-shadow-[0_1.5px_1.5px_rgba(2,6,23,0.12)]"
-            >
-              IT-Академія <br className="xs:hidden" /> K1BER School
-            </h1>
-
-            {/* Описание: темный сланец для превосходной читаемости на белом фоне */}
-            <p className="text-[10px] xs:text-[11px] sm:text-sm md:text-base lg:text-lg text-slate-700 font-semibold max-w-[240px] xs:max-w-xs sm:max-w-md md:max-w-xl mb-3 sm:mb-6 md:mb-8 leading-relaxed">
-              Інноваційний простір, де діти створюють власні ігри, вивчають кодинг та підкорюють світ технологій майбутнього.
-            </p>
-
-            {/* Блок кнопок: Montserrat semi-bold, Glassmorphism */}
-            <div 
-              style={{ fontFamily: "'Montserrat', sans-serif" }}
-              className="flex flex-row sm:flex-row gap-2 sm:gap-4 md:gap-5 w-full justify-center items-center px-1 sm:px-0"
-            >
-              {/* Кнопка 1: Записатись (акцентная неоновая) */}
-              <a
-                href="/intensives#booking-form"
-                className="group relative flex-1 sm:flex-none overflow-hidden rounded-xl py-2 sm:py-3.5 px-3 sm:px-6 md:px-8 text-[9px] xs:text-[10px] sm:text-xs md:text-sm font-bold text-white transition-all duration-300 transform hover:scale-[1.04] hover:-translate-y-0.5 active:scale-95 shadow-[0_4px_18px_rgba(6,182,212,0.35)] hover:shadow-[0_6px_25px_rgba(6,182,212,0.6)] border border-cyan-400/80 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-center"
-              >
-                <span className="opacity-70 group-hover:opacity-100 transition-opacity mr-1">{"["}</span>
-                Записатись на пробне заняття
-                <span className="opacity-70 group-hover:opacity-100 transition-opacity ml-1">{"]"}</span>
-              </a>
-
-              {/* Кнопка 2: Переглянути модулі (Glassmorphism на белом фоне) */}
-              <a
-                href="/intensives#courses"
-                className="group flex-1 sm:flex-none overflow-hidden rounded-xl py-2 sm:py-3.5 px-3 sm:px-6 md:px-8 text-[9px] xs:text-[10px] sm:text-xs md:text-sm font-bold text-cyan-950 transition-all duration-300 transform hover:scale-[1.04] hover:-translate-y-0.5 active:scale-95 bg-white/35 backdrop-blur-md hover:bg-white/60 border border-cyan-300/60 shadow-[0_4px_15px_rgba(6,182,212,0.1)] hover:shadow-[0_8px_20px_rgba(6,182,212,0.25)] text-center"
-              >
-                <span className="opacity-60 group-hover:opacity-100 transition-opacity mr-1">{"["}</span>
-                Переглянути модулі
-                <span className="opacity-60 group-hover:opacity-100 transition-opacity ml-1">{"]"}</span>
-              </a>
-            </div>
-
-          </div>
+        {/* Декоративный бейдж */}
+        <div className="inline-flex items-center gap-2.5 text-xs sm:text-sm font-bold uppercase tracking-widest text-cyan-400 bg-cyan-950/40 px-5 py-2.5 rounded-full border border-cyan-800/40 mb-8 shadow-lg shadow-cyan-900/10">
+          <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+          Суми · Набір відкрито · Вік 6–15 років
         </div>
+
+        {/* Заголовок: Белый, Крупный, Благородный Sans-serif */}
+        <h1 
+          className="text-5xl sm:text-7xl md:text-8xl lg:text-[5.5rem] font-black tracking-tight leading-[1.05] mb-6 text-white"
+          style={{ fontFamily: "'Outfit', 'Inter', system-ui, sans-serif" }}
+        >
+          IT-Академія <br />
+          <span className="relative inline-block bg-gradient-to-r from-cyan-400 via-blue-400 to-indigo-400 bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(6,182,212,0.3)]">
+            K1BER School
+          </span>
+        </h1>
+
+        {/* Описание: Светлый сланец на темном фоне */}
+        <p className="text-slate-400 text-lg sm:text-xl md:text-2xl mt-4 max-w-2xl mx-auto leading-relaxed font-medium mb-12">
+          Інноваційний простір, де діти не просто проводять час за комп'ютером — вони{' '}
+          <span className="text-slate-200 font-semibold border-b border-cyan-400/50 pb-0.5">
+            пишуть код, створюють ігри
+          </span>{' '}
+          та випускають власні IT-проекти.
+        </p>
+
+        {/* Блок кнопок: Montserrat, оригинальный Glassmorphism с аккуратной неоновой обводкой */}
+        <div 
+          className="flex flex-col sm:flex-row items-center justify-center gap-6 w-full px-4"
+          style={{ fontFamily: "'Montserrat', sans-serif" }}
+        >
+          {/* Кнопка 1: Записатись (акцентная неоновая) */}
+          <a
+            href="/intensives#booking-form"
+            className="w-full sm:w-auto text-center font-bold py-4.5 px-9 rounded-2xl text-base md:text-lg text-white transition-all duration-300 transform hover:scale-[1.03] hover:-translate-y-0.5 active:scale-95 bg-cyan-950/30 backdrop-blur-md border border-cyan-500/50 hover:border-cyan-400 shadow-[0_0_20px_rgba(6,182,212,0.2)] hover:shadow-[0_0_35px_rgba(6,182,212,0.5)] cursor-pointer"
+          >
+            Записатись на пробне заняття
+          </a>
+
+          {/* Кнопка 2: Переглянути модулі (второстепенная с индиго-обводкой) */}
+          <a
+            href="/intensives#courses"
+            className="w-full sm:w-auto text-center font-bold py-4.5 px-9 rounded-2xl text-base md:text-lg text-white transition-all duration-300 transform hover:scale-[1.03] hover:-translate-y-0.5 active:scale-95 bg-slate-900/30 backdrop-blur-md border border-slate-700 hover:border-purple-500/80 hover:bg-purple-950/10 shadow-[0_0_20px_rgba(168,85,247,0.05)] hover:shadow-[0_0_30px_rgba(168,85,247,0.2)] cursor-pointer"
+          >
+            Переглянути модулі
+          </a>
+        </div>
+
       </div>
+
     </div>
   );
 }
