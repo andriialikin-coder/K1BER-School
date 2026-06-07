@@ -14,14 +14,14 @@ const Hero = () => (
     <section id="hero" className="relative w-full bg-slate-950 text-white pt-32 pb-24 px-6 flex flex-col items-center text-center overflow-hidden">
         {/* Фоновий Image: summer.webp */}
         <div className="absolute inset-0 z-0">
-            <div className="absolute inset-0 bg-[url('/summer.webp')] bg-cover bg-center opacity-40 mix-blend-luminosity" />
-            <div className="absolute inset-0 bg-gradient-to-b from-slate-950/60 via-slate-950/80 to-slate-950" />
+            <div className="absolute inset-0 bg-[url('/summer.webp')] bg-cover bg-center opacity-60" />
+            <div className="absolute inset-0 bg-gradient-to-b from-slate-950/30 via-slate-950/70 to-slate-950" />
         </div>
 
         {/* Фоновий неон-ефект */}
         <div className="absolute inset-0 pointer-events-none z-0">
-            <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-cyan-500/[0.08] rounded-full blur-3xl" />
-            <div className="absolute top-1/3 left-1/3 w-[300px] h-[300px] bg-blue-600/10 rounded-full blur-3xl" />
+            <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-orange-500/[0.08] rounded-full blur-3xl" />
+            <div className="absolute top-1/3 left-1/3 w-[300px] h-[300px] bg-yellow-600/10 rounded-full blur-3xl" />
         </div>
 
         {/* Сітка-фон (технологічна текстура) */}
@@ -34,37 +34,31 @@ const Hero = () => (
         />
 
         {/* Decorative Background Glows */}
-        <div className="absolute top-[10%] left-1/2 -translate-x-1/2 w-[80%] max-w-[800px] h-[400px] bg-gradient-to-r from-cyan-600/30 to-blue-600/30 blur-[100px] rounded-full pointer-events-none" />
+        <div className="absolute top-[10%] left-1/2 -translate-x-1/2 w-[80%] max-w-[800px] h-[400px] bg-gradient-to-r from-orange-600/30 to-yellow-600/30 blur-[100px] rounded-full pointer-events-none" />
 
         <div className="relative max-w-4xl">
-
-            {/* Бейдж */}
-            <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-cyan-400 bg-cyan-950/60 px-4 py-2 rounded-full border border-cyan-800/40 mb-8 shadow-lg shadow-cyan-900/20">
-                <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
-                Суми · Набір відкрито · Вік 6–15 років
-            </div>
 
             {/* Головний заголовок */}
             <h1 className="text-5xl md:text-7xl font-black tracking-tight leading-[1.05] relative z-10">
                 Твоя дитина{' '}
                 <span className="relative inline-block">
-                    <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-cyan-300 bg-clip-text text-transparent">
+                    <span className="bg-gradient-to-r from-orange-400 via-yellow-400 to-orange-300 bg-clip-text text-transparent">
                         грає в ігри.
                     </span>
                 </span>
                 <br />
                 Пора почати їх{' '}
                 <span className="relative inline-block">
-                    <span className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
+                    <span className="bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent">
                         створювати.
                     </span>
-                    <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full opacity-60" />
+                    <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full opacity-60" />
                 </span>
             </h1>
 
             {/* Неоновий акцент */}
-            <div className="mt-6 inline-block bg-slate-900/80 backdrop-blur-sm border border-slate-800 rounded-xl px-6 py-3 shadow-lg shadow-cyan-900/20 relative z-10">
-                <p className="text-cyan-400 font-bold text-sm md:text-base drop-shadow-md">
+            <div className="mt-6 inline-block bg-slate-900/80 backdrop-blur-sm border border-slate-800 rounded-xl px-6 py-3 shadow-lg shadow-orange-900/20 relative z-10">
+                <p className="text-orange-400 font-bold text-sm md:text-base drop-shadow-md">
                     🔥 Практика &gt;80% — мінімум теорії, максимум реальних проектів за комп&apos;ютером!
                 </p>
             </div>
@@ -82,7 +76,7 @@ const Hero = () => (
                     { value: '8', label: 'унікальних літніх інтенсивів' },
                 ].map((stat) => (
                     <div key={stat.value} className="flex flex-col items-center">
-                        <span className="text-3xl font-black bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent leading-none drop-shadow-sm">
+                        <span className="text-3xl font-black bg-gradient-to-r from-orange-400 to-yellow-400 bg-clip-text text-transparent leading-none drop-shadow-sm">
                             {stat.value}
                         </span>
                         <span className="text-slate-500 text-xs font-medium mt-1 uppercase tracking-wider">{stat.label}</span>
@@ -94,9 +88,9 @@ const Hero = () => (
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <a
                     href="#booking-form"
-                    className="group relative inline-flex items-center gap-3 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-extrabold py-4 px-8 rounded-2xl text-lg shadow-2xl shadow-cyan-500/30 hover:shadow-cyan-500/50 transition-all duration-300 hover:-translate-y-0.5"
+                    className="group relative inline-flex items-center gap-3 bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-400 hover:to-amber-500 text-white font-extrabold py-4 px-8 rounded-2xl text-lg shadow-2xl shadow-orange-500/30 hover:shadow-orange-500/50 transition-all duration-300 hover:-translate-y-0.5"
                 >
-                    Записати дитину на пробне
+                    Записатись на пробне заняття
                     <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                     </svg>
@@ -105,14 +99,9 @@ const Hero = () => (
                     href="#courses"
                     className="inline-flex items-center gap-2 text-slate-400 hover:text-white font-semibold py-4 px-6 rounded-2xl border border-slate-800 hover:border-slate-600 transition-all duration-300 text-sm"
                 >
-                    Переглянути курси
+                    Переглянути Інтенсиви
                 </a>
             </div>
-
-            {/* Соціальний доказ */}
-            <p className="mt-6 text-slate-600 text-xs font-medium tracking-wide">
-                🔒 Без спаму. Тільки дзвінок від менеджера для підбору часу занять.
-            </p>
         </div>
     </section>
 );

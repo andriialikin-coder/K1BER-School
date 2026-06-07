@@ -43,9 +43,8 @@ const Header = () => {
                             <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-cyan-400 group-hover:w-full transition-all duration-300" />
                         </Link>
                         <span className="text-slate-500 font-bold">/</span>
-                        <Link to="/intensives" className="text-cyan-400 hover:text-white transition-colors duration-200 font-bold relative group">
-                            Літні Інтенсиви
-                            <span className="absolute -bottom-0.5 left-0 w-full h-px bg-cyan-400 group-hover:w-full transition-all duration-300" />
+                        <Link to="/intensives" className="text-orange-400 hover:text-orange-300 hover:bg-orange-500/10 transition-colors duration-200 font-bold border border-orange-500/50 rounded-full px-3 py-1 flex items-center gap-1.5 relative group">
+                            🏖️ Літні Інтенсиви
                         </Link>
                     </div>
                 </nav>
@@ -85,7 +84,7 @@ const Header = () => {
                     <div className="flex items-center space-x-2 py-1">
                         <Link to="/" onClick={() => setMenuOpen(false)} className="text-white hover:text-cyan-400 transition-colors font-bold">Академія</Link>
                         <span className="text-slate-500 font-bold">/</span>
-                        <Link to="/intensives" onClick={() => setMenuOpen(false)} className="text-cyan-400 hover:text-white transition-colors font-bold">Літні Інтенсиви</Link>
+                        <Link to="/intensives" onClick={() => setMenuOpen(false)} className="text-orange-400 hover:text-orange-300 hover:bg-orange-500/10 transition-colors font-bold flex items-center gap-1.5 border border-orange-500/50 rounded-full px-3 py-1">🏖️ Літні Інтенсиви</Link>
                     </div>
                     <a href="#!" onClick={() => setMenuOpen(false)} className="mt-2 text-center bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold py-2.5 px-4 rounded-xl text-sm">
                         Записатись на пробне
