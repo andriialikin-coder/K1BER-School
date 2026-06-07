@@ -376,7 +376,7 @@ const COURSES = [
     }
 ];
 
-const Courses = ({ slotsData, coursePrices, courseDetails, onOpenProgram }: { slotsData: Record<string, number>, coursePrices?: Record<string, number>, courseDetails?: Record<string, any>, onOpenProgram?: (slug: string) => void }) => {
+const Courses = ({ slotsData, coursePrices, courseDetails, onOpenProgram, onCourseView }: { slotsData: Record<string, number>, coursePrices?: Record<string, number>, courseDetails?: Record<string, any>, onOpenProgram?: (slug: string) => void, onCourseView?: (title: string) => void }) => {
     const scrollRef = React.useRef<HTMLDivElement>(null);
 
     const scroll = (direction: 'left' | 'right') => {
@@ -496,7 +496,7 @@ const Courses = ({ slotsData, coursePrices, courseDetails, onOpenProgram }: { sl
                                 {/* Кнопка */}
                                 <div className="mt-4 pt-4 border-t border-slate-800/50 flex flex-col gap-2">
                                     <button
-                                        onClick={(e) => { e.preventDefault(); onOpenProgram && onOpenProgram(course.slug); }}
+                                        onClick={(e) => { e.preventDefault(); onCourseView && onCourseView(course.title); onOpenProgram && onOpenProgram(course.slug); }}
                                         className="w-full inline-flex items-center justify-center gap-2 text-sm font-bold text-slate-300 hover:text-white py-2.5 px-4 rounded-xl border border-slate-700 hover:border-slate-500 hover:bg-slate-800 transition-all duration-200"
                                     >
                                         Подивитись програму навчань
@@ -523,7 +523,7 @@ const Courses = ({ slotsData, coursePrices, courseDetails, onOpenProgram }: { sl
 };
 
 // 5. КОМПОНЕНТ: ФОРМА ЗАХВАТУ ЛІДІВ (Форма -> Наша CRM)
-const RegisterForm = ({ onAuthSuccess, slotsData, fetchSlots, behaviorLogRef }: { onAuthSuccess?: (name: string, course: string, phone: string, chosenTime?: string) => void; slotsData: Record<string, number>; fetchSlots: () => void; behaviorLogRef?: React.MutableRefObject<Record<string, number>>; }) => {
+const RegisterForm = ({ onAuthSuccess, slotsData, fetchSlots, behaviorLogRef }: { onAuthSuccess?: (name: string, course: string, phone: string, chosenTime?: string) => void; slotsData: Record<string, number>; fetchSlots: () => void; behaviorLogRef?: React.MutableRefObject<any>; }) => {
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [tab, setTab] = useState<'new' | 'existing'>('new');
@@ -760,7 +760,12 @@ const RegisterForm = ({ onAuthSuccess, slotsData, fetchSlots, behaviorLogRef }: 
                                     <select
                                         required
                                         value={formData.course}
-                                        onChange={e => setFormData({ ...formData, course: e.target.value })}
+                                        onChange={e => {
+                                            setFormData({ ...formData, course: e.target.value });
+                                            if (behaviorLogRef && behaviorLogRef.current && behaviorLogRef.current.interactions) {
+                                                behaviorLogRef.current.interactions.course_selection_history.push(e.target.value);
+                                            }
+                                        }}
                                         className="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-cyan-500 text-white appearance-none"
                                     >
                                         <option value="" disabled>Оберіть напрямок...</option>
@@ -783,11 +788,14 @@ const RegisterForm = ({ onAuthSuccess, slotsData, fetchSlots, behaviorLogRef }: 
 };
 
 // 6. КОМПОНЕНТ: БЛОК FAQ (Заділ під AI Visibility)
-const FAQ = () => {
+const FAQ = ({ onFaqToggle }: { onFaqToggle?: (question: string) => void }) => {
     const [openIndex, setOpenIndex] = useState<number | null>(null);
 
-    const toggleFaq = (index: number) => {
+    const toggleFaq = (index: number, question: string) => {
         setOpenIndex(openIndex === index ? null : index);
+        if (openIndex !== index && onFaqToggle) {
+            onFaqToggle(question);
+        }
     };
 
     const faqs = [
@@ -823,7 +831,7 @@ const FAQ = () => {
                         return (
                             <div
                                 key={i}
-                                onClick={() => toggleFaq(i)}
+                                onClick={() => toggleFaq(i, item.q)}
                                 className={`cursor-pointer bg-white/5 backdrop-blur-md border rounded-2xl transition-all duration-300 p-5 md:p-6 ${isOpen ? 'border-blue-500/50 bg-white/10' : 'border-white/10 hover:border-white/20'}`}
                             >
                                 <div className="flex justify-between items-center gap-4">
@@ -1304,13 +1312,18 @@ export default function LandingPage() {
     const [courseDetails, setCourseDetails] = useState<Record<string, any>>({});
     const [viewingProgramFor, setViewingProgramFor] = useState<string | null>(null);
 
-    const behaviorLogRef = React.useRef<Record<string, number>>({
-        hero: 0,
-        about: 0,
-        courses: 0,
-        "booking-form": 0,
-        faq: 0,
-        contacts: 0
+    const behaviorLogRef = React.useRef<any>({
+        device: window.innerWidth < 768 ? 'mobile' : 'desktop',
+        max_scroll_depth: 0,
+        time_per_section: {
+            hero: 0, about: 0, courses: 0, "booking-form": 0, faq: 0, contacts: 0
+        },
+        interactions: {
+            viewed_courses: [] as string[],
+            opened_faq: [] as string[],
+            course_selection_history: [] as string[],
+            focus_duration_seconds: { name: 0, phone: 0 }
+        }
     });
     const activeSectionRef = React.useRef<string | null>(null);
     const lastTickRef = React.useRef<number>(Date.now());
@@ -1399,8 +1412,8 @@ export default function LandingPage() {
 
             if (!isIdle && !document.hidden && activeSectionRef.current) {
                 const section = activeSectionRef.current;
-                if (behaviorLogRef.current[section] !== undefined) {
-                    behaviorLogRef.current[section] += delta / 1000;
+                if (behaviorLogRef.current.time_per_section[section] !== undefined) {
+                    behaviorLogRef.current.time_per_section[section] += delta / 1000;
                 }
             }
         }, 1000);
@@ -1419,6 +1432,18 @@ export default function LandingPage() {
             }
         }, { threshold: [0.1, 0.5, 0.8] });
 
+        const handleScroll = () => {
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            if (docHeight > 0) {
+                const scrollPercent = Math.min(100, Math.round((scrollTop / docHeight) * 100));
+                if (scrollPercent > behaviorLogRef.current.max_scroll_depth) {
+                    behaviorLogRef.current.max_scroll_depth = scrollPercent;
+                }
+            }
+        };
+        window.addEventListener('scroll', handleScroll, { passive: true });
+
         const sections = ['hero', 'about', 'courses', 'booking-form', 'faq', 'contacts'];
         setTimeout(() => {
             sections.forEach(id => {
@@ -1431,6 +1456,7 @@ export default function LandingPage() {
             clearInterval(interval);
             observer.disconnect();
             events.forEach(e => window.removeEventListener(e, resetIdle));
+            window.removeEventListener('scroll', handleScroll);
             clearTimeout(idleTimer);
         };
     }, []);
@@ -1448,14 +1474,30 @@ export default function LandingPage() {
             <Header />
             <Hero />
             <PainPoints />
-            <Courses slotsData={slotsData} coursePrices={coursePrices} courseDetails={courseDetails} onOpenProgram={setViewingProgramFor} />
+            <Courses 
+                slotsData={slotsData} 
+                coursePrices={coursePrices} 
+                courseDetails={courseDetails} 
+                onOpenProgram={setViewingProgramFor} 
+                onCourseView={(title) => {
+                    if (!behaviorLogRef.current.interactions.viewed_courses.includes(title)) {
+                        behaviorLogRef.current.interactions.viewed_courses.push(title);
+                    }
+                }} 
+            />
             <RegisterForm
                 onAuthSuccess={(name, course, phone, chosenTime) => setAuthData({ name, course, phone, chosenTime })}
                 slotsData={slotsData}
                 fetchSlots={fetchSlots}
                 behaviorLogRef={behaviorLogRef}
             />
-            <FAQ />
+            <FAQ 
+                onFaqToggle={(q) => {
+                    if (!behaviorLogRef.current.interactions.opened_faq.includes(q)) {
+                        behaviorLogRef.current.interactions.opened_faq.push(q);
+                    }
+                }}
+            />
             <ContactsAndMap />
             <footer className="w-full bg-slate-950 py-6 text-center border-t border-slate-900">
                 <p className="text-slate-700 text-xs">
