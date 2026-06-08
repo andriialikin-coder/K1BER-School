@@ -9,11 +9,11 @@ const tracks = [
     icon: <Gamepad2 className="w-8 h-8 text-cyan-400" />,
     color: 'border-cyan-500/30',
     modules: [
-      { name: 'Модуль 1: Кібер-Логіка & Scratch Jr', desc: 'Розвиваємо алгоритмічне мислення без коду. Створюємо перші інтерактивні анімації.' },
-      { name: 'Модуль 2: Конструювання в Kodu Game Lab', desc: 'Вивчаємо 3D-простір, логіку взаємодії об\'єктів та створення перших бойових арен.' },
-      { name: 'Модуль 3: Візуальне програмування в Google Blockly', desc: 'Перехід від блоків до розуміння синтаксису справжніх мов.' },
-      { name: 'Модуль 4: Архітектура світів у Minecraft Education', desc: 'Проєктування складних автоматизованих систем і цілих міст за допомогою Redstone-логіки.' },
-      { name: 'Модуль 5: Скриптинг у Roblox Studio', desc: 'Вивчення бази мови Lua. Створення мультиплеєрних карт та ігрових механік.' }
+      { name: 'Модуль 1: Кібер-Логіка', tech: 'Scratch Jr', desc: 'Розвиваємо алгоритмічне мислення без коду. Створюємо перші інтерактивні анімації.', result: 'Перші інтерактивні анімації та ігри.' },
+      { name: 'Модуль 2: Конструювання світів', tech: 'Kodu Game Lab', desc: 'Вивчаємо 3D-простір та логіку взаємодії об\'єктів.', result: 'Власні 3D бойові арени.' },
+      { name: 'Модуль 3: Візуальне програмування', tech: 'Google Blockly', desc: 'Перехід від блоків до синтаксису справжніх мов.', result: 'Розуміння принципів написання коду.' },
+      { name: 'Модуль 4: Архітектура світів', tech: 'Minecraft', desc: 'Проєктування складних систем за допомогою Redstone-логіки.', result: 'Автоматизовані ферми та міста.' },
+      { name: 'Модуль 5: Скриптинг та логіка', tech: 'Roblox Lua', desc: 'Вивчення бази мови Lua та створення механік.', result: 'Власна мультиплеєрна гра.' }
     ]
   },
   {
@@ -23,11 +23,11 @@ const tracks = [
     icon: <Code2 className="w-8 h-8 text-orange-400" />,
     color: 'border-orange-500/30',
     modules: [
-      { name: 'Модуль 1: CodeMonkey: Старт алгоритмів', desc: 'Ігрова прокачка навичок написання текстового коду.' },
-      { name: 'Модуль 2: Основи Python: Синтаксис & Логіка', desc: 'Перехід на одну з найбільш затребуваних мов світу. Змінні, цикли, функції.' },
-      { name: 'Модуль 3: Розробка автономних Telegram-ботів', desc: 'Створення інтерактивних ботів на Python, робота з API та зовнішніми даними.' },
-      { name: 'Модуль 4: Штучний Інтелект & Prompt Engineering', desc: 'Як використовувати нейромережі (ChatGPT, Midjourney) для генерації коду, графіки та автоматизації рутини.' },
-      { name: 'Модуль 5: Базовий Fullstack: Свій перший веб-додаток', desc: 'Як пов\'язати логіку Python з візуальним інтерфейсом на екрані.' }
+      { name: 'Модуль 1: Старт алгоритмів', tech: 'CodeMonkey', desc: 'Ігрова прокачка навичок написання текстового коду.', result: 'Вміння писати прості скрипти.' },
+      { name: 'Модуль 2: Синтаксис & Логіка', tech: 'Python', desc: 'Перехід на одну з найбільш затребуваних мов світу.', result: 'Розуміння змінних, циклів та функцій.' },
+      { name: 'Модуль 3: Автономні боти', tech: 'Telegram API', desc: 'Робота з API та зовнішніми даними.', result: 'Повноцінний Telegram-бот для вирішення завдань.' },
+      { name: 'Модуль 4: Штучний Інтелект', tech: 'ChatGPT', desc: 'Генерація коду, графіки та автоматизація рутини.', result: 'Навички роботи з нейромережами (Prompt Engineering).' },
+      { name: 'Модуль 5: Базовий Fullstack', tech: 'Web UI', desc: 'Як пов\'язати логіку Python з візуальним інтерфейсом.', result: 'Власний робочий веб-додаток.' }
     ]
   },
   {
@@ -37,10 +37,10 @@ const tracks = [
     icon: <Paintbrush className="w-8 h-8 text-purple-400" />,
     color: 'border-purple-500/30',
     modules: [
-      { name: 'Модуль 1: Основи Figma: Проєктування інтерфейсів', desc: 'Створюємо дизайн-макет свого першого мобільного додатка та сайту.' },
-      { name: 'Модуль 2: Чарівний Photoshop: Графіка та колажі', desc: 'Робота з шарами, масками, кольором. Створення професійного візуалу для вебу.' },
-      { name: 'Модуль 3: UI/UX розробка сайтів', desc: 'Як зробити інтерфейс зручним для користувача. Сітки, шрифти, композиція.' },
-      { name: 'Модуль 4: 2D-Анімація & Відеомонтаж', desc: 'Створення динамічного контенту, склейка, звукові ефекти для YouTube і соцмереж.' }
+      { name: 'Модуль 1: Проєктування інтерфейсів', tech: 'Figma', desc: 'Створюємо дизайн-макет свого першого мобільного додатка або сайту.', result: 'Готовий дизайн мобільного додатка або сайту.' },
+      { name: 'Модуль 2: Графіка та колажі', tech: 'Photoshop', desc: 'Робота з шарами, масками, кольором.', result: 'Професійний візуал для вебу.' },
+      { name: 'Модуль 3: Розробка сайтів', tech: 'UI/UX', desc: 'Як зробити інтерфейс зручним для користувача.', result: 'Грамотний прототип із сітками та шрифтами.' },
+      { name: 'Модуль 4: 2D-Анімація & Монтаж', tech: 'Video/Motion', desc: 'Створення динамічного контенту та звукових ефектів.', result: 'Готовий відеоролик для YouTube і соцмереж.' }
     ]
   },
   {
@@ -50,9 +50,9 @@ const tracks = [
     icon: <ShieldCheck className="w-8 h-8 text-emerald-400" />,
     color: 'border-emerald-500/30',
     modules: [
-      { name: 'Модуль 1: Проєктування додатків у Thunkable', desc: 'Створення та компіляція реального софту під iOS та Android без складного бекенду.' },
-      { name: 'Модуль 2: Digital Hygiene & Cybersecurity', desc: 'Як захистити свої дані, паролі, криптогаманці. Розуміння мережевих загроз і фішингу.' },
-      { name: 'Модуль 3: Вступ до Баз Даних & Структури', desc: 'Як зберігаються дані у великих додатках (знайомство з SQL логікою).' }
+      { name: 'Модуль 1: Проєктування додатків', tech: 'Thunkable', desc: 'Створення софту під iOS та Android без складного бекенду.', result: 'Робочий мобільний додаток.' },
+      { name: 'Модуль 2: Digital Hygiene', tech: 'Cybersecurity', desc: 'Розуміння мережевих загроз та фішингу.', result: 'Вміння захищати дані та протистояти хакерам.' },
+      { name: 'Модуль 3: Вступ до Баз Даних', tech: 'SQL', desc: 'Як зберігаються дані у великих додатках.', result: 'Розуміння архітектури баз даних.' }
     ]
   }
 ];
@@ -118,14 +118,42 @@ export function BentoModules() {
 
               {/* Раскрывающийся контент (Плавная анимация через grid) */}
               <div 
-                className={`grid transition-all duration-500 ease-in-out ${isActive ? 'grid-rows-[1fr] opacity-100 mt-8' : 'grid-rows-[0fr] opacity-0 mt-0'}`}
+                className={`grid transition-all duration-500 ease-in-out ${isActive ? 'grid-rows-[1fr] opacity-100 mt-6' : 'grid-rows-[0fr] opacity-0 mt-0'}`}
               >
                 <div className="overflow-hidden">
-                  <div className="flex flex-col gap-3 pt-4 border-t border-slate-800/60">
+                  <div className="flex flex-col pt-2 border-t border-slate-800/60">
                     {track.modules.map((mod, idx) => (
-                      <div key={idx} className="flex flex-col bg-slate-900/40 rounded-xl p-4 border border-slate-800/40 hover:bg-slate-800/60 transition-colors">
-                        <span className="text-white font-semibold text-base md:text-lg mb-1">{mod.name}</span>
-                        <span className="text-slate-400 text-sm">{mod.desc}</span>
+                      <div key={idx} className="flex flex-col py-5 border-b border-white/5 last:border-0 hover:bg-slate-800/20 transition-colors px-3 -mx-3 rounded-xl">
+                        
+                        {/* Заголовок и Бейдж */}
+                        <div className="flex flex-wrap items-center gap-3 mb-2">
+                          <span className="text-white font-semibold text-base md:text-lg">
+                            {mod.name}
+                          </span>
+                          <span 
+                            className="text-[11px] uppercase tracking-wider font-bold px-3 py-1 rounded-full border border-blue-500/20"
+                            style={{ background: 'rgba(59, 130, 246, 0.15)', color: '#60A5FA' }}
+                          >
+                            {mod.tech}
+                          </span>
+                        </div>
+
+                        {/* Описание процесса */}
+                        <span className="text-slate-400 text-sm md:text-[15px] leading-relaxed mb-4">
+                          {mod.desc}
+                        </span>
+
+                        {/* Яркий акцент на Результат */}
+                        <div className="bg-slate-900/50 p-3.5 rounded-lg border border-slate-800/50 inline-flex">
+                          <span className="text-sm font-medium text-slate-300">
+                            <span className="text-orange-500 font-bold mr-2 inline-flex items-center gap-1.5">
+                              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                              Результат:
+                            </span>
+                            {mod.result}
+                          </span>
+                        </div>
+
                       </div>
                     ))}
                   </div>
