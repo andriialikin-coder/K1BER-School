@@ -1,4 +1,4 @@
-import { Cpu, Rocket, Gamepad2, Users, Layers } from 'lucide-react';
+import { Cpu, Rocket, Gamepad2, Users, Layers, Sparkles } from 'lucide-react';
 
 const features = [
   {
@@ -40,12 +40,21 @@ const features = [
 
 export function BentoGrid() {
   return (
-    <div className="w-full max-w-7xl mx-auto px-6 py-24 relative z-10">
-      <div className="text-center mb-16">
-        <h2 className="text-3xl md:text-5xl font-black text-white tracking-tight mb-4" style={{ fontFamily: "'Outfit', sans-serif" }}>
-          Що отримає дитина?
+    <div className="w-full max-w-7xl mx-auto px-6 py-16 md:py-20 relative z-10">
+      <div className="text-center mb-16 relative">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-400 text-sm font-bold mb-6 shadow-[0_0_15px_rgba(249,115,22,0.15)] uppercase tracking-wider">
+          <Sparkles className="w-4 h-4" />
+          <span>Справжні навички</span>
+        </div>
+        <h2 className="text-4xl md:text-6xl font-black tracking-tight mb-6" style={{ fontFamily: "'Outfit', sans-serif" }}>
+          <span className="text-transparent bg-clip-text bg-gradient-to-b from-white via-slate-100 to-slate-400">
+            Що отримає{' '}
+          </span>
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-500 drop-shadow-[0_0_20px_rgba(249,115,22,0.4)]">
+            дитина?
+          </span>
         </h2>
-        <p className="text-slate-400 text-lg md:text-xl max-w-2xl mx-auto font-medium">
+        <p className="text-slate-400 text-lg md:text-xl max-w-2xl mx-auto font-medium leading-relaxed">
           Ми перетворюємо захоплення іграми на реальні навички для майбутнього
         </p>
       </div>

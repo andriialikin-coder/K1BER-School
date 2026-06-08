@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Gamepad2, Code2, Paintbrush, ShieldCheck, ChevronDown } from 'lucide-react';
+import { Gamepad2, Code2, Paintbrush, ShieldCheck, ChevronDown, MapPin } from 'lucide-react';
 
 const tracks = [
   {
@@ -65,12 +65,21 @@ export function BentoModules() {
   };
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-6 py-20 relative z-10">
-      <div className="text-center mb-16">
-        <h2 className="text-3xl md:text-5xl font-black text-white tracking-tight mb-4" style={{ fontFamily: "'Outfit', sans-serif" }}>
-          Програма навчання
+    <div className="w-full max-w-7xl mx-auto px-6 py-12 md:py-16 relative z-10">
+      <div className="text-center mb-16 relative">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-sm font-bold mb-6 shadow-[0_0_15px_rgba(6,182,212,0.15)] uppercase tracking-wider">
+          <MapPin className="w-4 h-4" />
+          <span>Шлях до професії</span>
+        </div>
+        <h2 className="text-4xl md:text-6xl font-black tracking-tight mb-6" style={{ fontFamily: "'Outfit', sans-serif" }}>
+          <span className="text-transparent bg-clip-text bg-gradient-to-b from-white via-slate-100 to-slate-400">
+            Програма{' '}
+          </span>
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 drop-shadow-[0_0_20px_rgba(6,182,212,0.4)]">
+            навчання
+          </span>
         </h2>
-        <p className="text-slate-400 text-lg md:text-xl max-w-2xl mx-auto font-medium">
+        <p className="text-slate-400 text-lg md:text-xl max-w-2xl mx-auto font-medium leading-relaxed">
           4 головних треки для побудови успішної кар'єри в IT
         </p>
       </div>
