@@ -353,7 +353,7 @@ ${JSON.stringify(lead.behavior_log, null, 2)}
 ⚡ ТРИГЕР: (Знижка, офлайн в центрі Сум, залишилося 1 місце).
 💬 СКРИПТ: (Готова фраза для дзвінка. Завжди починай з ПОДЯКИ за залишену заявку).`;
 
-          const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=${apiKey.trim()}`, {
+          const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey.trim()}`, {
               method: "POST",
               headers: {
                   "Content-Type": "application/json"
