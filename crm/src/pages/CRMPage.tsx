@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { createClient } from '@supabase/supabase-js';
+import { supabase } from '../lib/supabase';
 import {
   Users, Phone, TrendingUp, Star, Search, RefreshCw,
   ChevronDown, Calendar, Database, Loader2, AlertCircle,
@@ -8,12 +8,8 @@ import {
 } from 'lucide-react';
 
 // ═══════════════════════════════════════════════
-//  SUPABASE CLIENT
+//  SUPABASE CLIENT (Imported from lib)
 // ═══════════════════════════════════════════════
-const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL!,
-  import.meta.env.VITE_SUPABASE_ANON_KEY!
-);
 
 // ═══════════════════════════════════════════════
 //  TYPES

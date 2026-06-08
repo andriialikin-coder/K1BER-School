@@ -133,7 +133,7 @@ export default function HomePage() {
         </h1>
 
         {/* Описание: Светлый сланец на темном фоне */}
-        <p className="text-slate-400 text-lg sm:text-xl md:text-2xl mt-4 max-w-2xl mx-auto leading-relaxed font-medium mb-12">
+        <p className="text-slate-400 text-lg sm:text-xl md:text-2xl mt-4 max-w-2xl mx-auto leading-relaxed font-medium mb-8">
           Інноваційний простір, де діти не просто проводять час за комп'ютером — вони{' '}
           <span className="text-slate-200 font-semibold border-b border-cyan-400/50 pb-0.5">
             пишуть код, створюють ігри
@@ -149,7 +149,7 @@ export default function HomePage() {
           {/* Кнопка 1: Записатись (акцентная неоновая) */}
           <a
             href="#register"
-            className="w-full sm:w-auto text-center font-bold py-4.5 px-9 rounded-2xl text-base md:text-lg text-white transition-all duration-300 transform hover:scale-[1.03] hover:-translate-y-0.5 active:scale-95 bg-cyan-950/30 backdrop-blur-md border border-cyan-500/50 hover:border-cyan-400 shadow-[0_0_20px_rgba(6,182,212,0.2)] hover:shadow-[0_0_35px_rgba(6,182,212,0.5)] cursor-pointer"
+            className="w-full sm:w-auto text-center font-bold py-4 px-9 rounded-2xl text-base md:text-lg text-white transition-all duration-300 transform hover:scale-[1.03] hover:-translate-y-0.5 active:scale-95 bg-cyan-950/30 backdrop-blur-md border border-cyan-500/50 hover:border-cyan-400 shadow-[0_0_20px_rgba(6,182,212,0.2)] hover:shadow-[0_0_35px_rgba(6,182,212,0.5)] cursor-pointer"
           >
             Записатись на пробне заняття
           </a>
@@ -157,7 +157,7 @@ export default function HomePage() {
           {/* Кнопка 2: Переглянути модулі (второстепенная с индиго-обводкой) */}
           <a
             href="#register"
-            className="w-full sm:w-auto text-center font-bold py-4.5 px-9 rounded-2xl text-base md:text-lg text-white transition-all duration-300 transform hover:scale-[1.03] hover:-translate-y-0.5 active:scale-95 bg-slate-900/30 backdrop-blur-md border border-slate-700 hover:border-purple-500/80 hover:bg-purple-950/10 shadow-[0_0_20px_rgba(168,85,247,0.05)] hover:shadow-[0_0_30px_rgba(168,85,247,0.2)] cursor-pointer"
+            className="w-full sm:w-auto text-center font-bold py-4 px-9 rounded-2xl text-base md:text-lg text-white transition-all duration-300 transform hover:scale-[1.03] hover:-translate-y-0.5 active:scale-95 bg-slate-900/30 backdrop-blur-md border border-slate-700 hover:border-purple-500/80 hover:bg-purple-950/10 shadow-[0_0_20px_rgba(168,85,247,0.05)] hover:shadow-[0_0_30px_rgba(168,85,247,0.2)] cursor-pointer"
           >
             Переглянути модулі
           </a>
@@ -166,7 +166,7 @@ export default function HomePage() {
       </div>
 
       {/* Статистика / Факты */}
-      <div className="w-full max-w-5xl mx-auto px-6 mt-16 md:mt-24 z-20 relative flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
+      <div className="w-full max-w-5xl mx-auto px-6 mt-10 md:mt-16 z-20 relative flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
         <div className="flex flex-col items-center text-center">
           <span className="text-4xl md:text-5xl font-black text-orange-500 mb-1 drop-shadow-[0_0_15px_rgba(249,115,22,0.5)]" style={{ fontFamily: "'Outfit', sans-serif" }}>7+</span>
           <span className="text-orange-400/90 font-bold text-xs md:text-sm tracking-widest uppercase">років на ринку<br className="hidden md:block" />України</span>
