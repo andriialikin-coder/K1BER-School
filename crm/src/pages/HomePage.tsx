@@ -168,24 +168,24 @@ export default function HomePage() {
       {/* Статистика / Факты */}
       <div className="w-full max-w-5xl mx-auto px-6 mt-10 md:mt-16 z-20 relative flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
         <div className="flex flex-col items-center text-center">
-          <span className="text-4xl md:text-5xl font-black text-orange-500 mb-1 drop-shadow-[0_0_15px_rgba(249,115,22,0.5)]" style={{ fontFamily: "'Outfit', sans-serif" }}>7+</span>
-          <span className="text-orange-400/90 font-bold text-xs md:text-sm tracking-widest uppercase">років на ринку<br className="hidden md:block" />України</span>
+          <span className="text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-br from-white to-slate-400 mb-2 drop-shadow-md" style={{ fontFamily: "'Outfit', sans-serif" }}>7+</span>
+          <span className="text-slate-400 font-medium text-xs md:text-sm tracking-widest uppercase">років на ринку<br className="hidden md:block" />України</span>
         </div>
         
         {/* Разделитель */}
-        <div className="hidden md:block w-px h-20 bg-gradient-to-b from-transparent via-orange-500/30 to-transparent"></div>
+        <div className="hidden md:block w-px h-20 bg-gradient-to-b from-transparent via-slate-500/30 to-transparent"></div>
 
         <div className="flex flex-col items-center text-center">
-          <span className="text-4xl md:text-5xl font-black text-orange-500 mb-1 drop-shadow-[0_0_15px_rgba(249,115,22,0.5)]" style={{ fontFamily: "'Outfit', sans-serif" }}>70+</span>
-          <span className="text-orange-400/90 font-bold text-xs md:text-sm tracking-widest uppercase">навчальних<br className="hidden md:block" />модулів</span>
+          <span className="text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-br from-white to-slate-400 mb-2 drop-shadow-md" style={{ fontFamily: "'Outfit', sans-serif" }}>70+</span>
+          <span className="text-slate-400 font-medium text-xs md:text-sm tracking-widest uppercase">навчальних<br className="hidden md:block" />модулів</span>
         </div>
 
         {/* Разделитель */}
-        <div className="hidden md:block w-px h-20 bg-gradient-to-b from-transparent via-orange-500/30 to-transparent"></div>
+        <div className="hidden md:block w-px h-20 bg-gradient-to-b from-transparent via-slate-500/30 to-transparent"></div>
 
         <div className="flex flex-col items-center text-center">
-          <span className="text-4xl md:text-5xl font-black text-orange-500 mb-1 drop-shadow-[0_0_15px_rgba(249,115,22,0.5)]" style={{ fontFamily: "'Outfit', sans-serif" }}>2000+</span>
-          <span className="text-orange-400/90 font-bold text-xs md:text-sm tracking-widest uppercase">задоволених<br className="hidden md:block" />студентів</span>
+          <span className="text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-br from-white to-slate-400 mb-2 drop-shadow-md" style={{ fontFamily: "'Outfit', sans-serif" }}>2000+</span>
+          <span className="text-slate-400 font-medium text-xs md:text-sm tracking-widest uppercase">задоволених<br className="hidden md:block" />студентів</span>
         </div>
       </div>
       </section>

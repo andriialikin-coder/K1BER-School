@@ -3,35 +3,55 @@ import { Cpu, Rocket, Gamepad2, Users, Layers, Sparkles } from 'lucide-react';
 const features = [
   {
     title: "Фундамент інженерного мислення",
-    desc: "Ми не вчимо просто «клікати мишкою». Дитина починає розуміти логіку алгоритмів, базову архітектуру проєктів та принципи кібербезпеки. Це не абстрактна шкільна інформатика, а реальний технічний скілсет для життя та майбутньої кар'єри.",
+    desc: (
+      <>
+        Ми не вчимо просто «клікати мишкою». Дитина починає розуміти <strong className="text-white font-semibold">логіку алгоритмів</strong>, базову <strong className="text-white font-semibold">архітектуру проєктів</strong> та принципи кібербезпеки. Це не абстрактна шкільна інформатика, а <strong className="text-white font-semibold">реальний технічний скілсет</strong> для життя.
+      </>
+    ),
     icon: <Cpu className="w-8 h-8 md:w-12 md:h-12 text-cyan-400" />,
     className: "md:col-span-2 md:row-span-2 bg-gradient-to-br from-slate-900 to-slate-950 border-cyan-500/20 hover:border-cyan-500/50",
     glow: "bg-cyan-500/10"
   },
   {
     title: "Еволюція від Споживача до Творця",
-    desc: "Замість безцільного скролінгу відео та ігор, дитина вчиться створювати власні IT-продукти. Ми направляємо ігрову залежність у продуктивне русло.",
+    desc: (
+      <>
+        Замість безцільного скролінгу відео та ігор, дитина вчиться створювати <strong className="text-white font-semibold">власні IT-продукти</strong>. Ми направляємо <strong className="text-white font-semibold">ігрову залежність</strong> у продуктивне русло.
+      </>
+    ),
     icon: <Rocket className="w-7 h-7 text-orange-400" />,
     className: "md:col-span-2 bg-gradient-to-br from-slate-900 to-slate-950 border-orange-500/20 hover:border-orange-500/50",
     glow: "bg-orange-500/10"
   },
   {
     title: "Гейміфіковані модулі без сухої теорії",
-    desc: "Навчання побудоване у форматі IT-спринтів на базі улюблених платформ дитини (Minecraft, Roblox, Python). Написав рядок коду — миттєво побачив результат.",
+    desc: (
+      <>
+        Навчання побудоване у форматі <strong className="text-white font-semibold">IT-спринтів</strong> на базі улюблених платформ (Minecraft, Roblox, Python). <strong className="text-white font-semibold">Написав рядок коду — миттєво побачив результат</strong>.
+      </>
+    ),
     icon: <Gamepad2 className="w-7 h-7 text-purple-400" />,
     className: "md:col-span-2 bg-gradient-to-br from-slate-900 to-slate-950 border-purple-500/20 hover:border-purple-500/50",
     glow: "bg-purple-500/10"
   },
   {
     title: "Ментори-практики, а не шкільні вчителі",
-    desc: "З резидентами Академії працюють молоді фахівці, які розмовляють з ними однією мовою. Вони проводять Code Review — допомагають знаходити та фіксити баги.",
+    desc: (
+      <>
+        З резидентами працюють <strong className="text-white font-semibold">молоді фахівці</strong>, які розмовляють з ними однією мовою. Вони проводять <strong className="text-white font-semibold">Code Review</strong> — допомагають знаходити та фіксити баги.
+      </>
+    ),
     icon: <Users className="w-7 h-7 text-blue-400" />,
     className: "md:col-span-2 bg-gradient-to-br from-slate-900 to-slate-950 border-blue-500/20 hover:border-blue-500/50",
     glow: "bg-blue-500/10"
   },
   {
     title: "Архітектура Soft & Hard Skills",
-    desc: "Ми прокачуємо критичне мислення, навичку працювати в команді та вміння самостійно доводити проєкти до релізу. Це монолітний фундамент для старту.",
+    desc: (
+      <>
+        Ми прокачуємо критичне мислення, <strong className="text-white font-semibold">навичку працювати в команді</strong> та вміння самостійно <strong className="text-white font-semibold">доводити проєкти до релізу</strong>.
+      </>
+    ),
     icon: <Layers className="w-7 h-7 text-emerald-400" />,
     className: "md:col-span-2 bg-gradient-to-br from-slate-900 to-slate-950 border-emerald-500/20 hover:border-emerald-500/50",
     glow: "bg-emerald-500/10"

@@ -404,22 +404,22 @@ const Courses = ({ slotsData, coursePrices, courseDetails, onOpenProgram, onCour
 
                                 {/* Кнопка */}
                                 <div className="mt-4 pt-4 border-t border-slate-800/50 flex flex-col gap-2">
-                                    <button
-                                        onClick={(e) => { e.preventDefault(); onCourseView && onCourseView(course.title); onOpenProgram && onOpenProgram(course.slug); }}
-                                        className="w-full inline-flex items-center justify-center gap-2 text-sm font-bold text-slate-300 hover:text-white py-2.5 px-4 rounded-xl border border-slate-700 hover:border-slate-500 hover:bg-slate-800 transition-all duration-200"
-                                    >
-                                        Подивитись програму навчань
-                                    </button>
                                     <a
                                         href="#register"
                                         onClick={(e) => handleSelectCourse(e, course.title)}
-                                        className={`w-full inline-flex items-center justify-center gap-2 text-sm font-bold text-white py-3 px-4 rounded-xl border ${course.btnBorder} transition-all duration-200`}
+                                        className="w-full inline-flex items-center justify-center gap-2 text-base font-bold text-white py-3 px-4 rounded-xl bg-orange-500 hover:bg-orange-600 shadow-[0_0_15px_rgba(249,115,22,0.3)] hover:shadow-[0_0_25px_rgba(249,115,22,0.5)] transition-all duration-300 transform hover:-translate-y-0.5 group"
                                     >
                                         Забронювати місце
                                         <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                                         </svg>
                                     </a>
+                                    <button
+                                        onClick={(e) => { e.preventDefault(); onCourseView && onCourseView(course.title); onOpenProgram && onOpenProgram(course.slug); }}
+                                        className="w-full inline-flex items-center justify-center gap-2 text-sm font-medium text-slate-400 hover:text-white py-2 px-4 underline-offset-4 hover:underline transition-all duration-200"
+                                    >
+                                        Подивитись програму навчань
+                                    </button>
                                 </div>
                             </div>
                         </div>
