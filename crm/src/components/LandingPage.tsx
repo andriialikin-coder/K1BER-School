@@ -1154,9 +1154,6 @@ export default function LandingPage() {
     const [isLoadingAuth, setIsLoadingAuth] = useState(true);
     const [slotsData, setSlotsData] = useState<Record<string, number>>({});
     const [coursePrices, setCoursePrices] = useState<Record<string, number>>({});
-    const [courseModules, setCourseModules] = useState<Record<string, any[]>>({});
-    const [courseDetails, setCourseDetails] = useState<Record<string, any>>({});
-    const [viewingProgramFor, setViewingProgramFor] = useState<string | null>(null);
 
     const behaviorLogRef = React.useRef<any>({
         device: window.innerWidth < 768 ? 'mobile' : 'desktop',
@@ -1185,18 +1182,8 @@ export default function LandingPage() {
                 acc[item.course_slug] = item.price;
                 return acc;
             }, {});
-            const modulesMap = data.reduce((acc: Record<string, any[]>, item) => {
-                acc[item.course_slug] = item.modules || [];
-                return acc;
-            }, {});
-            const detailsMap = data.reduce((acc: Record<string, any>, item) => {
-                acc[item.course_slug] = item.details || {};
-                return acc;
-            }, {});
             setSlotsData(slotsMap);
             setCoursePrices(pricesMap);
-            setCourseModules(modulesMap);
-            setCourseDetails(detailsMap);
         }
     };
 

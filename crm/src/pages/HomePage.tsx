@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { RegisterForm, Courses, FAQ, ContactsAndMap, ProgramModal, COURSES } from '../components/LandingPage';
 import { BentoGrid } from '../components/BentoGrid';
 import { BentoModules } from '../components/BentoModules';
