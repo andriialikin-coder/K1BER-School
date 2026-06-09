@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { supabase } from '../lib/supabase';
+import { ageGroups } from './BentoModules';
 
 // Header extracted to Layout.tsx
 
@@ -110,7 +111,6 @@ export const Courses = ({ slotsData = {}, coursePrices, courseDetails, onOpenPro
         e.preventDefault();
         const event = new CustomEvent('selectCourse', { detail: { course: `Інтенсив: ${courseTitle}` } });
         window.dispatchEvent(event);
-        document.getElementById('booking-form')?.scrollIntoView({ behavior: 'smooth' });
     };
 
     return (
@@ -542,11 +542,20 @@ export const RegisterForm = ({ sourceName = 'Інтенсив', onAuthSuccess, s
                                                 <option key={c.title} value={`Інтенсив: ${c.title}`}>{c.title}</option>
                                             ))}
                                         </optgroup>
+                                        <optgroup label="Академія (Групи та модулі)">
+                                            {ageGroups.map(group => (
+                                                <React.Fragment key={group.id}>
+                                                    {group.modules.map((m: any, i: number) => (
+                                                        <option key={`${group.id}-${i}`} value={`Академія: ${group.title} — ${m.name}`}>{m.name} ({group.title})</option>
+                                                    ))}
+                                                </React.Fragment>
+                                            ))}
+                                        </optgroup>
                                         {courseModules && Object.entries(courseModules).some(([_, mods]) => mods.length > 0) && (
-                                            <optgroup label="Академія (Модулі)">
+                                            <optgroup label="Інтенсиви (Модулі)">
                                                 {Object.entries(courseModules).map(([slug, mods]) => (
                                                     mods.length > 0 && mods.map((m: any, i: number) => (
-                                                        <option key={`${slug}-${i}`} value={`Академія: ${COURSES.find(c => c.slug === slug)?.title} — ${m.title}`}>{m.title} ({COURSES.find(c => c.slug === slug)?.title})</option>
+                                                        <option key={`${slug}-${i}`} value={`Інтенсив (Модуль): ${COURSES.find(c => c.slug === slug)?.title} — ${m.title}`}>{m.title} ({COURSES.find(c => c.slug === slug)?.title})</option>
                                                     ))
                                                 ))}
                                             </optgroup>
@@ -958,10 +967,9 @@ export const MiniCabinet = ({ clientName, registeredCourse, phone, initialTime }
 
 export const ProgramModal = ({ course, modules, onClose }: { course: any, modules: any[], onClose: () => void }) => {
     const handleSelectModule = (moduleTitle: string) => {
-        const event = new CustomEvent('selectCourse', { detail: { course: `Академія: ${course?.title} — ${moduleTitle}` } });
+        const event = new CustomEvent('selectCourse', { detail: { course: `Інтенсив (Модуль): ${course?.title} — ${moduleTitle}` } });
         window.dispatchEvent(event);
         onClose();
-        setTimeout(() => document.getElementById('booking-form')?.scrollIntoView({ behavior: 'smooth' }), 100);
     };
 
     return (
