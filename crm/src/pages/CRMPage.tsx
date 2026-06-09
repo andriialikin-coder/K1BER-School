@@ -511,10 +511,9 @@ ${JSON.stringify(lead.behavior_log, null, 2)}
             return [...prev, { course_slug: slug, ...updates } as CourseSlot];
         }
     });
-    const { error } = await supabase.from('course_slots').upsert({
-      course_slug: slug,
+    const { error } = await supabase.from('course_slots').update({
       ...updates
-    }, { onConflict: 'course_slug' });
+    }).eq('course_slug', slug);
     if (error) {
       console.error(error);
       fetchSlots(); // revert on error
@@ -555,12 +554,16 @@ ${JSON.stringify(lead.behavior_log, null, 2)}
      });
      
      // To DB
-     await supabase.from('course_slots').upsert({
-        course_slug: slug,
+     const { error } = await supabase.from('course_slots').update({
         price: formData.price,
         available_slots: formData.available_slots,
         details: newDetails
-     }, { onConflict: 'course_slug' });
+     }).eq('course_slug', slug);
+     
+     if (error) {
+       console.error("Помилка збереження курсу:", error);
+       alert("Помилка збереження: " + error.message);
+     }
      
      setEditingCourseFor(null);
   };
