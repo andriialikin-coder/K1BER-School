@@ -32,7 +32,7 @@ export const COURSES = [
         cardBorder: 'hover:border-blue-500/40',
     },
     {
-        slug: 'construct',
+        slug: 'construct-stitch',
         price: 5200,
         image: '/3.png',
         tag: 'Gamedev',
@@ -44,7 +44,7 @@ export const COURSES = [
         cardBorder: 'hover:border-violet-500/40',
     },
     {
-        slug: 'python',
+        slug: 'python-farm',
         price: 6000,
         image: '/8.png',
         tag: 'Code',
@@ -56,7 +56,7 @@ export const COURSES = [
         cardBorder: 'hover:border-yellow-500/40',
     },
     {
-        slug: 'mobile-ai',
+        slug: 'app-inventor',
         price: 5500,
         image: '/5.png',
         tag: 'Mobile & AI',
