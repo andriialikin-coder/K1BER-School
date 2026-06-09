@@ -270,9 +270,15 @@ export default function HomePage() {
             K1BER School
           </span>
         </h1>
-        <p className="text-xl sm:text-2xl md:text-3xl font-semibold text-slate-300 tracking-wide mb-6">
-          Школа програмування та цифрової творчості
-        </p>
+        <div className="mb-8 mt-3 relative z-10">
+          <div className="inline-flex items-center gap-3 px-6 py-2.5 rounded-full bg-slate-900/50 border border-cyan-500/20 shadow-[0_0_20px_rgba(6,182,212,0.1)] backdrop-blur-md hover:border-cyan-500/40 transition-colors duration-300 cursor-default">
+            <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_8px_rgba(6,182,212,0.8)]"></span>
+            <h2 className="text-xs sm:text-sm md:text-base font-bold tracking-[0.15em] sm:tracking-[0.2em] uppercase text-slate-200">
+              Школа програмування <span className="text-slate-600 font-black mx-1 sm:mx-2">/</span> <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400">Цифрової творчості</span>
+            </h2>
+            <span className="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.8)]"></span>
+          </div>
+        </div>
 
         {/* Описание: Светлый сланец на темном фоне */}
         <p className="text-slate-400 text-lg sm:text-xl md:text-2xl mt-4 max-w-2xl mx-auto leading-relaxed font-medium mb-8">
