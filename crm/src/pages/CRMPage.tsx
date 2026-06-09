@@ -392,8 +392,13 @@ ${JSON.stringify(lead.behavior_log, null, 2)}
               })
           });
           const data = await res.json();
-          if (res.ok && data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts && data.candidates[0].content.parts[0]) {
-              setAiPortraits(prev => ({ ...prev, [lead.id]: data.candidates[0].content.parts[0].text }));
+          if (res.ok && data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts) {
+              let responseText = data.candidates[0].content.parts.map((p: any) => p.text || "").join("");
+              if (data.candidates[0].finishReason && data.candidates[0].finishReason !== 'STOP') {
+                  responseText += `\n[Увага, текст обрізано! Причина: ${data.candidates[0].finishReason}]`;
+              }
+              setAiPortraits(prev => ({ ...prev, [lead.id]: responseText }));
+              console.log("Gemini API Full Response:", data);
           } else {
               console.error("Gemini API Error:", data);
               setAiPortraits(prev => ({ ...prev, [lead.id]: `Помилка: ${data.error?.message || "Невідома помилка Gemini"}` }));
