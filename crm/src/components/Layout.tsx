@@ -11,7 +11,7 @@ const Header = () => {
 
                 {/* Логотип */}
                 <Link to="/" className="flex items-center gap-2 group">
-                    <img src="/logo.webp" alt="K1BER Logo" className="w-9 h-9 rounded-lg shadow-lg shadow-cyan-500/30 group-hover:shadow-cyan-500/50 transition-all duration-300 object-contain" />
+                    <img src="/logo.webp" alt="K1BER Logo" className="w-12 h-12 md:w-14 md:h-14 drop-shadow-[0_0_15px_rgba(6,182,212,0.4)] group-hover:drop-shadow-[0_0_25px_rgba(6,182,212,0.6)] transition-all duration-300 object-contain" />
                     <span className="text-white font-black text-xl tracking-tight">
                         K1BER<span className="text-cyan-400">.</span>SCHOOL
                     </span>
