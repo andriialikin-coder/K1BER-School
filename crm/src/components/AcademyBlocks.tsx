@@ -573,12 +573,12 @@ export const FAQ = ({ onFaqToggle }: { onFaqToggle?: (question: string) => void 
                 {/* Ліва частина: Сова (Filin) */}
                 <div className="lg:col-span-5 flex justify-center relative">
                     {/* Глоу ефект за совою */}
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 md:w-64 h-48 md:h-64 bg-cyan-500/10 rounded-full blur-[60px] pointer-events-none" />
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 md:w-48 h-40 md:h-48 bg-cyan-500/10 rounded-full blur-[50px] pointer-events-none" />
                     
                     <img 
                         src="/filin.webp" 
                         alt="Мудра сова K1BER" 
-                        className="w-48 sm:w-64 md:w-80 lg:w-[450px] object-contain drop-shadow-[0_0_30px_rgba(6,182,212,0.3)] relative z-10 transform transition-transform duration-500 hover:scale-105 hover:-translate-y-2"
+                        className="w-40 sm:w-48 md:w-56 lg:w-[320px] object-contain drop-shadow-[0_0_20px_rgba(6,182,212,0.25)] relative z-10 transform transition-transform duration-500 hover:scale-105 hover:-translate-y-2"
                     />
                 </div>
 
