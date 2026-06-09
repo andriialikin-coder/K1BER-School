@@ -285,7 +285,7 @@ export const COURSES = [
     }
 ];
 
-const Courses = ({ slotsData, coursePrices, courseDetails, onOpenProgram, onCourseView }: { slotsData: Record<string, number>, coursePrices?: Record<string, number>, courseDetails?: Record<string, any>, onOpenProgram?: (slug: string) => void, onCourseView?: (title: string) => void }) => {
+export const Courses = ({ slotsData = {}, coursePrices, courseDetails, onOpenProgram, onCourseView }: { slotsData?: Record<string, number>, coursePrices?: Record<string, number>, courseDetails?: Record<string, any>, onOpenProgram?: (slug: string) => void, onCourseView?: (title: string) => void }) => {
     const scrollRef = React.useRef<HTMLDivElement>(null);
 
     const scroll = (direction: 'left' | 'right') => {
@@ -725,7 +725,7 @@ export const RegisterForm = ({ sourceName = 'Інтенсив', onAuthSuccess, s
 };
 
 // 6. КОМПОНЕНТ: БЛОК FAQ (Заділ під AI Visibility)
-const FAQ = ({ onFaqToggle }: { onFaqToggle?: (question: string) => void }) => {
+export const FAQ = ({ onFaqToggle }: { onFaqToggle?: (question: string) => void }) => {
     const [openIndex, setOpenIndex] = useState<number | null>(null);
 
     const toggleFaq = (index: number, question: string) => {
@@ -796,7 +796,7 @@ const FAQ = ({ onFaqToggle }: { onFaqToggle?: (question: string) => void }) => {
 };
 
 // 7. КОМПОНЕНТ: КОНТАКТИ ТА КАРТА (GEO / AI Visibility)
-const ContactsAndMap = () => (
+export const ContactsAndMap = () => (
     <section id="contacts" className="w-full bg-slate-900 text-white py-20 px-6 border-b border-slate-950">
         <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
 
@@ -1102,7 +1102,7 @@ const MiniCabinet = ({ clientName, registeredCourse, phone, initialTime, courseP
 
 // FloatingChat extracted to Layout.tsx
 
-const ProgramModal = ({ course, modules, onClose }: { course: any, modules: any[], onClose: () => void }) => {
+export const ProgramModal = ({ course, modules, onClose }: { course: any, modules: any[], onClose: () => void }) => {
     return (
         <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-[9999] flex items-center justify-center p-4">
             <div className="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-2xl max-h-[85vh] flex flex-col shadow-2xl relative overflow-hidden">
@@ -1319,39 +1319,12 @@ export default function LandingPage() {
         <>
             <Hero />
             <PainPoints />
-            <Courses 
-                slotsData={slotsData} 
-                coursePrices={coursePrices} 
-                courseDetails={courseDetails} 
-                onOpenProgram={setViewingProgramFor} 
-                onCourseView={(title) => {
-                    if (!behaviorLogRef.current.interactions.viewed_courses.includes(title)) {
-                        behaviorLogRef.current.interactions.viewed_courses.push(title);
-                    }
-                }} 
-            />
             <RegisterForm
                 onAuthSuccess={(name, course, phone, chosenTime) => setAuthData({ name, course, phone, chosenTime })}
                 slotsData={slotsData}
                 fetchSlots={fetchSlots}
                 behaviorLogRef={behaviorLogRef}
             />
-            <FAQ 
-                onFaqToggle={(q) => {
-                    if (!behaviorLogRef.current.interactions.opened_faq.includes(q)) {
-                        behaviorLogRef.current.interactions.opened_faq.push(q);
-                    }
-                }}
-            />
-            <ContactsAndMap />
-
-            {viewingProgramFor && (
-                <ProgramModal 
-                    course={COURSES.find(c => c.slug === viewingProgramFor)} 
-                    modules={courseModules[viewingProgramFor]} 
-                    onClose={() => setViewingProgramFor(null)} 
-                />
-            )}
         </>
     );
 }

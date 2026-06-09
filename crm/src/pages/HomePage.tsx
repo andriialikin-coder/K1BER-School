@@ -1,8 +1,11 @@
-import { RegisterForm } from '../components/LandingPage';
+import React, { useState } from 'react';
+import { RegisterForm, Courses, FAQ, ContactsAndMap, ProgramModal, COURSES } from '../components/LandingPage';
 import { BentoGrid } from '../components/BentoGrid';
 import { BentoModules } from '../components/BentoModules';
 
 export default function HomePage() {
+  const [viewingProgramFor, setViewingProgramFor] = useState<string | null>(null);
+
   return (
     <main className="w-full bg-slate-950 overflow-hidden">
       <section className="relative w-full min-h-[calc(100vh-72px)] flex flex-col items-center justify-center py-20 px-6">
@@ -192,7 +195,24 @@ export default function HomePage() {
 
       <BentoGrid />
       <BentoModules />
+      
+      <Courses 
+        slotsData={{}} 
+        onOpenProgram={setViewingProgramFor} 
+      />
+      
+      <FAQ />
+      <ContactsAndMap />
+
       <RegisterForm sourceName="Академія" />
+
+      {viewingProgramFor && (
+        <ProgramModal 
+            course={COURSES.find(c => c.slug === viewingProgramFor)} 
+            modules={[]} 
+            onClose={() => setViewingProgramFor(null)} 
+        />
+      )}
     </main>
   );
 }
