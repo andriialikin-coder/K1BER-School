@@ -571,14 +571,49 @@ export const FAQ = ({ onFaqToggle }: { onFaqToggle?: (question: string) => void 
             <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
                 
                 {/* Ліва частина: Сова (Filin) */}
-                <div className="lg:col-span-5 flex justify-center relative">
+                <div className="lg:col-span-5 flex justify-center relative group cursor-pointer">
                     {/* Глоу ефект за совою */}
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 md:w-48 h-40 md:h-48 bg-cyan-500/10 rounded-full blur-[50px] pointer-events-none" />
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 md:w-48 h-40 md:h-48 bg-cyan-500/10 rounded-full blur-[50px] pointer-events-none transition-all duration-700 group-hover:bg-cyan-500/20 group-hover:w-64 group-hover:h-64" />
                     
+                    {/* Неонові Кібер-Крила */}
+                    <svg 
+                        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] md:w-[450px] lg:w-[500px] h-[350px] md:h-[450px] lg:h-[500px] pointer-events-none z-0 opacity-0 group-hover:opacity-100 transition-all duration-700 ease-out scale-50 group-hover:scale-100" 
+                        viewBox="0 0 800 600"
+                    >
+                        <defs>
+                            <linearGradient id="neonWing" x1="0%" y1="100%" x2="100%" y2="0%">
+                                <stop offset="0%" stopColor="#06b6d4" /> {/* cyan-500 */}
+                                <stop offset="50%" stopColor="#3b82f6" /> {/* blue-500 */}
+                                <stop offset="100%" stopColor="#c084fc" /> {/* purple-400 */}
+                            </linearGradient>
+                            <filter id="glowWing">
+                                <feGaussianBlur stdDeviation="8" result="coloredBlur"/>
+                                <feMerge>
+                                    <feMergeNode in="coloredBlur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                        </defs>
+                        
+                        {/* Ліве крило */}
+                        <g filter="url(#glowWing)" fill="none" stroke="url(#neonWing)" strokeLinecap="round" className="origin-[400px_300px] transition-transform duration-700 ease-out -rotate-12 group-hover:-rotate-[25deg]">
+                            <path d="M 380 300 Q 250 250 100 100 Q 200 180 360 250" strokeWidth="6" />
+                            <path d="M 380 320 Q 280 280 150 180 Q 230 230 360 280" strokeWidth="5" />
+                            <path d="M 380 340 Q 300 320 200 250 Q 280 290 370 310" strokeWidth="4" />
+                        </g>
+
+                        {/* Праве крило */}
+                        <g filter="url(#glowWing)" fill="none" stroke="url(#neonWing)" strokeLinecap="round" className="origin-[400px_300px] transition-transform duration-700 ease-out rotate-12 group-hover:rotate-[25deg]">
+                            <path d="M 420 300 Q 550 250 700 100 Q 600 180 440 250" strokeWidth="6" />
+                            <path d="M 420 320 Q 520 280 650 180 Q 570 230 440 280" strokeWidth="5" />
+                            <path d="M 420 340 Q 500 320 600 250 Q 520 290 430 310" strokeWidth="4" />
+                        </g>
+                    </svg>
+
                     <img 
                         src="/filin.webp" 
                         alt="Мудра сова K1BER" 
-                        className="w-40 sm:w-48 md:w-56 lg:w-[320px] object-contain drop-shadow-[0_0_20px_rgba(6,182,212,0.25)] relative z-10 transform transition-transform duration-500 hover:scale-105 hover:-translate-y-2"
+                        className="w-40 sm:w-48 md:w-56 lg:w-[320px] object-contain drop-shadow-[0_0_20px_rgba(6,182,212,0.25)] relative z-10 transform transition-all duration-700 ease-out group-hover:scale-105 group-hover:-translate-y-4"
                     />
                 </div>
 
