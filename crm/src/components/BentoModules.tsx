@@ -66,7 +66,13 @@ export function BentoModules() {
 
   return (
     <div className="w-full max-w-7xl mx-auto px-6 py-12 md:py-16 relative z-10">
-      <div className="text-center mb-16 relative">
+      
+      {/* Builder Background */}
+      <div className="absolute top-[30%] md:top-[40%] right-[-5%] md:-right-10 lg:-right-20 w-64 md:w-[400px] lg:w-[500px] opacity-30 md:opacity-50 z-0 pointer-events-none transform rotate-[15deg] md:rotate-[20deg] mix-blend-luminosity">
+        <img src="/builder.webp" alt="Roblox Builder" className="w-full h-auto drop-shadow-[0_0_30px_rgba(6,182,212,0.4)] object-contain" />
+      </div>
+
+      <div className="text-center mb-16 relative z-10">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-sm font-bold mb-6 shadow-[0_0_15px_rgba(6,182,212,0.15)] uppercase tracking-wider">
           <MapPin className="w-4 h-4" />
           <span>Шлях до професії</span>
@@ -84,7 +90,7 @@ export function BentoModules() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start relative z-10">
         {tracks.map((track) => {
           const isActive = activeTrack === track.id;
           
