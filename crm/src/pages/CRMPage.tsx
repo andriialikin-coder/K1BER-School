@@ -511,12 +511,17 @@ ${JSON.stringify(lead.behavior_log, null, 2)}
             return [...prev, { course_slug: slug, ...updates } as CourseSlot];
         }
     });
-    const { error } = await supabase.from('course_slots').update({
+    const { data, error } = await supabase.from('course_slots').update({
       ...updates
-    }).eq('course_slug', slug);
+    }).eq('course_slug', slug).select();
+    
     if (error) {
-      console.error(error);
+      console.error("Supabase error on modules:", error);
+      alert("Помилка Supabase: " + error.message);
       fetchSlots(); // revert on error
+    } else if (!data || data.length === 0) {
+      alert(`Помилка: Рядок з slug '${slug}' не знайдено в базі! Оновлено 0 рядків.`);
+      fetchSlots();
     }
   };
 
@@ -554,15 +559,19 @@ ${JSON.stringify(lead.behavior_log, null, 2)}
      });
      
      // To DB
-     const { error } = await supabase.from('course_slots').update({
+     const { data, error } = await supabase.from('course_slots').update({
         price: formData.price,
         available_slots: formData.available_slots,
         details: newDetails
-     }).eq('course_slug', slug);
+     }).eq('course_slug', slug).select();
      
      if (error) {
        console.error("Помилка збереження курсу:", error);
        alert("Помилка збереження: " + error.message);
+     } else if (!data || data.length === 0) {
+       alert(`Помилка бази: Картку з slug '${slug}' не знайдено в таблиці. Оновлено 0 рядків.`);
+     } else {
+       console.log("Успішно збережено:", data);
      }
      
      setEditingCourseFor(null);
