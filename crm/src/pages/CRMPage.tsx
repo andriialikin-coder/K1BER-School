@@ -221,8 +221,8 @@ function CourseEditorModal({ slot, onClose, onSave }: any) {
     desc: slot.details?.desc || defaultData.desc,
     image: slot.details?.image || defaultData.image,
     ages: slot.details?.ages || defaultData.ages,
-    price: slot.price || defaultData.price,
-    available_slots: slot.available_slots || 0,
+    price: slot.price ?? defaultData.price,
+    available_slots: slot.available_slots ?? 0,
   });
 
   const [isSaving, setIsSaving] = useState(false);
@@ -823,7 +823,7 @@ ${JSON.stringify(lead.behavior_log, null, 2)}
                             <p className="text-slate-400 text-sm leading-relaxed flex-1 line-clamp-4">{course.desc}</p>
                             
                             <div className="mt-4 flex items-baseline gap-2">
-                                <span className="text-2xl font-black text-white">{slot.price || defCourse.price} ₴</span>
+                                <span className="text-2xl font-black text-white">{slot.price ?? defCourse.price} ₴</span>
                                 <span className="text-sm font-medium text-slate-500">/ інтенсив</span>
                             </div>
                             
