@@ -60,7 +60,7 @@ const features = [
 
 export function BentoGrid() {
   return (
-    <div className="w-full max-w-7xl mx-auto px-6 py-16 md:py-20 relative z-10">
+    <div id="about" className="w-full max-w-7xl mx-auto px-6 py-16 md:py-20 relative z-10">
       <div className="text-center mb-16 relative">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-400 text-sm font-bold mb-6 shadow-[0_0_15px_rgba(249,115,22,0.15)] uppercase tracking-wider">
           <Sparkles className="w-4 h-4" />
