@@ -1,59 +1,48 @@
-import { Cpu, Rocket, Gamepad2, Users, Layers, Sparkles } from 'lucide-react';
+import { Clock, Apple, Users, Gamepad2, Sparkles } from 'lucide-react';
 
 const features = [
   {
-    title: "Фундамент інженерного мислення",
+    title: "Зручний Формат",
     desc: (
       <>
-        Ми не вчимо просто «клікати мишкою». Дитина починає розуміти <strong className="text-white font-semibold">логіку алгоритмів</strong>, базову <strong className="text-white font-semibold">архітектуру проєктів</strong> та принципи кібербезпеки. Це не абстрактна шкільна інформатика, а <strong className="text-white font-semibold">реальний технічний скілсет</strong> для життя.
+        Заняття тривають 2 години, проходять по <strong className="text-white font-semibold">вихідних (Субота та Неділя)</strong>. Обов'язково включають інтерактивну перерву.
       </>
     ),
-    icon: <Cpu className="w-8 h-8 md:w-12 md:h-12 text-cyan-400" />,
-    className: "md:col-span-2 md:row-span-2 bg-gradient-to-br from-slate-900 to-slate-950 border-cyan-500/20 hover:border-cyan-500/50",
+    icon: <Clock className="w-8 h-8 md:w-10 md:h-10 text-cyan-400" />,
+    className: "md:col-span-1 bg-gradient-to-br from-slate-900 to-slate-950 border-cyan-500/20 hover:border-cyan-500/50",
     glow: "bg-cyan-500/10"
   },
   {
-    title: "Еволюція від Споживача до Творця",
+    title: "Турбота про дітей",
     desc: (
       <>
-        Замість безцільного скролінгу відео та ігор, дитина вчиться створювати <strong className="text-white font-semibold">власні IT-продукти</strong>. Ми направляємо <strong className="text-white font-semibold">ігрову залежність</strong> у продуктивне русло.
+        <strong className="text-white font-semibold">Безкоштовні корисні перекуси</strong> для дітей під час перерви. Ваша дитина завжди буде сита та з гарним настроєм.
       </>
     ),
-    icon: <Rocket className="w-7 h-7 text-orange-400" />,
-    className: "md:col-span-2 bg-gradient-to-br from-slate-900 to-slate-950 border-orange-500/20 hover:border-orange-500/50",
+    icon: <Apple className="w-8 h-8 md:w-10 md:h-10 text-orange-400" />,
+    className: "md:col-span-1 bg-gradient-to-br from-slate-900 to-slate-950 border-orange-500/20 hover:border-orange-500/50",
     glow: "bg-orange-500/10"
   },
   {
-    title: "Гейміфіковані модулі без сухої теорії",
+    title: "Фокус на кожному",
     desc: (
       <>
-        Навчання побудоване у форматі <strong className="text-white font-semibold">IT-спринтів</strong> на базі улюблених платформ (Minecraft, Roblox, Python). <strong className="text-white font-semibold">Написав рядок коду — миттєво побачив результат</strong>.
+        Максимальне наповнення групи — <strong className="text-white font-semibold">всього 13 дітей</strong>. Індивідуальний підхід до кожного майбутнього інженера.
       </>
     ),
-    icon: <Gamepad2 className="w-7 h-7 text-purple-400" />,
-    className: "md:col-span-2 bg-gradient-to-br from-slate-900 to-slate-950 border-purple-500/20 hover:border-purple-500/50",
+    icon: <Users className="w-8 h-8 md:w-10 md:h-10 text-purple-400" />,
+    className: "md:col-span-1 bg-gradient-to-br from-slate-900 to-slate-950 border-purple-500/20 hover:border-purple-500/50",
     glow: "bg-purple-500/10"
   },
   {
-    title: "Ментори-практики, а не шкільні вчителі",
+    title: "Кібермаркет (Гейміфікація)",
     desc: (
       <>
-        З резидентами працюють <strong className="text-white font-semibold">молоді фахівці</strong>, які розмовляють з ними однією мовою. Вони проводять <strong className="text-white font-semibold">Code Review</strong> — допомагають знаходити та фіксити баги.
+        Унікальна екосистема. За успіхи в навчанні діти заробляють <strong className="text-white font-semibold">«кіберони»</strong>, які двічі на рік витрачають на реальному ярмарку крутих гаджетів та мерчу.
       </>
     ),
-    icon: <Users className="w-7 h-7 text-blue-400" />,
-    className: "md:col-span-2 bg-gradient-to-br from-slate-900 to-slate-950 border-blue-500/20 hover:border-blue-500/50",
-    glow: "bg-blue-500/10"
-  },
-  {
-    title: "Архітектура Soft & Hard Skills",
-    desc: (
-      <>
-        Ми прокачуємо критичне мислення, <strong className="text-white font-semibold">навичку працювати в команді</strong> та вміння самостійно <strong className="text-white font-semibold">доводити проєкти до релізу</strong>.
-      </>
-    ),
-    icon: <Layers className="w-7 h-7 text-emerald-400" />,
-    className: "md:col-span-2 bg-gradient-to-br from-slate-900 to-slate-950 border-emerald-500/20 hover:border-emerald-500/50",
+    icon: <Gamepad2 className="w-8 h-8 md:w-10 md:h-10 text-emerald-400" />,
+    className: "md:col-span-1 bg-gradient-to-br from-slate-900 to-slate-950 border-emerald-500/20 hover:border-emerald-500/50",
     glow: "bg-emerald-500/10"
   }
 ];
@@ -71,22 +60,23 @@ export function BentoGrid() {
       <div className="text-center mb-16 relative">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-400 text-sm font-bold mb-6 shadow-[0_0_15px_rgba(249,115,22,0.15)] uppercase tracking-wider">
           <Sparkles className="w-4 h-4" />
-          <span>Справжні навички</span>
+          <span>Унікальні переваги</span>
         </div>
         <h2 className="text-4xl md:text-6xl font-black tracking-tight mb-6" style={{ fontFamily: "'Outfit', sans-serif" }}>
           <span className="text-transparent bg-clip-text bg-gradient-to-b from-white via-slate-100 to-slate-400">
-            Що отримає{' '}
+            Чому{' '}
           </span>
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-500 drop-shadow-[0_0_20px_rgba(249,115,22,0.4)]">
-            дитина?
+            ми?
           </span>
         </h2>
         <p className="text-slate-400 text-lg md:text-xl max-w-2xl mx-auto font-medium leading-relaxed">
-          Ми перетворюємо захоплення іграми на реальні навички для майбутнього
+          Те, що робить навчання у K1BER School дійсно особливим та комфортним
         </p>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-6 gap-6 auto-rows-fr">
+      {/* Сітка 2x2 для 4 карток */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 auto-rows-fr max-w-5xl mx-auto">
         {features.map((feature, i) => (
           <div 
             key={i} 
@@ -99,11 +89,11 @@ export function BentoGrid() {
               {feature.icon}
             </div>
             
-            <h3 className={`font-bold text-white mb-4 leading-snug ${i === 0 ? 'text-2xl md:text-3xl' : 'text-xl'}`} style={{ fontFamily: "'Montserrat', sans-serif" }}>
+            <h3 className="font-bold text-white mb-4 leading-snug text-2xl" style={{ fontFamily: "'Montserrat', sans-serif" }}>
               {feature.title}
             </h3>
             
-            <p className={`text-slate-400 leading-relaxed ${i === 0 ? 'text-base md:text-lg' : 'text-sm'}`}>
+            <p className="text-slate-400 leading-relaxed text-base md:text-lg">
               {feature.desc}
             </p>
           </div>
