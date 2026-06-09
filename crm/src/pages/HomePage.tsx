@@ -140,7 +140,7 @@ export default function HomePage() {
   }
 
   if (authData) {
-      return <MiniCabinet clientName={authData.name} registeredCourse={authData.course} phone={authData.phone} initialTime={authData.chosenTime} coursePrices={coursePrices} />;
+      return <MiniCabinet clientName={authData.name} registeredCourse={authData.course} phone={authData.phone} initialTime={authData.chosenTime} />;
   }
 
   return (
