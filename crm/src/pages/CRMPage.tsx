@@ -355,7 +355,26 @@ ${JSON.stringify(lead.behavior_log, null, 2)}
 ⚡ ТРИГЕР: (Знижка, офлайн в центрі Сум, залишилося 1 місце).
 💬 СКРИПТ: (Готова фраза для дзвінка. Завжди починай з ПОДЯКИ за залишену заявку).`;
 
-          const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey.trim()}`, {
+          let modelName = 'gemini-1.5-flash';
+          try {
+              const modelsRes = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey.trim()}`);
+              if (modelsRes.ok) {
+                  const modelsData = await modelsRes.json();
+                  const validModels = modelsData.models?.filter((m: any) => 
+                      m.supportedGenerationMethods?.includes('generateContent') && 
+                      m.name.includes('flash')
+                  ) || [];
+                  
+                  if (validModels.length > 0) {
+                      const exact = validModels.find((m: any) => m.name.includes('gemini-1.5-flash'));
+                      modelName = exact ? exact.name.replace('models/', '') : validModels[0].name.replace('models/', '');
+                  }
+              }
+          } catch (e) {
+              console.warn("Could not fetch dynamic models, using fallback", e);
+          }
+
+          const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey.trim()}`, {
               method: "POST",
               headers: {
                   "Content-Type": "application/json"

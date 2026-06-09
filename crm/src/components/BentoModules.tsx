@@ -59,7 +59,7 @@ export function BentoModules() {
   const activeData = ageGroups.find(g => g.id === activeGroup) || ageGroups[0];
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-6 py-12 md:py-16 relative z-10">
+    <section id="courses" className="w-full max-w-7xl mx-auto px-6 py-12 md:py-16 relative z-10">
       
       {/* Builder Background */}
       <div className="absolute top-[30%] md:top-[40%] right-[-5%] md:-right-10 lg:-right-20 w-64 md:w-[400px] lg:w-[500px] opacity-30 md:opacity-50 z-0 pointer-events-none transform rotate-[15deg] md:rotate-[20deg] mix-blend-luminosity">
@@ -161,6 +161,6 @@ export function BentoModules() {
 
         </div>
       </div>
-    </div>
+    </section>
   );
 }
