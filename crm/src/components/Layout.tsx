@@ -21,32 +21,22 @@ const Header = () => {
 
                 {/* Навігація — десктоп */}
                 <nav className="hidden md:flex items-center space-x-8 text-sm font-medium">
-                    <a href="/intensives#about" className="text-slate-400 hover:text-white transition-colors duration-200 relative group">
+                    <a href="/#about" className="text-slate-400 hover:text-white transition-colors duration-200 relative group">
                         Про нас
                         <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-cyan-400 group-hover:w-full transition-all duration-300" />
                     </a>
-                    <a href="/intensives#courses" className="text-slate-400 hover:text-white transition-colors duration-200 relative group">
+                    <a href="/#courses" className="text-slate-400 hover:text-white transition-colors duration-200 relative group">
                         Навчання
                         <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-cyan-400 group-hover:w-full transition-all duration-300" />
                     </a>
-                    <a href="/intensives#faq" className="text-slate-400 hover:text-white transition-colors duration-200 relative group">
+                    <a href="/#faq" className="text-slate-400 hover:text-white transition-colors duration-200 relative group">
                         FAQ
                         <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-cyan-400 group-hover:w-full transition-all duration-300" />
                     </a>
-                    <a href="/intensives#contacts" className="text-slate-400 hover:text-white transition-colors duration-200 relative group">
+                    <a href="/#contacts" className="text-slate-400 hover:text-white transition-colors duration-200 relative group">
                         Контакти
                         <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-cyan-400 group-hover:w-full transition-all duration-300" />
                     </a>
-                    <div className="flex items-center space-x-1">
-                        <Link to="/" className="text-white hover:text-cyan-400 transition-colors duration-200 font-bold relative group">
-                            Академія
-                            <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-cyan-400 group-hover:w-full transition-all duration-300" />
-                        </Link>
-                        <span className="text-slate-500 font-bold">/</span>
-                        <Link to="/intensives" className="text-orange-400 hover:text-orange-300 hover:bg-orange-500/10 transition-colors duration-200 font-bold border border-orange-500/50 rounded-full px-3 py-1 flex items-center gap-1.5 relative group">
-                            🏖️ Літні Інтенсиви
-                        </Link>
-                    </div>
                 </nav>
 
                 {/* CTA кнопка */}
@@ -77,15 +67,11 @@ const Header = () => {
             {/* Мобільне меню */}
             <div className={`md:hidden overflow-hidden transition-all duration-300 ${menuOpen ? 'max-h-80 border-t border-slate-800/60' : 'max-h-0'}`}>
                 <nav className="px-6 py-4 flex flex-col space-y-3 bg-slate-950/95">
-                    <a href="/intensives#about" onClick={() => setMenuOpen(false)} className="text-slate-300 hover:text-cyan-400 transition-colors py-1">Про нас</a>
-                    <a href="/intensives#courses" onClick={() => setMenuOpen(false)} className="text-slate-300 hover:text-cyan-400 transition-colors py-1">Навчання</a>
-                    <a href="/intensives#faq" onClick={() => setMenuOpen(false)} className="text-slate-300 hover:text-cyan-400 transition-colors py-1">FAQ</a>
-                    <a href="/intensives#contacts" onClick={() => setMenuOpen(false)} className="text-slate-300 hover:text-cyan-400 transition-colors py-1">📍 Контакти</a>
-                    <div className="flex items-center space-x-2 py-1">
-                        <Link to="/" onClick={() => setMenuOpen(false)} className="text-white hover:text-cyan-400 transition-colors font-bold">Академія</Link>
-                        <span className="text-slate-500 font-bold">/</span>
-                        <Link to="/intensives" onClick={() => setMenuOpen(false)} className="text-orange-400 hover:text-orange-300 hover:bg-orange-500/10 transition-colors font-bold flex items-center gap-1.5 border border-orange-500/50 rounded-full px-3 py-1">🏖️ Літні Інтенсиви</Link>
-                    </div>
+                    <a href="/#about" onClick={() => setMenuOpen(false)} className="text-slate-300 hover:text-cyan-400 transition-colors py-1">Про нас</a>
+                    <a href="/#courses" onClick={() => setMenuOpen(false)} className="text-slate-300 hover:text-cyan-400 transition-colors py-1">Навчання</a>
+                    <a href="/#faq" onClick={() => setMenuOpen(false)} className="text-slate-300 hover:text-cyan-400 transition-colors py-1">FAQ</a>
+                    <a href="/#contacts" onClick={() => setMenuOpen(false)} className="text-slate-300 hover:text-cyan-400 transition-colors py-1">📍 Контакти</a>
+
                     <a href="#register" onClick={() => setMenuOpen(false)} className="mt-2 text-center bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold py-2.5 px-4 rounded-xl text-sm">
                         Записатись на заняття
                     </a>

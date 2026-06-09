@@ -1,10 +1,147 @@
-import { useState } from 'react';
-import { RegisterForm, Courses, FAQ, ContactsAndMap, ProgramModal, COURSES } from '../components/LandingPage';
+import { useState, useEffect, useRef } from 'react';
+import { supabase } from '../lib/supabase';
+import { RegisterForm, Courses, FAQ, ContactsAndMap, ProgramModal, COURSES, MiniCabinet } from '../components/AcademyBlocks';
 import { BentoGrid } from '../components/BentoGrid';
 import { BentoModules } from '../components/BentoModules';
 
 export default function HomePage() {
   const [viewingProgramFor, setViewingProgramFor] = useState<string | null>(null);
+
+  const [authData, setAuthData] = useState<{ name: string, course: string, phone: string, chosenTime?: string } | null>(null);
+  const [isLoadingAuth, setIsLoadingAuth] = useState(true);
+  const [slotsData, setSlotsData] = useState<Record<string, number>>({});
+  const [coursePrices, setCoursePrices] = useState<Record<string, number>>({});
+
+  const behaviorLogRef = useRef<any>({
+      device: window.innerWidth < 768 ? 'mobile' : 'desktop',
+      max_scroll_depth: 0,
+      time_per_section: { hero: 0, about: 0, courses: 0, "booking-form": 0, faq: 0, contacts: 0 },
+      interactions: { viewed_courses: [] as string[], opened_faq: [] as string[], course_selection_history: [] as string[], focus_duration_seconds: { name: 0, phone: 0 } }
+  });
+  const activeSectionRef = useRef<string | null>(null);
+  const lastTickRef = useRef<number>(Date.now());
+
+  const fetchSlots = async () => {
+      const { data, error } = await supabase.from('course_slots').select('course_slug, available_slots, price, modules, details');
+      if (data && !error) {
+          const slotsMap = data.reduce((acc: Record<string, number>, item) => { acc[item.course_slug] = item.available_slots; return acc; }, {});
+          const pricesMap = data.reduce((acc: Record<string, number>, item) => { acc[item.course_slug] = item.price; return acc; }, {});
+          setSlotsData(slotsMap);
+          setCoursePrices(pricesMap);
+      }
+  };
+
+  useEffect(() => {
+      fetchSlots();
+      const fetchUserData = async () => {
+          const params = new URLSearchParams(window.location.search);
+          const urlPhone = params.get('phone');
+          const savedPhone = localStorage.getItem('kiberUserPhone');
+          const phone = urlPhone || savedPhone;
+
+          if (phone) {
+              try {
+                  const { data, error } = await supabase
+                      .from('leads')
+                      .select('name, course, chosen_time')
+                      .eq('phone', phone)
+                      .single();
+
+                  if (!error && data) {
+                      if (data.course) {
+                          setAuthData({ name: data.name || '', course: data.course || '', phone, chosenTime: data.chosen_time });
+                          localStorage.setItem('kiberUserPhone', phone);
+                      } else {
+                          localStorage.setItem('kiberUserPhone', phone);
+                      }
+                  } else if (savedPhone && !urlPhone) {
+                      localStorage.removeItem('kiberUserPhone');
+                  }
+              } catch (e) {
+                  console.error("Error fetching lead:", e);
+              }
+          }
+          setIsLoadingAuth(false);
+      };
+      fetchUserData();
+
+      let idleTimer: ReturnType<typeof setTimeout>;
+      let isIdle = false;
+
+      const resetIdle = () => {
+          isIdle = false;
+          clearTimeout(idleTimer);
+          lastTickRef.current = Date.now();
+          idleTimer = setTimeout(() => { isIdle = true; }, 30000);
+      };
+
+      const events = ['mousemove', 'scroll', 'keydown', 'touchstart'];
+      events.forEach(e => window.addEventListener(e, resetIdle, { passive: true }));
+      resetIdle();
+
+      const interval = setInterval(() => {
+          const now = Date.now();
+          const delta = now - lastTickRef.current;
+          lastTickRef.current = now;
+
+          if (!isIdle && !document.hidden && activeSectionRef.current) {
+              const section = activeSectionRef.current;
+              if (behaviorLogRef.current.time_per_section[section] !== undefined) {
+                  behaviorLogRef.current.time_per_section[section] += delta / 1000;
+              }
+          }
+      }, 1000);
+
+      const observer = new IntersectionObserver((entries) => {
+          let maxRatio = 0;
+          let currentActive: string | null = null;
+          entries.forEach(entry => {
+              if (entry.isIntersecting && entry.intersectionRatio > maxRatio) {
+                  maxRatio = entry.intersectionRatio;
+                  currentActive = entry.target.id;
+              }
+          });
+          if (currentActive) {
+              activeSectionRef.current = currentActive;
+          }
+      }, { threshold: [0.1, 0.5, 0.8] });
+
+      const handleScroll = () => {
+          const scrollTop = window.scrollY;
+          const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+          if (docHeight > 0) {
+              const scrollPercent = Math.min(100, Math.round((scrollTop / docHeight) * 100));
+              if (scrollPercent > behaviorLogRef.current.max_scroll_depth) {
+                  behaviorLogRef.current.max_scroll_depth = scrollPercent;
+              }
+          }
+      };
+      window.addEventListener('scroll', handleScroll, { passive: true });
+
+      const sections = ['hero', 'about', 'courses', 'booking-form', 'faq', 'contacts'];
+      setTimeout(() => {
+          sections.forEach(id => {
+              const el = document.getElementById(id);
+              if (el) observer.observe(el);
+          });
+      }, 500);
+
+      return () => {
+          clearInterval(interval);
+          observer.disconnect();
+          events.forEach(e => window.removeEventListener(e, resetIdle));
+          window.removeEventListener('scroll', handleScroll);
+          clearTimeout(idleTimer);
+      };
+  }, []);
+
+  if (isLoadingAuth) {
+      return <div className="w-full min-h-screen bg-slate-950 flex items-center justify-center text-white font-sans">Завантаження...</div>;
+  }
+
+  if (authData) {
+      return <MiniCabinet clientName={authData.name} registeredCourse={authData.course} phone={authData.phone} initialTime={authData.chosenTime} coursePrices={coursePrices} />;
+  }
 
   return (
     <main className="w-full bg-slate-950 overflow-hidden">
@@ -126,14 +263,16 @@ export default function HomePage() {
         
         {/* Заголовок: Белый, Крупный, Благородный Sans-serif */}
         <h1 
-          className="text-5xl sm:text-7xl md:text-8xl lg:text-[5.5rem] font-black tracking-tight leading-[1.05] mb-6 text-white"
+          className="text-5xl sm:text-7xl md:text-8xl lg:text-[5.5rem] font-black tracking-tight leading-[1.05] mb-2 text-white"
           style={{ fontFamily: "'Outfit', 'Inter', system-ui, sans-serif" }}
         >
-          IT-Академія <br />
           <span className="relative inline-block bg-gradient-to-r from-cyan-400 via-blue-400 to-indigo-400 bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(6,182,212,0.3)]">
             K1BER School
           </span>
         </h1>
+        <p className="text-xl sm:text-2xl md:text-3xl font-semibold text-slate-300 tracking-wide mb-6">
+          Школа програмування та цифрової творчості
+        </p>
 
         {/* Описание: Светлый сланец на темном фоне */}
         <p className="text-slate-400 text-lg sm:text-xl md:text-2xl mt-4 max-w-2xl mx-auto leading-relaxed font-medium mb-8">
@@ -159,7 +298,7 @@ export default function HomePage() {
 
           {/* Кнопка 2: Переглянути модулі (второстепенная с индиго-обводкой) */}
           <a
-            href="#register"
+            href="#modules"
             className="w-full sm:w-auto text-center font-bold py-4 px-9 rounded-2xl text-base md:text-lg text-white transition-all duration-300 transform hover:scale-[1.03] hover:-translate-y-0.5 active:scale-95 bg-slate-900/30 backdrop-blur-md border border-slate-700 hover:border-purple-500/80 hover:bg-purple-950/10 shadow-[0_0_20px_rgba(168,85,247,0.05)] hover:shadow-[0_0_30px_rgba(168,85,247,0.2)] cursor-pointer"
           >
             Переглянути модулі
@@ -194,17 +333,26 @@ export default function HomePage() {
       </section>
 
       <BentoGrid />
-      <BentoModules />
+      <div id="modules" className="w-full">
+        <BentoModules />
+      </div>
       
       <Courses 
-        slotsData={{}} 
+        slotsData={slotsData} 
+        coursePrices={coursePrices}
         onOpenProgram={setViewingProgramFor} 
       />
       
       <FAQ />
       <ContactsAndMap />
 
-      <RegisterForm sourceName="Академія" />
+      <RegisterForm 
+        sourceName="Академія" 
+        onAuthSuccess={(name, course, phone, chosenTime) => setAuthData({ name, course, phone, chosenTime })}
+        slotsData={slotsData}
+        fetchSlots={fetchSlots}
+        behaviorLogRef={behaviorLogRef}
+      />
 
       {viewingProgramFor && (
         <ProgramModal 
