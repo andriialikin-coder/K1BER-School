@@ -11,6 +11,7 @@ export default function HomePage() {
   const [isLoadingAuth, setIsLoadingAuth] = useState(true);
   const [slotsData, setSlotsData] = useState<Record<string, number>>({});
   const [coursePrices, setCoursePrices] = useState<Record<string, number>>({});
+  const [courseModules, setCourseModules] = useState<Record<string, any[]>>({});
 
   const behaviorLogRef = useRef<any>({
       device: window.innerWidth < 768 ? 'mobile' : 'desktop',
@@ -26,8 +27,10 @@ export default function HomePage() {
       if (data && !error) {
           const slotsMap = data.reduce((acc: Record<string, number>, item) => { acc[item.course_slug] = item.available_slots; return acc; }, {});
           const pricesMap = data.reduce((acc: Record<string, number>, item) => { acc[item.course_slug] = item.price; return acc; }, {});
+          const modulesMap = data.reduce((acc: Record<string, any[]>, item) => { acc[item.course_slug] = item.modules || []; return acc; }, {});
           setSlotsData(slotsMap);
           setCoursePrices(pricesMap);
+          setCourseModules(modulesMap);
       }
   };
 
@@ -355,6 +358,7 @@ export default function HomePage() {
         sourceName="Академія" 
         onAuthSuccess={(name, course, phone, chosenTime) => setAuthData({ name, course, phone, chosenTime })}
         slotsData={slotsData}
+        courseModules={courseModules}
         fetchSlots={fetchSlots}
         behaviorLogRef={behaviorLogRef}
       />
@@ -362,7 +366,7 @@ export default function HomePage() {
       {viewingProgramFor && (
         <ProgramModal 
             course={COURSES.find(c => c.slug === viewingProgramFor)} 
-            modules={[]} 
+            modules={courseModules[viewingProgramFor] || []} 
             onClose={() => setViewingProgramFor(null)} 
         />
       )}

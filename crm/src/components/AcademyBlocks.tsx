@@ -108,7 +108,7 @@ export const Courses = ({ slotsData = {}, coursePrices, courseDetails, onOpenPro
 
     const handleSelectCourse = (e: React.MouseEvent, courseTitle: string) => {
         e.preventDefault();
-        const event = new CustomEvent('selectCourse', { detail: { course: courseTitle } });
+        const event = new CustomEvent('selectCourse', { detail: { course: `Інтенсив: ${courseTitle}` } });
         window.dispatchEvent(event);
         document.getElementById('booking-form')?.scrollIntoView({ behavior: 'smooth' });
     };
@@ -240,7 +240,7 @@ export const Courses = ({ slotsData = {}, coursePrices, courseDetails, onOpenPro
 };
 
 // 5. КОМПОНЕНТ: ФОРМА ЗАХВАТУ ЛІДІВ (Форма -> Наша CRM)
-export const RegisterForm = ({ sourceName = 'Інтенсив', onAuthSuccess, slotsData, fetchSlots, behaviorLogRef }: { sourceName?: string; onAuthSuccess?: (name: string, course: string, phone: string, chosenTime?: string) => void; slotsData?: Record<string, number>; fetchSlots?: () => void; behaviorLogRef?: React.MutableRefObject<any>; }) => {
+export const RegisterForm = ({ sourceName = 'Інтенсив', onAuthSuccess, slotsData, courseModules, fetchSlots, behaviorLogRef }: { sourceName?: string; onAuthSuccess?: (name: string, course: string, phone: string, chosenTime?: string) => void; slotsData?: Record<string, number>; courseModules?: Record<string, any[]>; fetchSlots?: () => void; behaviorLogRef?: React.MutableRefObject<any>; }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
@@ -372,7 +372,7 @@ export const RegisterForm = ({ sourceName = 'Інтенсив', onAuthSuccess, s
             }).catch(e => console.error("Помилка відправки в Telegram:", e));
 
             // Крок 3: Списання місця
-            const selectedCourseSlug = COURSES.find(c => c.title === formData.course)?.slug;
+            const selectedCourseSlug = COURSES.find(c => formData.course.includes(c.title))?.slug;
             if (selectedCourseSlug && slotsData && fetchSlots) {
                 const currentAvailable = slotsData[selectedCourseSlug] ?? 10;
                 await supabase
@@ -537,9 +537,23 @@ export const RegisterForm = ({ sourceName = 'Інтенсив', onAuthSuccess, s
                                         className="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-cyan-500 text-white appearance-none"
                                     >
                                         <option value="" disabled>Оберіть напрямок...</option>
-                                        {COURSES.map(c => (
-                                            <option key={c.title} value={c.title}>{c.title}</option>
-                                        ))}
+                                        <optgroup label="Літні інтенсиви">
+                                            {COURSES.map(c => (
+                                                <option key={c.title} value={`Інтенсив: ${c.title}`}>{c.title}</option>
+                                            ))}
+                                        </optgroup>
+                                        {courseModules && Object.entries(courseModules).some(([slug, mods]) => mods.length > 0) && (
+                                            <optgroup label="Академія (Модулі)">
+                                                {Object.entries(courseModules).map(([slug, mods]) => (
+                                                    mods.length > 0 && mods.map((m: any, i: number) => (
+                                                        <option key={`${slug}-${i}`} value={`Академія: ${COURSES.find(c => c.slug === slug)?.title} — ${m.title}`}>{m.title} ({COURSES.find(c => c.slug === slug)?.title})</option>
+                                                    ))
+                                                ))}
+                                            </optgroup>
+                                        )}
+                                        {formData.course && !formData.course.startsWith('Інтенсив:') && !formData.course.startsWith('Академія:') && (
+                                            <option value={formData.course}>{formData.course}</option>
+                                        )}
                                     </select>
                                 </div>
                             </>
@@ -793,7 +807,7 @@ export const ContactsAndMap = () => (
 
                 <iframe
                     title="K1BER.SCHOOL — м. Суми, ТРЦ КИЇВ, вул. Нижньовоскресенська, 1"
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2511.970146039578!2d34.80164297693574!3d50.90575305452285!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x412903e1b7db5b6f%3A0xe23bf04f8b9cb68b!2z0KLQoNCmICLQmtC40ZfQkiI!5e0!3m2!1suk!2sua!4v1717592400000!5m2!1suk!2sua"
+                    src="https://maps.google.com/maps?q=ТРЦ%20Київ,%20вулиця%20Нижньовоскресенська%201,%20Суми&t=&z=16&ie=UTF8&iwloc=&output=embed"
                     className="w-full h-full grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500"
                     allowFullScreen={false}
                     loading="lazy"
@@ -943,6 +957,13 @@ export const MiniCabinet = ({ clientName, registeredCourse, phone, initialTime }
 // FloatingChat extracted to Layout.tsx
 
 export const ProgramModal = ({ course, modules, onClose }: { course: any, modules: any[], onClose: () => void }) => {
+    const handleSelectModule = (moduleTitle: string) => {
+        const event = new CustomEvent('selectCourse', { detail: { course: `Академія: ${course?.title} — ${moduleTitle}` } });
+        window.dispatchEvent(event);
+        onClose();
+        setTimeout(() => document.getElementById('booking-form')?.scrollIntoView({ behavior: 'smooth' }), 100);
+    };
+
     return (
         <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-[9999] flex items-center justify-center p-4">
             <div className="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-2xl max-h-[85vh] flex flex-col shadow-2xl relative overflow-hidden">
@@ -970,6 +991,7 @@ export const ProgramModal = ({ course, modules, onClose }: { course: any, module
                                 </h4>
                                 <h3 className="text-lg font-bold text-white mb-2">{m.title}</h3>
                                 <p className="text-slate-400 text-sm leading-relaxed">{m.desc}</p>
+                                <button onClick={() => handleSelectModule(m.title)} className="mt-4 w-full inline-flex items-center justify-center gap-2 text-sm font-bold text-white py-2.5 px-4 rounded-xl bg-orange-500 hover:bg-orange-600 shadow-[0_0_15px_rgba(249,115,22,0.3)] transition-all">Забронювати місце</button>
                             </div>
                         ))
                     ) : (
