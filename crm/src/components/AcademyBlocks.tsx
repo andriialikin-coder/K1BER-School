@@ -206,7 +206,7 @@ export const Courses = ({ slotsData = {}, coursePrices, courseDetails, onOpenPro
 
                                 {/* Ціна */}
                                 <div className="mt-4 flex items-baseline gap-2">
-                                    <span className="text-2xl font-black text-white">{coursePrices?.[course.slug] || course.price} ₴</span>
+                                    <span className="text-2xl font-black text-white">{coursePrices?.[course.slug] ?? course.price} ₴</span>
                                     <span className="text-sm font-medium text-slate-500">/ інтенсив</span>
                                 </div>
 
