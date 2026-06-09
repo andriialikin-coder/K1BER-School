@@ -60,7 +60,14 @@ const features = [
 
 export function BentoGrid() {
   return (
-    <div id="about" className="w-full max-w-7xl mx-auto px-6 py-16 md:py-20 relative z-10">
+    <section id="about" className="relative w-full border-y border-slate-800/50 overflow-hidden">
+      {/* Фоновий Image: summer.webp */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <div className="absolute inset-0 bg-[url('/summer.webp')] bg-cover bg-center opacity-30 sm:opacity-40 mix-blend-luminosity" />
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-slate-950/80 to-slate-950" />
+      </div>
+
+      <div className="w-full max-w-7xl mx-auto px-6 py-16 md:py-20 relative z-10">
       <div className="text-center mb-16 relative">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-400 text-sm font-bold mb-6 shadow-[0_0_15px_rgba(249,115,22,0.15)] uppercase tracking-wider">
           <Sparkles className="w-4 h-4" />
@@ -102,6 +109,7 @@ export function BentoGrid() {
           </div>
         ))}
       </div>
-    </div>
+      </div>
+    </section>
   );
 }
