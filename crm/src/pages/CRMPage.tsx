@@ -985,7 +985,7 @@ ${JSON.stringify(lead.behavior_log, null, 2)}
       {editingModulesFor && (
         <ModulesModal 
           slug={editingModulesFor} 
-          slot={courseSlots.find(s => s.course_slug === editingModulesFor)!}
+          slot={courseSlots.find(s => s.course_slug === editingModulesFor) || { course_slug: editingModulesFor, details: {}, modules: [] }}
           onClose={() => setEditingModulesFor(null)}
           onSave={(modules: any) => {
             updateCourseData(editingModulesFor, { modules });
@@ -996,7 +996,7 @@ ${JSON.stringify(lead.behavior_log, null, 2)}
 
       {editingCourseFor && (
         <CourseEditorModal
-          slot={courseSlots.find(s => s.course_slug === editingCourseFor)!}
+          slot={courseSlots.find(s => s.course_slug === editingCourseFor) || { course_slug: editingCourseFor, details: {} }}
           onClose={() => setEditingCourseFor(null)}
           onSave={async (formData: any) => {
              await saveCourseEditor(editingCourseFor, formData);
