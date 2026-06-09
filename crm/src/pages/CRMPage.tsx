@@ -503,7 +503,14 @@ ${JSON.stringify(lead.behavior_log, null, 2)}
 
   const updateCourseData = async (slug: string, updates: Partial<CourseSlot>) => {
     // Optimistic UI update
-    setCourseSlots(prev => prev.map(s => s.course_slug === slug ? { ...s, ...updates } : s));
+    setCourseSlots(prev => {
+        const exists = prev.find(s => s.course_slug === slug);
+        if (exists) {
+            return prev.map(s => s.course_slug === slug ? { ...s, ...updates } : s);
+        } else {
+            return [...prev, { course_slug: slug, ...updates } as CourseSlot];
+        }
+    });
     const { error } = await supabase.from('course_slots').upsert({
       course_slug: slug,
       ...updates
@@ -515,8 +522,7 @@ ${JSON.stringify(lead.behavior_log, null, 2)}
   };
 
   const saveCourseEditor = async (slug: string, formData: any) => {
-     const slot = courseSlots.find(s => s.course_slug === slug);
-     if(!slot) return;
+     const slot = courseSlots.find(s => s.course_slug === slug) || { course_slug: slug, details: {} } as CourseSlot;
      
      const detailsUpdates = {
        title: formData.title,
@@ -529,12 +535,24 @@ ${JSON.stringify(lead.behavior_log, null, 2)}
      const newDetails = { ...existingDetails, ...detailsUpdates };
      
      // Optimistic
-     setCourseSlots(prev => prev.map(s => s.course_slug === slug ? { 
-         ...s, 
-         price: formData.price, 
-         available_slots: formData.available_slots, 
-         details: newDetails 
-     } : s));
+     setCourseSlots(prev => {
+         const exists = prev.find(s => s.course_slug === slug);
+         if (exists) {
+             return prev.map(s => s.course_slug === slug ? { 
+                 ...s, 
+                 price: formData.price, 
+                 available_slots: formData.available_slots, 
+                 details: newDetails 
+             } : s);
+         } else {
+             return [...prev, { 
+                 course_slug: slug, 
+                 price: formData.price, 
+                 available_slots: formData.available_slots, 
+                 details: newDetails 
+             } as CourseSlot];
+         }
+     });
      
      // To DB
      await supabase.from('course_slots').upsert({
