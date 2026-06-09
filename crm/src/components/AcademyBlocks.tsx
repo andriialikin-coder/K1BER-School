@@ -245,7 +245,7 @@ export const RegisterForm = ({ sourceName = 'Інтенсив', onAuthSuccess, s
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [tab, setTab] = useState<'new' | 'existing'>('new');
-    const [formData, setFormData] = useState({ name: '', phone: '+380', course: '' });
+    const [formData, setFormData] = useState({ name: '', phone: '+380', course: '', city: '', child_age: '' });
 
     const [loginPhone, setLoginPhone] = useState('+380');
     const [loginError, setLoginError] = useState('');
@@ -256,7 +256,7 @@ export const RegisterForm = ({ sourceName = 'Інтенсив', onAuthSuccess, s
     };
 
     const isFormInvalid = tab === 'new'
-        ? (!formData.name.trim() || !formData.course || !isPhoneValid(formData.phone))
+        ? (!formData.name.trim() || !formData.course || !isPhoneValid(formData.phone) || !formData.city.trim() || !formData.child_age.trim())
         : (!isPhoneValid(loginPhone));
 
     React.useEffect(() => {
@@ -344,6 +344,8 @@ export const RegisterForm = ({ sourceName = 'Інтенсив', onAuthSuccess, s
                 name: formData.name,
                 phone: formData.phone,
                 course: formData.course,
+                city: formData.city,
+                child_age: formData.child_age,
                 source: sourceName,
                 behavior_log: behaviorLogRef ? behaviorLogRef.current : {}
             };
@@ -412,7 +414,7 @@ export const RegisterForm = ({ sourceName = 'Інтенсив', onAuthSuccess, s
                     Забронювати місце на
                     <br />
                     <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
-                        літній інтенсив
+                        Безкоштовний урок
                     </span>
                 </h2>
                 <p className="text-slate-400 text-sm text-center mt-3 leading-relaxed mb-6">
@@ -496,6 +498,31 @@ export const RegisterForm = ({ sourceName = 'Інтенсив', onAuthSuccess, s
                                     />
                                 </div>
 
+                                <div className="grid grid-cols-2 gap-3">
+                                    <div>
+                                        <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Місто</label>
+                                        <input
+                                            type="text"
+                                            required
+                                            value={formData.city}
+                                            onChange={e => setFormData({ ...formData, city: e.target.value })}
+                                            placeholder="Суми / Онлайн"
+                                            className="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-cyan-500 text-white"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Вік дитини</label>
+                                        <input
+                                            type="text"
+                                            required
+                                            value={formData.child_age}
+                                            onChange={e => setFormData({ ...formData, child_age: e.target.value })}
+                                            placeholder="Напр. 10 років"
+                                            className="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-cyan-500 text-white"
+                                        />
+                                    </div>
+                                </div>
+
                                 <div>
                                     <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Вибір напрямку</label>
                                     <select
@@ -518,8 +545,15 @@ export const RegisterForm = ({ sourceName = 'Інтенсив', onAuthSuccess, s
                             </>
                         )}
 
+                        <div className="bg-emerald-950/30 border border-emerald-500/20 rounded-xl p-3 my-4 flex items-center justify-center gap-2">
+                            <span className="text-xl">🎁</span>
+                            <span className="text-emerald-400 font-bold text-sm text-center">
+                                Приведи друга — отримай знижку -15% на абонемент!
+                            </span>
+                        </div>
+
                         <button type="submit" disabled={loading || isFormInvalid} className="w-full mt-2 bg-gradient-to-r from-cyan-500 to-blue-600 hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold py-3.5 px-4 rounded-xl text-sm transition">
-                            {loading ? 'Відправляємо...' : tab === 'new' ? 'Забронювати місце на інтенсив →' : 'Увійти в кабінет →'}
+                            {loading ? 'Відправляємо...' : tab === 'new' ? 'Забронювати місце на урок →' : 'Увійти в кабінет →'}
                         </button>
                         
                         <p className="mt-5 text-[11px] text-slate-500 text-center leading-relaxed px-2">
