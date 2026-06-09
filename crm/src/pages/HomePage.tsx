@@ -270,13 +270,13 @@ export default function HomePage() {
             K1BER School
           </span>
         </h1>
-        <div className="mb-8 mt-3 relative z-10">
-          <div className="inline-flex items-center gap-3 px-6 py-2.5 rounded-full bg-slate-900/50 border border-cyan-500/20 shadow-[0_0_20px_rgba(6,182,212,0.1)] backdrop-blur-md hover:border-cyan-500/40 transition-colors duration-300 cursor-default">
-            <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_8px_rgba(6,182,212,0.8)]"></span>
-            <h2 className="text-xs sm:text-sm md:text-base font-bold tracking-[0.15em] sm:tracking-[0.2em] uppercase text-slate-200">
-              Школа програмування <span className="text-slate-600 font-black mx-1 sm:mx-2">/</span> <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400">Цифрової творчості</span>
+        <div className="mb-8 mt-3 relative z-10 w-[95%] max-w-2xl mx-auto flex justify-center">
+          <div className="inline-flex items-center gap-2 sm:gap-3 px-4 sm:px-6 py-2.5 rounded-3xl sm:rounded-full bg-slate-900/50 border border-cyan-500/20 shadow-[0_0_20px_rgba(6,182,212,0.1)] backdrop-blur-md hover:border-cyan-500/40 transition-colors duration-300 cursor-default text-center">
+            <span className="hidden sm:block w-2 h-2 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_8px_rgba(6,182,212,0.8)] shrink-0"></span>
+            <h2 className="text-[10px] sm:text-sm md:text-base font-bold tracking-[0.1em] sm:tracking-[0.2em] uppercase text-slate-200 leading-relaxed">
+              Школа програмування <span className="hidden sm:inline text-slate-600 font-black mx-1 sm:mx-2">/</span><br className="sm:hidden" /> <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400">Цифрової творчості</span>
             </h2>
-            <span className="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.8)]"></span>
+            <span className="hidden sm:block w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.8)] shrink-0"></span>
           </div>
         </div>
 
@@ -314,26 +314,26 @@ export default function HomePage() {
       </div>
 
       {/* Статистика / Факты */}
-      <div className="w-full max-w-5xl mx-auto px-6 mt-10 md:mt-16 z-20 relative flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
-        <div className="flex flex-col items-center text-center">
-          <span className="text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-br from-white to-slate-400 mb-2 drop-shadow-md" style={{ fontFamily: "'Outfit', sans-serif" }}>7+</span>
-          <span className="text-slate-400 font-medium text-xs md:text-sm tracking-widest uppercase">років на ринку<br className="hidden md:block" />України</span>
+      <div className="w-full max-w-5xl mx-auto px-2 sm:px-6 mt-8 md:mt-16 z-20 relative flex flex-row items-center justify-center gap-2 sm:gap-8 md:gap-16">
+        <div className="flex flex-col items-center text-center w-1/3 md:w-auto">
+          <span className="text-3xl sm:text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-br from-white to-slate-400 mb-1 md:mb-2 drop-shadow-md" style={{ fontFamily: "'Outfit', sans-serif" }}>7+</span>
+          <span className="text-slate-400 font-medium text-[9px] sm:text-xs md:text-sm tracking-widest uppercase leading-snug">років на ринку<br className="hidden md:block" /> України</span>
         </div>
         
         {/* Разделитель */}
         <div className="hidden md:block w-px h-20 bg-gradient-to-b from-transparent via-slate-500/30 to-transparent"></div>
 
-        <div className="flex flex-col items-center text-center">
-          <span className="text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-br from-white to-slate-400 mb-2 drop-shadow-md" style={{ fontFamily: "'Outfit', sans-serif" }}>70+</span>
-          <span className="text-slate-400 font-medium text-xs md:text-sm tracking-widest uppercase">навчальних<br className="hidden md:block" />модулів</span>
+        <div className="flex flex-col items-center text-center w-1/3 md:w-auto">
+          <span className="text-3xl sm:text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-br from-white to-slate-400 mb-1 md:mb-2 drop-shadow-md" style={{ fontFamily: "'Outfit', sans-serif" }}>70+</span>
+          <span className="text-slate-400 font-medium text-[9px] sm:text-xs md:text-sm tracking-widest uppercase leading-snug">навчальних<br className="hidden md:block" /> модулів</span>
         </div>
 
         {/* Разделитель */}
         <div className="hidden md:block w-px h-20 bg-gradient-to-b from-transparent via-slate-500/30 to-transparent"></div>
 
-        <div className="flex flex-col items-center text-center">
-          <span className="text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-br from-white to-slate-400 mb-2 drop-shadow-md" style={{ fontFamily: "'Outfit', sans-serif" }}>2000+</span>
-          <span className="text-slate-400 font-medium text-xs md:text-sm tracking-widest uppercase">задоволених<br className="hidden md:block" />студентів</span>
+        <div className="flex flex-col items-center text-center w-1/3 md:w-auto">
+          <span className="text-3xl sm:text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-br from-white to-slate-400 mb-1 md:mb-2 drop-shadow-md" style={{ fontFamily: "'Outfit', sans-serif" }}>2000+</span>
+          <span className="text-slate-400 font-medium text-[9px] sm:text-xs md:text-sm tracking-widest uppercase leading-snug">задоволених<br className="hidden md:block" /> студентів</span>
         </div>
       </div>
       </section>
