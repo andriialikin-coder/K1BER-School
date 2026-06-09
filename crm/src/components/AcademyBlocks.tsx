@@ -567,37 +567,57 @@ export const FAQ = ({ onFaqToggle }: { onFaqToggle?: (question: string) => void 
     ];
 
     return (
-        <section id="faq" className="w-full bg-slate-950 text-white py-16 px-6">
-            <div className="max-w-3xl mx-auto">
-                <h2 className="text-2xl md:text-4xl font-bold text-center tracking-tight">Популярні питання батьків</h2>
-                <div className="mt-12 space-y-4">
-                    {faqs.map((item, i) => {
-                        const isOpen = openIndex === i;
-                        return (
-                            <div
-                                key={i}
-                                onClick={() => toggleFaq(i, item.q)}
-                                className={`cursor-pointer bg-white/5 backdrop-blur-md border rounded-2xl transition-all duration-300 p-5 md:p-6 ${isOpen ? 'border-blue-500/50 bg-white/10' : 'border-white/10 hover:border-white/20'}`}
-                            >
-                                <div className="flex justify-between items-center gap-4">
-                                    <h3 className="text-white font-bold text-lg">{item.q}</h3>
-                                    <div className={`flex-shrink-0 text-slate-400 transform transition-transform duration-300 ${isOpen ? 'rotate-180 text-blue-400' : 'rotate-0'}`}>
-                                        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                                        </svg>
-                                    </div>
-                                </div>
-                                <div className={`grid transition-all duration-300 ease-in-out ${isOpen ? 'grid-rows-[1fr] opacity-100 mt-4' : 'grid-rows-[0fr] opacity-0'}`}>
-                                    <div className="overflow-hidden">
-                                        <p className="text-gray-400 text-sm leading-relaxed">
-                                            {item.a}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        );
-                    })}
+        <section id="faq" className="relative w-full bg-slate-950 text-white py-16 px-6 border-b border-slate-900 overflow-hidden">
+            <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                {/* Ліва частина: Сова (Filin) */}
+                <div className="lg:col-span-5 flex justify-center relative">
+                    {/* Глоу ефект за совою */}
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 md:w-64 h-48 md:h-64 bg-cyan-500/10 rounded-full blur-[60px] pointer-events-none" />
+                    
+                    <img 
+                        src="/filin.webp" 
+                        alt="Мудра сова K1BER" 
+                        className="w-48 sm:w-64 md:w-80 lg:w-[450px] object-contain drop-shadow-[0_0_30px_rgba(6,182,212,0.3)] relative z-10 transform transition-transform duration-500 hover:scale-105 hover:-translate-y-2"
+                    />
                 </div>
+
+                {/* Права частина: Акордеон FAQ */}
+                <div className="lg:col-span-7">
+                    <h2 className="text-3xl md:text-4xl font-black tracking-tight mb-8 text-center lg:text-left">
+                        Популярні питання <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">батьків</span>
+                    </h2>
+                    
+                    <div className="space-y-4">
+                        {faqs.map((item, i) => {
+                            const isOpen = openIndex === i;
+                            return (
+                                <div
+                                    key={i}
+                                    onClick={() => toggleFaq(i, item.q)}
+                                    className={`cursor-pointer bg-white/5 backdrop-blur-md border rounded-2xl transition-all duration-300 p-5 md:p-6 ${isOpen ? 'border-cyan-500/50 bg-white/10' : 'border-white/10 hover:border-cyan-500/30'}`}
+                                >
+                                    <div className="flex justify-between items-center gap-4">
+                                        <h3 className="text-white font-bold text-lg">{item.q}</h3>
+                                        <div className={`flex-shrink-0 text-slate-400 transform transition-transform duration-300 ${isOpen ? 'rotate-180 text-cyan-400' : 'rotate-0'}`}>
+                                            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div className={`grid transition-all duration-300 ease-in-out ${isOpen ? 'grid-rows-[1fr] opacity-100 mt-4' : 'grid-rows-[0fr] opacity-0'}`}>
+                                        <div className="overflow-hidden">
+                                            <p className="text-slate-300 text-sm leading-relaxed">
+                                                {item.a}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                </div>
+
             </div>
         </section>
     );
