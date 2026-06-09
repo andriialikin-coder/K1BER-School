@@ -24,6 +24,8 @@ interface Lead {
   source: string | null;
   course: string | null;
   chosen_time: string | null;
+  city?: string | null;
+  child_age?: string | null;
   behavior_log?: any;
 }
 
@@ -816,6 +818,14 @@ ${JSON.stringify(lead.behavior_log, null, 2)}
               <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100">
                 <span className="block text-xs uppercase tracking-widest font-bold text-slate-400 mb-1">Джерело</span>
                 <p className="text-base font-medium text-slate-600">{selectedLead.source || 'Лендінг'}</p>
+              </div>
+              <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                <span className="block text-xs uppercase tracking-widest font-bold text-slate-400 mb-1">Місто</span>
+                <p className="text-base font-medium text-slate-600">{selectedLead.city || '—'}</p>
+              </div>
+              <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                <span className="block text-xs uppercase tracking-widest font-bold text-slate-400 mb-1">Вік дитини</span>
+                <p className="text-base font-medium text-slate-600">{selectedLead.child_age || '—'}</p>
               </div>
             </div>
 
