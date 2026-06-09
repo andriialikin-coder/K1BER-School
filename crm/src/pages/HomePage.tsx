@@ -355,7 +355,7 @@ export default function HomePage() {
       <ContactsAndMap />
 
       <RegisterForm 
-        sourceName="Академія" 
+        sourceName="website" 
         onAuthSuccess={(name, course, phone, chosenTime) => setAuthData({ name, course, phone, chosenTime })}
         slotsData={slotsData}
         courseModules={courseModules}

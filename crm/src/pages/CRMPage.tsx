@@ -18,15 +18,16 @@ interface Lead {
   id: number;
   created_at: string;
   telegram_id: string;
-  name: string | null;
-  phone: string | null;
+  name: string;
+  source: string;
   status: string;
-  source: string | null;
-  course: string | null;
-  chosen_time: string | null;
-  city?: string | null;
-  child_age?: string | null;
+  phone: string;
+  course: string;
+  city: string;
+  child_age: string;
+  chosen_time?: string;
   behavior_log?: any;
+  program_type?: string;
 }
 
 interface CourseSlot {
@@ -127,7 +128,7 @@ function StatusSelect({ lead, onUpdate, isUpdating }: { lead: Lead; onUpdate: (i
         className="appearance-none bg-white border border-slate-200 rounded-lg pl-3 pr-8 py-1.5 text-sm font-medium text-slate-700 cursor-pointer hover:border-blue-300 hover:bg-blue-50/30 focus:outline-none focus:ring-2 focus:ring-blue-500/25 focus:border-blue-400 transition-all duration-150 disabled:opacity-50 disabled:cursor-wait"
       >
         {!STATUS_OPTIONS.find(s => s.value === lead.status) && (
-          <option value="" disabled>{getStatusConfig(lead.status).label} → оберіть новий</option>
+          <option value="" disabled>{getStatusConfig(lead.status).label}</option>
         )}
         {STATUS_OPTIONS.map(s => (
           <option key={s.value} value={s.value}>{s.label}</option>
@@ -715,6 +716,11 @@ ${JSON.stringify(lead.behavior_log, null, 2)}
                     <td className="px-6 py-4 whitespace-nowrap">
                       {lead.course ? (
                         <div className="flex flex-col gap-1.5 items-start">
+                          {lead.program_type && (
+                            <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md border ${lead.program_type === 'Академія' ? 'bg-indigo-50 text-indigo-700 border-indigo-200' : 'bg-orange-50 text-orange-700 border-orange-200'}`}>
+                              {lead.program_type}
+                            </span>
+                          )}
                           <span className="text-[11px] font-semibold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-md border border-blue-100">{lead.course}</span>
                           {lead.chosen_time ? <span className="text-[11px] font-semibold text-purple-700 bg-purple-50 px-2 py-0.5 rounded-md border border-purple-100 flex items-center gap-1">🗓️ {lead.chosen_time}</span> : <span className="text-[11px] font-medium text-slate-400 bg-slate-50 px-2 py-0.5 rounded-md border border-slate-100">Час не обрано</span>}
                         </div>
@@ -877,7 +883,11 @@ ${JSON.stringify(lead.behavior_log, null, 2)}
               </div>
               <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100">
                 <span className="block text-xs uppercase tracking-widest font-bold text-slate-400 mb-1">Джерело</span>
-                <p className="text-base font-medium text-slate-600">{selectedLead.source || 'Лендінг'}</p>
+                <p className="text-base font-medium text-slate-600">{selectedLead.source || 'website'}</p>
+              </div>
+              <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                <span className="block text-xs uppercase tracking-widest font-bold text-slate-400 mb-1">Напрямок</span>
+                <p className="text-base font-medium text-slate-600">{selectedLead.program_type || '—'}</p>
               </div>
               <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100">
                 <span className="block text-xs uppercase tracking-widest font-bold text-slate-400 mb-1">Місто</span>

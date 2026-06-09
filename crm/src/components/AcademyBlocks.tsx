@@ -340,6 +340,10 @@ export const RegisterForm = ({ sourceName = 'Інтенсив', onAuthSuccess, s
         setLoading(true);
 
         try {
+            let programType = '';
+            if (formData.course.startsWith('Академія')) programType = 'Академія';
+            if (formData.course.startsWith('Інтенсив')) programType = 'Інтенсив';
+
             const payload = {
                 name: formData.name,
                 phone: formData.phone,
@@ -347,6 +351,7 @@ export const RegisterForm = ({ sourceName = 'Інтенсив', onAuthSuccess, s
                 city: formData.city,
                 child_age: formData.child_age,
                 source: sourceName,
+                program_type: programType,
                 behavior_log: behaviorLogRef ? behaviorLogRef.current : {}
             };
 
