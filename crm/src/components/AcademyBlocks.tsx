@@ -542,7 +542,7 @@ export const RegisterForm = ({ sourceName = 'Інтенсив', onAuthSuccess, s
                                                 <option key={c.title} value={`Інтенсив: ${c.title}`}>{c.title}</option>
                                             ))}
                                         </optgroup>
-                                        {courseModules && Object.entries(courseModules).some(([slug, mods]) => mods.length > 0) && (
+                                        {courseModules && Object.entries(courseModules).some(([_, mods]) => mods.length > 0) && (
                                             <optgroup label="Академія (Модулі)">
                                                 {Object.entries(courseModules).map(([slug, mods]) => (
                                                     mods.length > 0 && mods.map((m: any, i: number) => (
