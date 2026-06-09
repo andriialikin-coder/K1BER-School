@@ -386,8 +386,7 @@ ${JSON.stringify(lead.behavior_log, null, 2)}
                       }]
                   }],
                   generationConfig: {
-                      temperature: 0.7,
-                      maxOutputTokens: 800,
+                      temperature: 0.7
                   }
               })
           });
