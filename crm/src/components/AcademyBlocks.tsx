@@ -245,7 +245,7 @@ export const RegisterForm = ({ sourceName = 'Інтенсив', onAuthSuccess, s
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [tab, setTab] = useState<'new' | 'existing'>('new');
-    const [formData, setFormData] = useState({ name: '', phone: '+380', course: '', city: '', child_age: '' });
+    const [formData, setFormData] = useState({ name: '', phone: '+380', course: '', city: '', child_age: '', child_name: '' });
 
     const [loginPhone, setLoginPhone] = useState('+380');
     const [loginError, setLoginError] = useState('');
@@ -256,7 +256,7 @@ export const RegisterForm = ({ sourceName = 'Інтенсив', onAuthSuccess, s
     };
 
     const isFormInvalid = tab === 'new'
-        ? (!formData.name.trim() || !formData.course || !isPhoneValid(formData.phone) || !formData.city.trim() || !formData.child_age.trim())
+        ? (!formData.name.trim() || !formData.course || !isPhoneValid(formData.phone) || !formData.city.trim() || !formData.child_age.trim() || !formData.child_name.trim())
         : (!isPhoneValid(loginPhone));
 
     React.useEffect(() => {
@@ -350,6 +350,7 @@ export const RegisterForm = ({ sourceName = 'Інтенсив', onAuthSuccess, s
                 course: formData.course,
                 city: formData.city,
                 child_age: formData.child_age,
+                child_name: formData.child_name,
                 source: sourceName,
                 program_type: programType,
                 behavior_log: behaviorLogRef ? behaviorLogRef.current : {}
