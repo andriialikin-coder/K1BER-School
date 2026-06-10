@@ -476,7 +476,7 @@ ${JSON.stringify(lead.behavior_log, null, 2)}
   const handleLoginSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       const formData = new FormData(e.currentTarget);
-      const email = formData.get('email') as string;
+      const email = (formData.get('email') as string)?.trim();
       const password = formData.get('password') as string;
       
       const { error } = await supabase.auth.signInWithPassword({ email, password });
@@ -1060,7 +1060,7 @@ ${JSON.stringify(lead.behavior_log, null, 2)}
   const handleUpdateCredentials = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const email = formData.get('email') as string;
+    const email = (formData.get('email') as string)?.trim();
     const password = formData.get('password') as string;
 
     const updates: any = {};
