@@ -4,7 +4,7 @@ import {
   Users, Phone, TrendingUp, Star, Search, RefreshCw,
   ChevronDown, Calendar, Database, Loader2, AlertCircle,
   X, PhoneCall, UserCheck, Archive, PhoneMissed, Clock,
-  CheckCircle2, XCircle, LayoutDashboard, Component, Edit3, Save, Settings, Sparkles
+  CheckCircle2, XCircle, LayoutDashboard, Component, Edit3, Save, Settings, Sparkles, LogOut
 } from 'lucide-react';
 
 // ═══════════════════════════════════════════════
@@ -291,10 +291,25 @@ function CourseEditorModal({ slot, onClose, onSave }: any) {
 //  CRM DASHBOARD
 // ═══════════════════════════════════════════════
 export default function CRMPage() {
-  const [isAuthenticated, setIsAuthenticated] = useState(() => {
-    const expires = localStorage.getItem('crm_auth_expires');
-    return expires ? parseInt(expires) > Date.now() : false;
-  });
+  const [session, setSession] = useState<any>(null);
+  const [isInitializingAuth, setIsInitializingAuth] = useState(true);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setIsInitializingAuth(false);
+    });
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const isAuthenticated = !!session;
   
   const [activeTab, setActiveTab] = useState<'analytics' | 'builder'>('analytics');
   const [leads, setLeads] = useState<Lead[]>([]);
@@ -420,11 +435,7 @@ ${JSON.stringify(lead.behavior_log, null, 2)}
       }
   };
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      localStorage.setItem('crm_auth_expires', (Date.now() + 30 * 60 * 1000).toString());
-    }
-  }, [isAuthenticated]);
+
 
   const fetchLeads = useCallback(async () => {
     if (!isAuthenticated) return;
@@ -462,35 +473,59 @@ ${JSON.stringify(lead.behavior_log, null, 2)}
     }
   }, [isAuthenticated, fetchLeads, fetchSlots]);
 
+  const handleLoginSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      const formData = new FormData(e.currentTarget);
+      const email = formData.get('email') as string;
+      const password = formData.get('password') as string;
+      
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) {
+          alert("Помилка авторизації: " + error.message);
+      }
+  };
+
+  if (isInitializingAuth) {
+    return (
+      <div className="min-h-screen bg-slate-950 text-white flex flex-col items-center justify-center font-sans p-4">
+         <Loader2 size={32} className="animate-spin text-blue-500 mb-4" />
+         <p className="text-sm font-bold text-slate-400">Перевірка доступу...</p>
+      </div>
+    );
+  }
+
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center font-sans p-4">
         <form 
           className="bg-slate-900 p-8 rounded-2xl border border-slate-800 shadow-xl max-w-sm w-full"
-          onSubmit={(e) => {
-            e.preventDefault();
-            const formData = new FormData(e.currentTarget);
-            const pwd = formData.get('password');
-            if (pwd === "K1berAdmin2026!") {
-              setIsAuthenticated(true);
-              localStorage.setItem('crm_auth_expires', (Date.now() + 30 * 60 * 1000).toString());
-            } else {
-              alert("Невірний пароль!");
-            }
-          }}
+          onSubmit={handleLoginSubmit}
         >
           <div className="flex justify-center mb-6">
             <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-violet-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/30">
               <Star size={24} className="text-white" fill="currentColor" />
             </div>
           </div>
-          <h2 className="text-xl font-bold text-center mb-6">Вхід до CRM</h2>
+          <h2 className="text-xl font-bold text-center mb-2">Вхід до CRM</h2>
+          <p className="text-xs text-center text-slate-400 mb-6">Авторизація через Supabase Auth</p>
+          
+          <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Email</label>
+          <input 
+            type="email" 
+            name="email"
+            placeholder="admin@kiber.school" 
+            className="w-full bg-slate-950 border border-slate-700 rounded-lg px-4 py-3 mb-4 focus:outline-none focus:border-blue-500 text-sm transition-colors"
+            required
+            autoFocus
+          />
+          
+          <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Пароль</label>
           <input 
             type="password" 
             name="password"
-            placeholder="Секретний ключ" 
+            placeholder="Ваш пароль" 
             className="w-full bg-slate-950 border border-slate-700 rounded-lg px-4 py-3 mb-6 focus:outline-none focus:border-blue-500 text-sm transition-colors"
-            autoFocus
+            required
           />
           <button type="submit" className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-lg transition-colors text-sm">Увійти</button>
           <button type="button" onClick={() => window.location.href = "/"} className="w-full mt-4 text-slate-400 hover:text-white text-sm transition-colors">Повернутись на сайт</button>
@@ -1048,9 +1083,12 @@ ${JSON.stringify(lead.behavior_log, null, 2)}
           </button>
         </nav>
 
-        <div className="p-4 border-t border-slate-100">
-           <button onClick={() => window.location.href = '/'} className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-slate-100 hover:bg-slate-200 rounded-xl text-xs font-bold text-slate-600 transition-all duration-150">
-             ← Повернутися на сайт
+        <div className="p-4 border-t border-slate-100 flex flex-col gap-2">
+           <button onClick={async () => { await supabase.auth.signOut(); }} className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-rose-50 hover:bg-rose-100 rounded-xl text-xs font-bold text-rose-600 transition-all duration-150">
+             <LogOut size={14} /> Вийти з CRM
+           </button>
+           <button onClick={() => window.location.href = '/'} className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-slate-100 hover:bg-slate-200 rounded-xl text-xs font-bold text-slate-600 transition-all duration-150">
+             ← На головний сайт
            </button>
         </div>
       </aside>
@@ -1065,9 +1103,9 @@ ${JSON.stringify(lead.behavior_log, null, 2)}
             <Component size={20} />
             <span className="text-[10px] font-bold">Конструктор</span>
         </button>
-        <button onClick={() => window.location.href = '/'} className="flex flex-col items-center gap-1 p-2 rounded-xl text-slate-400 transition-all">
-            <UserCheck size={20} />
-            <span className="text-[10px] font-bold">На сайт</span>
+        <button onClick={async () => { await supabase.auth.signOut(); }} className="flex flex-col items-center gap-1 p-2 rounded-xl text-rose-400 hover:text-rose-600 transition-all">
+            <LogOut size={20} />
+            <span className="text-[10px] font-bold">Вийти</span>
         </button>
       </nav>
 
