@@ -479,6 +479,11 @@ ${JSON.stringify(lead.behavior_log, null, 2)}
       const email = (formData.get('email') as string)?.trim();
       const password = formData.get('password') as string;
       
+      if (email && /[^\x00-\x7F]/.test(email)) {
+        alert("Помилка: Ваш email містить недопустимі символи (наприклад, кирилицю замість латиниці). Будь ласка, введіть email англійською мовою.");
+        return;
+      }
+
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) {
           alert("Помилка авторизації: " + error.message);
@@ -1064,7 +1069,14 @@ ${JSON.stringify(lead.behavior_log, null, 2)}
     const password = formData.get('password') as string;
 
     const updates: any = {};
-    if (email) updates.email = email;
+    if (email) {
+      // Check for Cyrillic or non-ASCII characters
+      if (/[^\x00-\x7F]/.test(email)) {
+        alert("Помилка: Ваш email містить недопустимі символи (наприклад, кирилицю замість латиниці). Будь ласка, введіть email англійською мовою.");
+        return;
+      }
+      updates.email = email;
+    }
     if (password) updates.password = password;
 
     if (Object.keys(updates).length === 0) return;
