@@ -487,6 +487,18 @@ export const RegisterForm = ({ sourceName = 'Інтенсив', onAuthSuccess, s
                                 </div>
 
                                 <div>
+                                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Ім&apos;я дитини</label>
+                                    <input
+                                        type="text"
+                                        required
+                                        value={formData.child_name}
+                                        onChange={e => setFormData({ ...formData, child_name: e.target.value })}
+                                        placeholder="Наприклад, Олексій"
+                                        className="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-cyan-500 text-white"
+                                    />
+                                </div>
+
+                                <div>
                                     <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Номер телефону</label>
                                     <input
                                         type="tel"
