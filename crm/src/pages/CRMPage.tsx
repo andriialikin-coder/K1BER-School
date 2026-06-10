@@ -616,7 +616,7 @@ ${JSON.stringify(lead.behavior_log, null, 2)}
   // ────────────── ВЬЮ: АНАЛИТИКА ──────────────
   const renderAnalytics = () => (
     <>
-      <div className="flex items-center gap-3 overflow-x-auto pb-4 mb-2">
+      <div className="grid grid-cols-2 md:flex md:items-center md:flex-wrap gap-3 pb-4 mb-2">
         <StatCard icon={Users}      label="Всього лідів"  value={leads.length} colorClass="bg-blue-50 text-blue-600" />
         <StatCard icon={TrendingUp} label="Нових сьогодні" value={newToday}    colorClass="bg-emerald-50 text-emerald-600" />
         <StatCard icon={Phone}      label="З телефоном"   value={withPhone}    colorClass="bg-violet-50 text-violet-600" />
@@ -624,12 +624,12 @@ ${JSON.stringify(lead.behavior_log, null, 2)}
       </div>
 
       <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4 mb-5">
-        <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
+        <div className="flex flex-col md:flex-row gap-3 items-start md:items-center">
           <div className="relative flex-1 min-w-0 w-full">
             <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
             <input
               type="text"
-              placeholder="Пошук за іменем, телефоном або Telegram ID..."
+              placeholder="Пошук (ім'я, телефон, tg)..."
               value={search}
               onChange={e => setSearch(e.target.value)}
               className="w-full pl-10 pr-9 py-2.5 border border-slate-200 rounded-xl text-sm text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/25 focus:border-blue-400 transition-all duration-150"
@@ -640,27 +640,26 @@ ${JSON.stringify(lead.behavior_log, null, 2)}
               </button>
             )}
           </div>
-          <div className="relative flex-shrink-0 w-full sm:w-auto">
-            <select
-              value={statusFilter}
-              onChange={e => setStatusFilter(e.target.value)}
-              className="appearance-none w-full sm:w-52 pl-4 pr-9 py-2.5 border border-slate-200 rounded-xl text-sm text-slate-700 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/25 focus:border-blue-400 transition-all cursor-pointer"
-            >
-              <option value="">Усі статуси</option>
-              {STATUS_OPTIONS.map(s => <option key={s.value} value={s.value}>{s.label}</option>)}
-            </select>
-            <ChevronDown size={13} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
-          </div>
-          <div className="flex items-center gap-2 flex-shrink-0 ml-1">
-            <input 
-              type="checkbox" 
-              id="showEmpty" 
-              checked={showEmptyLeads} 
-              onChange={e => setShowEmptyLeads(e.target.checked)}
-              className="w-4 h-4 text-blue-600 bg-slate-100 border-slate-300 rounded focus:ring-blue-500 cursor-pointer"
-            />
-            <label htmlFor="showEmpty" className="text-sm font-medium text-slate-600 cursor-pointer select-none">
-              Показувати пусті бот-ліди
+          <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto items-stretch sm:items-center">
+            <div className="relative w-full sm:w-52 shrink-0">
+              <select
+                value={statusFilter}
+                onChange={e => setStatusFilter(e.target.value)}
+                className="appearance-none w-full pl-4 pr-9 py-2.5 border border-slate-200 rounded-xl text-sm text-slate-700 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/25 focus:border-blue-400 transition-all cursor-pointer"
+              >
+                <option value="">Усі статуси</option>
+                {STATUS_OPTIONS.map(s => <option key={s.value} value={s.value}>{s.label}</option>)}
+              </select>
+              <ChevronDown size={13} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+            </div>
+            <label className="flex items-center gap-2 flex-shrink-0 cursor-pointer select-none bg-slate-50 border border-slate-100 rounded-xl px-4 py-2.5 w-full sm:w-auto justify-center">
+              <input 
+                type="checkbox" 
+                checked={showEmptyLeads} 
+                onChange={e => setShowEmptyLeads(e.target.checked)}
+                className="w-4 h-4 text-blue-600 bg-white border-slate-300 rounded focus:ring-blue-500 cursor-pointer"
+              />
+              <span className="text-sm font-medium text-slate-600">Пусті бот-ліди</span>
             </label>
           </div>
           <span className="text-sm text-slate-400 flex-shrink-0 pl-2 hidden lg:inline-block ml-auto">
@@ -677,7 +676,64 @@ ${JSON.stringify(lead.behavior_log, null, 2)}
         </div>
       )}
 
-      <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden mb-6">
+      {/* MOBILE LIST VIEW */}
+      <div className="md:hidden flex flex-col gap-4 mb-6">
+          {loading ? (
+             Array.from({ length: 4 }).map((_, i) => (
+               <div key={i} className="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm animate-pulse flex flex-col gap-3">
+                  <div className="h-4 bg-slate-100 rounded w-1/2"></div>
+                  <div className="h-3 bg-slate-50 rounded w-1/3"></div>
+                  <div className="h-8 bg-slate-50 rounded mt-2"></div>
+               </div>
+             ))
+          ) : filtered.length === 0 ? (
+               <div className="bg-white rounded-2xl p-8 text-center border border-slate-100 shadow-sm">
+                    <Users size={36} className="mx-auto mb-3 opacity-20 text-slate-400" strokeWidth={1.5} />
+                    <p className="text-sm font-medium text-slate-500">Лідів не знайдено</p>
+               </div>
+          ) : (
+             filtered.map(lead => (
+                 <div key={`mob-${lead.id}`} className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4 flex flex-col gap-3 relative overflow-hidden transition-all active:scale-[0.99]">
+                    <div className="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-blue-400 to-violet-500 opacity-50"></div>
+                    <div className="flex justify-between items-start pl-2">
+                        <div>
+                            <p className="font-bold text-slate-800 text-[15px]">{lead.name || 'Без імені'}</p>
+                            <p className="text-[11px] text-slate-400 font-mono mt-0.5">tg: {lead.telegram_id}</p>
+                        </div>
+                        <span className="text-[10px] font-medium text-slate-400">{formatDate(lead.created_at)}</span>
+                    </div>
+
+                    <div className="pl-2 space-y-2">
+                        {lead.phone && (
+                            <a href={`tel:${lead.phone}`} className="flex items-center gap-2 bg-blue-50/50 w-max px-2.5 py-1.5 rounded-lg border border-blue-100/50">
+                                <Phone size={12} className="text-blue-500" />
+                                <span className="text-[13px] font-bold text-blue-700">{lead.phone}</span>
+                            </a>
+                        )}
+                        {lead.course && (
+                            <div className="bg-slate-50 rounded-xl p-2.5 border border-slate-100 flex flex-col gap-1.5">
+                                {lead.program_type && <span className={`text-[9px] uppercase tracking-wider font-bold w-max px-2 py-0.5 rounded ${lead.program_type === 'Академія' ? 'bg-indigo-100 text-indigo-700' : 'bg-orange-100 text-orange-700'}`}>{lead.program_type}</span>}
+                                <span className="text-[12px] font-semibold text-slate-700 leading-snug">{lead.course}</span>
+                                {lead.chosen_time && <span className="text-[11px] font-medium text-purple-700 flex items-center gap-1 mt-0.5"><Clock size={11}/> {lead.chosen_time}</span>}
+                            </div>
+                        )}
+                    </div>
+
+                    <div className="pl-2 mt-1 pt-3 border-t border-slate-50 flex items-center justify-between gap-2">
+                        <div className="flex-1">
+                            <StatusSelect lead={lead} onUpdate={updateStatus} isUpdating={updatingIds.has(lead.id)} />
+                        </div>
+                        <button onClick={() => setSelectedLead(lead)} className="w-10 h-10 flex items-center justify-center bg-blue-50 text-blue-600 rounded-xl border border-blue-100 active:bg-blue-100 transition-colors shadow-sm shrink-0">
+                            <Sparkles size={16} />
+                        </button>
+                    </div>
+                 </div>
+             ))
+          )}
+      </div>
+
+      {/* DESKTOP TABLE VIEW */}
+      <div className="hidden md:block bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden mb-6">
         <div className="overflow-x-auto">
           <table className="w-full border-collapse">
             <thead>
@@ -784,7 +840,7 @@ ${JSON.stringify(lead.behavior_log, null, 2)}
 
                 <div
                     ref={builderScrollRef}
-                    className="flex flex-nowrap overflow-x-auto gap-6 pb-6 pt-2 px-12 snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+                    className="flex flex-nowrap overflow-x-auto gap-6 pb-6 pt-2 px-4 md:px-12 snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
                 >
                 {DEFAULT_COURSES.map(defCourse => {
                    const slot = courseSlots.find(c => c.course_slug === defCourse.slug) || { course_slug: defCourse.slug, available_slots: 10, price: defCourse.price };
@@ -971,8 +1027,8 @@ ${JSON.stringify(lead.behavior_log, null, 2)}
 
   return (
     <div className="min-h-screen bg-slate-50 flex font-sans" style={{ fontFamily: "'Inter', sans-serif" }}>
-      {/* SIDEBAR */}
-      <aside className="w-64 bg-white border-r border-slate-200 flex flex-col fixed inset-y-0 left-0 z-30 shadow-sm">
+      {/* SIDEBAR (Desktop) */}
+      <aside className="hidden md:flex w-64 bg-white border-r border-slate-200 flex-col fixed inset-y-0 left-0 z-30 shadow-sm">
         <div className="p-6 border-b border-slate-100 flex items-center gap-3">
           <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-violet-600 rounded-xl flex items-center justify-center shadow-md shadow-blue-200 flex-shrink-0">
              <Star size={18} className="text-white" fill="currentColor" />
@@ -999,31 +1055,54 @@ ${JSON.stringify(lead.behavior_log, null, 2)}
         </div>
       </aside>
 
+      {/* MOBILE BOTTOM NAV */}
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-slate-200 z-50 flex items-center justify-around p-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))] shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
+        <button onClick={() => setActiveTab('analytics')} className={`flex flex-col items-center gap-1 p-2 rounded-xl transition-all ${activeTab === 'analytics' ? 'text-blue-600' : 'text-slate-400'}`}>
+            <LayoutDashboard size={20} />
+            <span className="text-[10px] font-bold">Аналітика</span>
+        </button>
+        <button onClick={() => setActiveTab('builder')} className={`flex flex-col items-center gap-1 p-2 rounded-xl transition-all ${activeTab === 'builder' ? 'text-blue-600' : 'text-slate-400'}`}>
+            <Component size={20} />
+            <span className="text-[10px] font-bold">Конструктор</span>
+        </button>
+        <button onClick={() => window.location.href = '/'} className="flex flex-col items-center gap-1 p-2 rounded-xl text-slate-400 transition-all">
+            <UserCheck size={20} />
+            <span className="text-[10px] font-bold">На сайт</span>
+        </button>
+      </nav>
+
       {/* MAIN CONTENT */}
-      <main className="flex-1 ml-64 flex flex-col min-h-screen">
-         <header className="bg-white border-b border-slate-100 sticky top-0 z-20 px-8 py-5 flex justify-between items-center shadow-sm">
-            <div>
-              <h2 className="text-lg font-black text-slate-800">
-                 {activeTab === 'analytics' ? 'Аналітика та управління лідами' : 'Конструктор карток курсів'}
-              </h2>
-              {lastUpdated && !loading && (
-                <p className="text-[11px] font-medium text-slate-400 mt-0.5">Останнє оновлення: {lastUpdated.toLocaleTimeString('uk-UA')}</p>
-              )}
+      <main className="flex-1 md:ml-64 flex flex-col min-h-screen pb-20 md:pb-0">
+         <header className="bg-white border-b border-slate-100 sticky top-0 z-20 px-4 md:px-8 py-4 md:py-5 flex flex-col sm:flex-row sm:justify-between sm:items-center shadow-sm gap-3">
+            <div className="flex justify-between items-center w-full sm:w-auto">
+              <div>
+                <h2 className="text-base md:text-lg font-black text-slate-800">
+                   {activeTab === 'analytics' ? 'Аналітика лідів' : 'Конструктор курсів'}
+                </h2>
+                {lastUpdated && !loading && (
+                  <p className="text-[10px] md:text-[11px] font-medium text-slate-400 mt-0.5">Останнє оновлення: {lastUpdated.toLocaleTimeString('uk-UA')}</p>
+                )}
+              </div>
+              {/* Mobile-only DB indicator */}
+              <div className="sm:hidden flex items-center gap-1.5">
+                  <Database size={12} className={dbConnected ? 'text-emerald-500' : 'text-rose-400'} />
+              </div>
             </div>
-            <div className="flex items-center gap-4">
-              <div className="flex items-center gap-2 hidden sm:flex">
+            
+            <div className="flex justify-between sm:justify-end items-center gap-4 w-full sm:w-auto">
+              <div className="hidden sm:flex items-center gap-2">
                 <Database size={12} className={dbConnected ? 'text-emerald-500' : 'text-rose-400'} />
                 <span className={`text-[10px] uppercase font-bold tracking-widest ${dbConnected ? 'text-emerald-600' : 'text-rose-500'}`}>
                   {dbConnected ? 'DB OK' : 'DB ERROR'}
                 </span>
               </div>
-              <button onClick={handleRefresh} disabled={loading || loadingSlots} className="flex items-center gap-2 px-4 py-2.5 bg-blue-50 hover:bg-blue-100 text-blue-700 active:bg-blue-200 rounded-xl text-sm font-bold transition-all duration-150 disabled:opacity-50">
+              <button onClick={handleRefresh} disabled={loading || loadingSlots} className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2.5 bg-blue-50 hover:bg-blue-100 text-blue-700 active:bg-blue-200 rounded-xl text-sm font-bold transition-all duration-150 disabled:opacity-50">
                   <RefreshCw size={14} className={loading || loadingSlots ? 'animate-spin' : ''} /> Оновити дані
               </button>
             </div>
          </header>
 
-         <div className="p-8 flex-1 w-full max-w-[1600px] mx-auto">
+         <div className="p-4 md:p-8 flex-1 w-full max-w-[1600px] mx-auto">
             {activeTab === 'analytics' ? renderAnalytics() : renderBuilder()}
          </div>
       </main>
