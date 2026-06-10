@@ -1068,25 +1068,40 @@ ${JSON.stringify(lead.behavior_log, null, 2)}
     const email = (formData.get('email') as string)?.trim();
     const password = formData.get('password') as string;
 
-    const updates: any = {};
+    let hasError = false;
+    let messages: string[] = [];
+
     if (email) {
       // Check for Cyrillic or non-ASCII characters
       if (/[^\x00-\x7F]/.test(email)) {
         alert("Помилка: Ваш email містить недопустимі символи (наприклад, кирилицю замість латиниці). Будь ласка, введіть email англійською мовою.");
         return;
       }
-      updates.email = email;
+      const { error: emailError } = await supabase.auth.updateUser({ email });
+      if (emailError) {
+        alert("Помилка оновлення Email: " + emailError.message);
+        hasError = true;
+      } else {
+        messages.push("✅ Email успішно змінено! (Можливо, потрібно підтвердити лист на новій пошті)");
+      }
     }
-    if (password) updates.password = password;
 
-    if (Object.keys(updates).length === 0) return;
+    if (password && !hasError) {
+      const { error: passwordError } = await supabase.auth.updateUser({ password });
+      if (passwordError) {
+        if (passwordError.message.includes("different from the old password") || passwordError.message.includes("should be different")) {
+          alert("Помилка: Ви ввели свій поточний пароль у поле для НОВОГО пароля.\nЯкщо ви хочете змінити лише Email, залиште поле пароля порожнім.");
+        } else {
+          alert("Помилка оновлення Пароля: " + passwordError.message);
+        }
+        hasError = true;
+      } else {
+        messages.push("✅ Пароль успішно змінено!");
+      }
+    }
 
-    const { error } = await supabase.auth.updateUser(updates);
-
-    if (error) {
-      alert("Помилка оновлення: " + error.message);
-    } else {
-      alert("Дані успішно оновлено!" + (updates.email ? " Якщо ви змінили email, підтвердіть його через лист на новій пошті (якщо увімкнено Confirm Email у Supabase)." : ""));
+    if (messages.length > 0 && !hasError) {
+      alert(messages.join("\n"));
       (e.target as HTMLFormElement).reset();
     }
   };
