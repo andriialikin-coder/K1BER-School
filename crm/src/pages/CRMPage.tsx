@@ -311,7 +311,7 @@ export default function CRMPage() {
 
   const isAuthenticated = !!session;
   
-  const [activeTab, setActiveTab] = useState<'analytics' | 'builder'>('analytics');
+  const [activeTab, setActiveTab] = useState<'analytics' | 'builder' | 'settings'>('analytics');
   const [leads, setLeads] = useState<Lead[]>([]);
   const [courseSlots, setCourseSlots] = useState<CourseSlot[]>([]);
   const [loading, setLoading] = useState(true);
@@ -502,12 +502,9 @@ ${JSON.stringify(lead.behavior_log, null, 2)}
           onSubmit={handleLoginSubmit}
         >
           <div className="flex justify-center mb-6">
-            <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-violet-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/30">
-              <Star size={24} className="text-white" fill="currentColor" />
-            </div>
+            <img src="/logo.webp" alt="K1BER Logo" className="w-16 h-16 drop-shadow-[0_0_15px_rgba(6,182,212,0.4)] object-contain" />
           </div>
-          <h2 className="text-xl font-bold text-center mb-2">Вхід до CRM</h2>
-          <p className="text-xs text-center text-slate-400 mb-6">Авторизація через Supabase Auth</p>
+          <h2 className="text-xl font-bold text-center mb-6">Вхід до CRM</h2>
           
           <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Email</label>
           <input 
@@ -1060,6 +1057,66 @@ ${JSON.stringify(lead.behavior_log, null, 2)}
     );
   };
 
+  const handleUpdateCredentials = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const email = formData.get('email') as string;
+    const password = formData.get('password') as string;
+
+    const updates: any = {};
+    if (email) updates.email = email;
+    if (password) updates.password = password;
+
+    if (Object.keys(updates).length === 0) return;
+
+    const { error } = await supabase.auth.updateUser(updates);
+
+    if (error) {
+      alert("Помилка оновлення: " + error.message);
+    } else {
+      alert("Дані успішно оновлено!" + (updates.email ? " Якщо ви змінили email, підтвердіть його через лист на новій пошті (якщо увімкнено Confirm Email у Supabase)." : ""));
+      (e.target as HTMLFormElement).reset();
+    }
+  };
+
+  const renderSettings = () => (
+    <div className="max-w-2xl mx-auto bg-white rounded-2xl border border-slate-100 shadow-sm p-8">
+       <h3 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+          <Settings className="text-blue-500" /> Налаштування профілю
+       </h3>
+       <p className="text-sm text-slate-500 mb-8 leading-relaxed">
+          Тут ви можете змінити логін (email) та пароль для входу в CRM. 
+          Заповнюйте лише ті поля, які хочете змінити.
+       </p>
+       <form onSubmit={handleUpdateCredentials} className="space-y-5">
+          <div>
+             <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Новий Email (Логін)</label>
+             <input 
+                type="email" 
+                name="email"
+                placeholder={session?.user?.email || "Нова пошта"}
+                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 transition-colors"
+             />
+          </div>
+          <div>
+             <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Новий Пароль</label>
+             <input 
+                type="password" 
+                name="password"
+                placeholder="Введіть новий пароль"
+                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 transition-colors"
+             />
+             <p className="text-[11px] text-slate-400 mt-2">Пароль повинен містити не менше 6 символів.</p>
+          </div>
+          <div className="pt-4 border-t border-slate-100">
+             <button type="submit" className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-xl transition-colors shadow-sm flex items-center gap-2">
+                <Save size={16} /> Зберегти зміни
+             </button>
+          </div>
+       </form>
+    </div>
+  );
+
   return (
     <div className="min-h-screen bg-slate-50 flex font-sans" style={{ fontFamily: "'Inter', sans-serif" }}>
       {/* SIDEBAR (Desktop) */}
@@ -1080,6 +1137,9 @@ ${JSON.stringify(lead.behavior_log, null, 2)}
           </button>
           <button onClick={() => setActiveTab('builder')} className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-semibold transition-all ${activeTab === 'builder' ? 'bg-blue-50 text-blue-700 shadow-inner shadow-blue-500/10' : 'text-slate-600 hover:bg-slate-50'}`}>
             <Component size={18} className={activeTab === 'builder' ? 'text-blue-600' : 'text-slate-400'}/> Конструктор курсів
+          </button>
+          <button onClick={() => setActiveTab('settings')} className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-semibold transition-all ${activeTab === 'settings' ? 'bg-blue-50 text-blue-700 shadow-inner shadow-blue-500/10' : 'text-slate-600 hover:bg-slate-50'}`}>
+            <Settings size={18} className={activeTab === 'settings' ? 'text-blue-600' : 'text-slate-400'}/> Налаштування
           </button>
         </nav>
 
@@ -1103,6 +1163,10 @@ ${JSON.stringify(lead.behavior_log, null, 2)}
             <Component size={20} />
             <span className="text-[10px] font-bold">Конструктор</span>
         </button>
+        <button onClick={() => setActiveTab('settings')} className={`flex flex-col items-center gap-1 p-2 rounded-xl transition-all ${activeTab === 'settings' ? 'text-blue-600' : 'text-slate-400'}`}>
+            <Settings size={20} />
+            <span className="text-[10px] font-bold">Профіль</span>
+        </button>
         <button onClick={async () => { await supabase.auth.signOut(); }} className="flex flex-col items-center gap-1 p-2 rounded-xl text-rose-400 hover:text-rose-600 transition-all">
             <LogOut size={20} />
             <span className="text-[10px] font-bold">Вийти</span>
@@ -1115,7 +1179,7 @@ ${JSON.stringify(lead.behavior_log, null, 2)}
             <div className="flex justify-between items-center w-full sm:w-auto">
               <div>
                 <h2 className="text-base md:text-lg font-black text-slate-800">
-                   {activeTab === 'analytics' ? 'Аналітика лідів' : 'Конструктор курсів'}
+                   {activeTab === 'analytics' ? 'Аналітика лідів' : activeTab === 'builder' ? 'Конструктор курсів' : 'Налаштування профілю'}
                 </h2>
                 {lastUpdated && !loading && (
                   <p className="text-[10px] md:text-[11px] font-medium text-slate-400 mt-0.5">Останнє оновлення: {lastUpdated.toLocaleTimeString('uk-UA')}</p>
@@ -1141,7 +1205,9 @@ ${JSON.stringify(lead.behavior_log, null, 2)}
          </header>
 
          <div className="p-4 md:p-8 flex-1 w-full max-w-[1600px] mx-auto">
-            {activeTab === 'analytics' ? renderAnalytics() : renderBuilder()}
+            {activeTab === 'analytics' && renderAnalytics()}
+            {activeTab === 'builder' && renderBuilder()}
+            {activeTab === 'settings' && renderSettings()}
          </div>
       </main>
 
