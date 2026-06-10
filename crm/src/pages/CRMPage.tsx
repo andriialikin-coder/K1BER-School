@@ -28,6 +28,8 @@ interface Lead {
   chosen_time?: string;
   behavior_log?: any;
   program_type?: string;
+  child_name?: string;
+  consent?: boolean;
 }
 
 interface CourseSlot {

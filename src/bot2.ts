@@ -201,10 +201,8 @@ bot.on('text', async (ctx: Context) => {
                 source: 'bot2_survey',
                 city: state.location,
                 child_age: String(state.age),
-                behavior_log: {
-                    child_name: state.child_name,
-                    consent: state.consent
-                }
+                child_name: state.child_name,
+                consent: state.consent
             }, { onConflict: 'telegram_id' });
 
             await ctx.reply("Дякуємо! Ваша заявка успішно прийнята. Ми зв'яжемося з вами найближчим часом.", Markup.removeKeyboard());
