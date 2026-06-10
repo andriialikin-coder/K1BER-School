@@ -896,6 +896,10 @@ ${JSON.stringify(lead.behavior_log, null, 2)}
                 <p className="text-base font-medium text-slate-600">{selectedLead.city || '—'}</p>
               </div>
               <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                <span className="block text-xs uppercase tracking-widest font-bold text-slate-400 mb-1">Ім'я дитини</span>
+                <p className="text-base font-medium text-slate-600">{selectedLead.child_name || '—'}</p>
+              </div>
+              <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100">
                 <span className="block text-xs uppercase tracking-widest font-bold text-slate-400 mb-1">Вік дитини</span>
                 <p className="text-base font-medium text-slate-600">{selectedLead.child_age || '—'}</p>
               </div>

@@ -213,10 +213,16 @@ bot.on('text', async (ctx: Context) => {
                 const notificationText = `🔥 НОВА ЗАЯВКА (Бот Опитування)!\n\n👨‍👧 Батько: ${state.parent_name}\n👶 Дитина: ${state.child_name} (${state.age} років)\n📍 Місто: ${state.location}\n📞 Телефон: ${state.phone}`;
                 
                 for (const adminId of adminIds) {
-                    await bot.telegram.sendMessage(adminId as string, notificationText);
+                    await bot.telegram.sendMessage(adminId as string, notificationText, {
+                        reply_markup: {
+                            inline_keyboard: [
+                                [{ text: "💻 Відкрити CRM", url: "https://kiber-school.vercel.app/crm" }]
+                            ]
+                        }
+                    });
                 }
-            } catch (err) {
-                console.error("Failed to notify admins", err);
+            } catch (e) {
+                console.error("Ошибка отправки уведомления:", e);
             }
             break;
             
