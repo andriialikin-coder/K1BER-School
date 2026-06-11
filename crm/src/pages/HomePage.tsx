@@ -165,7 +165,7 @@ export default function HomePage() {
       />
 
       {/* Центральный Сатурн с орбитами (на фоне) */}
-      <div className="absolute top-[40%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] flex items-center justify-center opacity-[0.35] pointer-events-none z-0 mix-blend-screen hidden md:flex">
+      <div className="absolute top-[40%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] flex items-center justify-center opacity-[0.25] md:opacity-[0.35] scale-[0.5] sm:scale-[0.75] md:scale-100 pointer-events-none z-0 mix-blend-screen">
         {/* Само тело планеты */}
         <div className="absolute w-[360px] h-[360px] rounded-full bg-gradient-to-br from-[#fb923c] via-[#ea580c] to-[#7c2d12] shadow-[inset_-40px_-40px_60px_rgba(0,0,0,0.8),0_0_120px_rgba(234,88,12,0.6)] z-10" />
 

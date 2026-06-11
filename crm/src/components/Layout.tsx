@@ -50,16 +50,24 @@ const Header = () => {
                     </a>
                 </div>
 
-                {/* Бургер — мобайл */}
-                <button
-                    onClick={() => setMenuOpen(!menuOpen)}
-                    className="md:hidden flex flex-col gap-1.5 p-2 rounded-lg hover:bg-slate-800 transition-colors"
-                    aria-label="Меню"
-                >
-                    <span className={`block w-5 h-0.5 bg-slate-300 transition-all duration-300 ${menuOpen ? 'rotate-45 translate-y-2' : ''}`} />
-                    <span className={`block w-5 h-0.5 bg-slate-300 transition-all duration-300 ${menuOpen ? 'opacity-0' : ''}`} />
-                    <span className={`block w-5 h-0.5 bg-slate-300 transition-all duration-300 ${menuOpen ? '-rotate-45 -translate-y-2' : ''}`} />
-                </button>
+                {/* Мобільні елементи (Кнопка + Бургер) */}
+                <div className="flex md:hidden items-center gap-3">
+                    <a
+                        href="#register"
+                        className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold py-1.5 px-4 rounded-lg text-xs shadow-lg shadow-cyan-500/25 active:scale-95 transition-all"
+                    >
+                        Записатись
+                    </a>
+                    <button
+                        onClick={() => setMenuOpen(!menuOpen)}
+                        className="flex flex-col gap-1.5 p-2 rounded-lg hover:bg-slate-800 transition-colors"
+                        aria-label="Меню"
+                    >
+                        <span className={`block w-5 h-0.5 bg-slate-300 transition-all duration-300 ${menuOpen ? 'rotate-45 translate-y-2' : ''}`} />
+                        <span className={`block w-5 h-0.5 bg-slate-300 transition-all duration-300 ${menuOpen ? 'opacity-0' : ''}`} />
+                        <span className={`block w-5 h-0.5 bg-slate-300 transition-all duration-300 ${menuOpen ? '-rotate-45 -translate-y-2' : ''}`} />
+                    </button>
+                </div>
             </div>
 
             {/* Мобільне меню */}
