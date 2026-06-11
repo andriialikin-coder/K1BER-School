@@ -639,7 +639,10 @@ ${JSON.stringify(lead.behavior_log, null, 2)}
       || l.name?.toLowerCase().includes(q)
       || l.phone?.includes(search)
       || l.telegram_id?.includes(search);
-    const matchStatus = !statusFilter || l.status === statusFilter;
+    // Resolve legacy statuses (e.g. phone_captured/time_confirmed -> "Новий") for filter
+    const matchStatus = !statusFilter
+      || l.status === statusFilter
+      || getStatusConfig(l.status).label === getStatusConfig(statusFilter).label;
     return matchSearch && matchStatus;
   });
 
@@ -849,7 +852,7 @@ ${JSON.stringify(lead.behavior_log, null, 2)}
          </div>
       </div>
   
-      <div className="bg-slate-950 text-white rounded-[2rem] p-8 border border-slate-900 shadow-2xl relative overflow-hidden">
+      <div className="bg-slate-950 text-white rounded-[2rem] p-4 md:p-8 border border-slate-900 shadow-2xl relative overflow-hidden">
          {/* Декоративні елементи фону */}
          <div className="absolute inset-0 bg-[linear-gradient(rgba(6,182,212,1)_1px,transparent_1px),linear-gradient(90deg,rgba(6,182,212,1)_1px,transparent_1px)] bg-[size:60px_60px] opacity-[0.03] pointer-events-none"></div>
   
@@ -877,7 +880,7 @@ ${JSON.stringify(lead.behavior_log, null, 2)}
 
                 <div
                     ref={builderScrollRef}
-                    className="flex flex-nowrap overflow-x-auto gap-6 pb-6 pt-2 px-4 md:px-12 snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+                    className="flex flex-nowrap overflow-x-auto gap-6 pb-6 pt-2 px-2 md:px-12 snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
                 >
                 {DEFAULT_COURSES.map(defCourse => {
                    const slot = courseSlots.find(c => c.course_slug === defCourse.slug) || { course_slug: defCourse.slug, available_slots: 10, price: defCourse.price };
@@ -896,8 +899,8 @@ ${JSON.stringify(lead.behavior_log, null, 2)}
                    return (
                      <div key={defCourse.slug} className={`group relative bg-slate-900 rounded-2xl border border-slate-800 ${course.cardBorder} transition-all duration-300 flex flex-col overflow-hidden w-[85vw] sm:w-[320px] shrink-0 snap-center`}>
                         
-                        {/* EDIT OVERLAY */}
-                        <div className="absolute inset-0 bg-slate-950/70 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity z-30 flex flex-col items-center justify-center gap-3">
+                        {/* EDIT OVERLAY - visible on hover (desktop) or always visible on mobile */}
+                        <div className="absolute inset-0 bg-slate-950/70 backdrop-blur-sm opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity z-30 flex flex-col items-center justify-center gap-3">
                            <button onClick={() => setEditingCourseFor(defCourse.slug)} className="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl shadow-[0_0_20px_rgba(37,99,235,0.4)] flex items-center gap-2 transition-transform hover:scale-105"><Edit3 size={16}/> Редагувати картку</button>
                            <button onClick={() => setEditingModulesFor(defCourse.slug)} className="px-5 py-2.5 bg-cyan-600 hover:bg-cyan-500 text-white font-bold rounded-xl shadow-[0_0_20px_rgba(8,145,178,0.4)] flex items-center gap-2 transition-transform hover:scale-105"><Component size={16}/> Модулі програми</button>
                         </div>
