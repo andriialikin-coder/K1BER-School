@@ -148,7 +148,7 @@ export default function HomePage() {
 
   return (
     <main className="w-full bg-slate-950 overflow-x-hidden">
-      <section className="relative w-full sm:min-h-[calc(100vh-72px)] flex flex-col items-center justify-start pt-12 sm:pt-24 lg:justify-center lg:pt-0 pb-10 sm:pb-20 px-4 sm:px-6 overflow-hidden">
+      <section className="relative w-full lg:min-h-[calc(100vh-72px)] flex flex-col items-center justify-start pt-12 sm:pt-20 lg:justify-center lg:pt-0 pb-10 sm:pb-16 lg:pb-0 px-4 sm:px-6 overflow-hidden">
       
       {/* 1. Глобальный фон: Неоновые градиенты космоса */}
       <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-80 h-80 sm:w-[450px] sm:h-[450px] rounded-full bg-purple-600/[0.08] blur-[100px] sm:blur-[150px] pointer-events-none animate-drift-slow" />
