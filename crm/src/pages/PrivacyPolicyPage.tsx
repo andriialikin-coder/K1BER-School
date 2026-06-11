@@ -19,9 +19,7 @@ export default function PrivacyPolicyPage() {
 
                 <div className="bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-3xl p-8 md:p-12 shadow-2xl">
                     <div className="flex items-center gap-4 mb-10 pb-10 border-b border-slate-800">
-                        <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center shadow-lg shadow-cyan-500/20">
-                            <span className="text-white text-2xl font-black">K1</span>
-                        </div>
+                        <img src="/logo.webp" alt="K1BER Logo" className="w-16 h-16 drop-shadow-[0_0_15px_rgba(6,182,212,0.4)] object-contain" />
                         <div>
                             <h1 className="text-3xl font-black text-white tracking-tight">Політика конфіденційності</h1>
                             <p className="text-cyan-400 font-medium tracking-widest uppercase text-xs mt-1">K1BER.SCHOOL</p>
