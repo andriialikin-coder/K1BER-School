@@ -147,7 +147,7 @@ export default function HomePage() {
   }
 
   return (
-    <main className="w-full bg-slate-950 overflow-hidden">
+    <main className="w-full bg-slate-950 overflow-x-hidden">
       <section className="relative w-full min-h-[calc(100vh-72px)] flex flex-col items-center justify-center py-20 px-6">
       
       {/* 1. Глобальный фон: Неоновые градиенты космоса */}
