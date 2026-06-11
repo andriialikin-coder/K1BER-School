@@ -735,111 +735,142 @@ export const FAQ = ({ onFaqToggle }: { onFaqToggle?: (question: string) => void 
 
 // 7. КОМПОНЕНТ: КОНТАКТИ ТА КАРТА (GEO / AI Visibility)
 export const ContactsAndMap = () => (
-    <section id="contacts" className="w-full bg-slate-900 text-white py-20 px-6 border-b border-slate-950">
-        <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+    <section id="contacts" className="relative w-full bg-slate-950 text-white py-24 px-6 border-b border-slate-900 overflow-hidden">
+        {/* Декоративний фон */}
+        <div className="absolute top-1/2 left-0 -translate-y-1/2 w-[500px] h-[500px] bg-cyan-600/10 blur-[120px] rounded-full pointer-events-none"></div>
+        <div className="absolute top-1/2 right-0 -translate-y-1/2 w-[500px] h-[500px] bg-blue-600/10 blur-[120px] rounded-full pointer-events-none"></div>
+
+        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10">
 
             {/* Ліва частина: текст + контакти */}
-            <div className="space-y-6">
-                <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-cyan-400 bg-cyan-950/50 px-4 py-1.5 rounded-full border border-cyan-800/40">
-                    📍 Чекаємо на вас
-                </span>
-
-                <h2 className="text-3xl md:text-4xl font-black tracking-tight leading-tight">
-                    Сучасний хаб
-                    <br />
-                    <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
-                        у ТРЦ «КИЇВ»
+            <div className="space-y-8">
+                <div>
+                    <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-cyan-400 bg-cyan-950/50 px-4 py-1.5 rounded-full border border-cyan-800/40 mb-4 shadow-[0_0_15px_rgba(6,182,212,0.15)]">
+                        <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
+                        Чекаємо на вас
                     </span>
-                </h2>
 
-                <p className="text-slate-400 text-sm md:text-base leading-relaxed">
-                    Навчальний простір{' '}
-                    <span className="text-white font-semibold">K1BER.SCHOOL</span>{' '}
-                    розташований у ТРЦ «КИЇВ». Поки дитина
-                    створює свої перші IT-проекти під наглядом менторів — батьки можуть
-                    комфортно зайнятися шопінгом або відпочити в кафе.
-                </p>
+                    <h2 className="text-4xl md:text-5xl font-black tracking-tight leading-[1.1] mb-6">
+                        Сучасний хаб
+                        <br />
+                        <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-indigo-400 bg-clip-text text-transparent drop-shadow-sm">
+                            у ТРЦ «КИЇВ»
+                        </span>
+                    </h2>
 
-                {/* Деталі */}
-                <div className="space-y-6 pt-2">
+                    <p className="text-slate-400 text-base md:text-lg leading-relaxed max-w-lg">
+                        Навчальний простір <span className="text-white font-semibold">K1BER.SCHOOL</span> розташований у центрі міста. Поки дитина створює свої перші IT-проекти під наглядом менторів — батьки можуть комфортно зайнятися шопінгом або відпочити в кафе.
+                    </p>
+                </div>
 
+                {/* Деталі - Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
                     {/* 1. Адреса */}
-                    <div className="flex items-start gap-4 group">
-                        <div className="w-10 h-10 rounded-xl bg-cyan-950/60 border border-cyan-800/30 flex items-center justify-center text-lg flex-shrink-0 group-hover:border-cyan-500/50 transition-colors duration-300">
-                            📍
-                        </div>
-                        <div>
-                            <h4 className="text-base md:text-lg font-bold text-slate-200 mb-0.5">Наша адреса</h4>
-                            <p className="text-slate-300 text-base md:text-lg leading-relaxed">
-                                м. Суми, вул. Нижньовоскресенська, 1
-                                <br />
-                                <span className="text-slate-400 text-sm">(ТРЦ «КИЇВ»)</span>
-                            </p>
+                    <div className="group relative p-5 bg-slate-900/40 backdrop-blur-md border border-slate-800/80 rounded-2xl hover:bg-cyan-950/30 hover:border-cyan-500/40 transition-all duration-500 overflow-hidden shadow-lg shadow-slate-950/50">
+                        <div className="absolute top-0 left-0 w-1 h-full bg-cyan-500/50 group-hover:bg-cyan-400 transition-colors duration-500"></div>
+                        <div className="flex items-start gap-4">
+                            <div className="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-xl flex-shrink-0 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-[0_0_15px_rgba(6,182,212,0.15)] group-hover:shadow-[0_0_25px_rgba(6,182,212,0.3)] text-cyan-400">
+                                📍
+                            </div>
+                            <div>
+                                <h4 className="text-[10px] font-bold uppercase tracking-widest text-cyan-400/80 mb-1">Наша адреса</h4>
+                                <p className="text-slate-200 text-sm md:text-base font-semibold leading-snug">
+                                    м. Суми,<br />вул. Нижньовоскресенська, 1
+                                    <span className="block text-slate-500 text-xs font-normal mt-1">(ТРЦ «КИЇВ»)</span>
+                                </p>
+                            </div>
                         </div>
                     </div>
 
-                    {/* 2. Телефон (Дизайнерський акцент) */}
-                    <div className="flex items-start gap-4 group">
-                        <div className="w-10 h-10 rounded-xl bg-emerald-950/60 border border-emerald-800/30 flex items-center justify-center text-lg flex-shrink-0 group-hover:border-emerald-500/50 transition-colors duration-300 shadow-lg shadow-emerald-900/20">
-                            📞
-                        </div>
-                        <div className="pt-0.5">
-                            <h4 className="text-xs font-bold uppercase tracking-wider text-emerald-400/80 mb-1">Зателефонувати нам</h4>
-                            <a
-                                href="tel:+380502828029"
-                                className="inline-block text-xl md:text-2xl font-black text-white hover:text-emerald-400 tracking-tight transition-colors duration-300 drop-shadow-md"
-                            >
-                                +38 050 282 80 29
-                            </a>
+                    {/* 2. Телефон */}
+                    <div className="group relative p-5 bg-slate-900/40 backdrop-blur-md border border-slate-800/80 rounded-2xl hover:bg-emerald-950/30 hover:border-emerald-500/40 transition-all duration-500 overflow-hidden shadow-lg shadow-slate-950/50">
+                        <div className="absolute top-0 left-0 w-1 h-full bg-emerald-500/50 group-hover:bg-emerald-400 transition-colors duration-500"></div>
+                        <div className="flex items-start gap-4">
+                            <div className="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-xl flex-shrink-0 group-hover:scale-110 group-hover:-rotate-3 transition-all duration-500 shadow-[0_0_15px_rgba(16,185,129,0.15)] group-hover:shadow-[0_0_25px_rgba(16,185,129,0.3)] text-emerald-400">
+                                📞
+                            </div>
+                            <div className="flex flex-col justify-center">
+                                <h4 className="text-[10px] font-bold uppercase tracking-widest text-emerald-400/80 mb-1">Зателефонувати</h4>
+                                <a
+                                    href="tel:+380502828029"
+                                    className="inline-block text-lg md:text-xl font-black text-white hover:text-emerald-400 tracking-tight transition-colors duration-300 mt-1"
+                                >
+                                    +38 050 282 80 29
+                                </a>
+                            </div>
                         </div>
                     </div>
 
                     {/* 3. Графік роботи */}
-                    <div className="flex items-start gap-4 group">
-                        <div className="w-10 h-10 rounded-xl bg-blue-950/60 border border-blue-800/30 flex items-center justify-center text-lg flex-shrink-0 group-hover:border-blue-500/50 transition-colors duration-300">
-                            🕒
-                        </div>
-                        <div>
-                            <h4 className="text-sm font-bold text-slate-200 mb-0.5">Графік роботи</h4>
-                            <p className="text-slate-400 text-sm leading-relaxed">
-                                Субота та Неділя: 09:00 – 18:00
-                                <br />
-                                <span className="text-slate-500 text-xs">(згідно з розкладом груп)</span>
-                            </p>
+                    <div className="group relative p-5 bg-slate-900/40 backdrop-blur-md border border-slate-800/80 rounded-2xl hover:bg-blue-950/30 hover:border-blue-500/40 transition-all duration-500 overflow-hidden shadow-lg shadow-slate-950/50">
+                        <div className="absolute top-0 left-0 w-1 h-full bg-blue-500/50 group-hover:bg-blue-400 transition-colors duration-500"></div>
+                        <div className="flex items-start gap-4">
+                            <div className="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-xl flex-shrink-0 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-[0_0_15px_rgba(59,130,246,0.15)] group-hover:shadow-[0_0_25px_rgba(59,130,246,0.3)] text-blue-400">
+                                🕒
+                            </div>
+                            <div>
+                                <h4 className="text-[10px] font-bold uppercase tracking-widest text-blue-400/80 mb-1">Графік роботи</h4>
+                                <p className="text-slate-200 text-sm md:text-base font-semibold leading-snug">
+                                    Сб – Нд: 09:00 – 18:00
+                                    <span className="block text-slate-500 text-xs font-normal mt-1">(згідно з розкладом)</span>
+                                </p>
+                            </div>
                         </div>
                     </div>
 
                     {/* 4. Онлайн запис */}
-                    <div className="flex items-start gap-4 group">
-                        <div className="w-10 h-10 rounded-xl bg-violet-950/60 border border-violet-800/30 flex items-center justify-center text-lg flex-shrink-0 group-hover:border-violet-500/50 transition-colors duration-300">
-                            🎯
-                        </div>
-                        <div>
-                            <h4 className="text-sm font-bold text-slate-200 mb-0.5">Онлайн-запис</h4>
-                            <a
-                                href="#register"
-                                className="text-cyan-400 hover:text-cyan-300 text-sm font-semibold transition-colors duration-200 underline underline-offset-4 decoration-cyan-800 hover:decoration-cyan-400"
-                            >
-                                Заповніть форму вище →
-                            </a>
+                    <div className="group relative p-5 bg-slate-900/40 backdrop-blur-md border border-slate-800/80 rounded-2xl hover:bg-violet-950/30 hover:border-violet-500/40 transition-all duration-500 overflow-hidden shadow-lg shadow-slate-950/50">
+                        <div className="absolute top-0 left-0 w-1 h-full bg-violet-500/50 group-hover:bg-violet-400 transition-colors duration-500"></div>
+                        <div className="flex items-start gap-4">
+                            <div className="w-12 h-12 rounded-xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center text-xl flex-shrink-0 group-hover:scale-110 group-hover:-rotate-3 transition-all duration-500 shadow-[0_0_15px_rgba(139,92,246,0.15)] group-hover:shadow-[0_0_25px_rgba(139,92,246,0.3)] text-violet-400">
+                                🎯
+                            </div>
+                            <div className="flex flex-col justify-center w-full">
+                                <h4 className="text-[10px] font-bold uppercase tracking-widest text-violet-400/80 mb-1">Онлайн-запис</h4>
+                                <a
+                                    href="#register"
+                                    className="inline-flex items-center justify-between w-full text-white hover:text-violet-300 text-sm md:text-base font-semibold transition-colors duration-300 mt-1"
+                                >
+                                    Залишити заявку 
+                                    <div className="w-6 h-6 rounded-full bg-violet-500/20 flex items-center justify-center group-hover:bg-violet-500/40 transition-colors group-hover:translate-x-1">
+                                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                                    </div>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
             {/* Права частина: карта */}
-            <div className="group relative w-full h-80 md:h-96 rounded-2xl overflow-hidden border border-slate-800 hover:border-cyan-500/30 transition-all duration-300 shadow-2xl shadow-slate-950">
+            <div className="group relative w-full h-[400px] md:h-[500px] rounded-3xl overflow-hidden border border-slate-800/80 hover:border-cyan-500/50 transition-all duration-500 shadow-[0_0_40px_rgba(0,0,0,0.5)] shadow-slate-950">
                 {/* Декоративна рамка-glow */}
-                <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-cyan-500/5 to-blue-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-10" />
+                <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-cyan-500/10 to-blue-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none z-10" />
+                
+                {/* Overlay gradient to blend map with dark theme better */}
+                <div className="absolute inset-0 bg-slate-950/20 group-hover:bg-transparent transition-colors duration-500 pointer-events-none z-10"></div>
 
                 <iframe
                     title="K1BER.SCHOOL — м. Суми, ТРЦ КИЇВ, вул. Нижньовоскресенська, 1"
                     src="https://maps.google.com/maps?q=ТРЦ%20Київ,%20вулиця%20Нижньовоскресенська%201,%20Суми&t=&z=16&ie=UTF8&iwloc=&output=embed"
-                    className="w-full h-full grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500"
+                    className="w-full h-full grayscale-[0.8] opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700 scale-105 group-hover:scale-100"
                     allowFullScreen={false}
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
                 />
+                
+                {/* Floating Map Badge */}
+                <div className="absolute bottom-6 left-6 z-20 bg-slate-900/90 backdrop-blur-md border border-slate-700 p-4 rounded-2xl shadow-xl transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                    <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center shadow-lg shadow-cyan-500/30">
+                            <span className="text-white text-lg">🏫</span>
+                        </div>
+                        <div>
+                            <p className="text-white font-bold text-sm">K1BER.SCHOOL</p>
+                            <p className="text-cyan-400 text-xs">Ми знаходимось тут</p>
+                        </div>
+                    </div>
+                </div>
             </div>
 
         </div>
