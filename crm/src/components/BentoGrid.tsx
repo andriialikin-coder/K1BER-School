@@ -112,7 +112,7 @@ export function BentoGrid() {
             {(feature as any).image && (
               <div className="mt-auto pt-10 relative w-full flex justify-center pointer-events-none">
                  <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-slate-950 to-transparent z-10"></div>
-                 <img src={(feature as any).image} alt={feature.title} className="w-[85%] md:w-[90%] object-contain drop-shadow-[0_-10px_25px_rgba(244,63,94,0.15)] group-hover:scale-105 group-hover:-translate-y-2 transition-all duration-500 ease-out z-0 md:-translate-y-4" />
+                 <img src={(feature as any).image} alt={feature.title} className="w-[85%] md:w-[90%] object-contain group-hover:scale-105 group-hover:-translate-y-2 transition-all duration-500 ease-out z-0 md:-translate-y-4" />
               </div>
             )}
           </div>
