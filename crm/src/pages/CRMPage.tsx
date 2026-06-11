@@ -843,7 +843,7 @@ ${JSON.stringify(lead.behavior_log, null, 2)}
 
   // ────────────── ВЬЮ: КОНСТРУКТОР ──────────────
   const renderBuilder = () => (
-    <div className="w-full pb-10">
+    <div className="w-full pb-10 overflow-hidden">
       <div className="mb-6 bg-blue-50 border border-blue-100 rounded-2xl p-5 flex items-start gap-4">
          <Settings className="text-blue-500 flex-shrink-0 mt-0.5"/>
          <div>
@@ -852,9 +852,9 @@ ${JSON.stringify(lead.behavior_log, null, 2)}
          </div>
       </div>
   
-      <div className="bg-slate-950 text-white rounded-[2rem] p-4 md:p-8 border border-slate-900 shadow-2xl relative overflow-hidden">
+      <div className="bg-slate-950 text-white rounded-[2rem] p-4 md:p-8 border border-slate-900 shadow-2xl relative">
          {/* Декоративні елементи фону */}
-         <div className="absolute inset-0 bg-[linear-gradient(rgba(6,182,212,1)_1px,transparent_1px),linear-gradient(90deg,rgba(6,182,212,1)_1px,transparent_1px)] bg-[size:60px_60px] opacity-[0.03] pointer-events-none"></div>
+         <div className="absolute inset-0 bg-[linear-gradient(rgba(6,182,212,1)_1px,transparent_1px),linear-gradient(90deg,rgba(6,182,212,1)_1px,transparent_1px)] bg-[size:60px_60px] opacity-[0.03] pointer-events-none rounded-[2rem]"></div>
   
          {loadingSlots ? (
              <div className="text-center py-20 relative z-10 flex flex-col items-center justify-center">
@@ -862,7 +862,7 @@ ${JSON.stringify(lead.behavior_log, null, 2)}
                  <p className="text-slate-400">Завантаження карток...</p>
              </div>
          ) : (
-             <div className="relative w-full pb-4">
+             <div className="relative w-full">
                 {/* Кнопки-стрілки */}
                 <button
                     onClick={() => scrollBuilder('left')}
@@ -878,9 +878,11 @@ ${JSON.stringify(lead.behavior_log, null, 2)}
                     <svg className="w-5 h-5 pl-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" /></svg>
                 </button>
 
+                {/* Scroll wrapper — overflow-x-auto here, NOT on parent */}
                 <div
                     ref={builderScrollRef}
-                    className="flex flex-nowrap overflow-x-auto gap-6 pb-6 pt-2 px-2 md:px-12 snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+                    style={{ WebkitOverflowScrolling: 'touch' }}
+                    className="flex flex-nowrap overflow-x-auto overflow-y-hidden gap-4 md:gap-6 pb-4 pt-2 px-1 md:px-12 snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] touch-pan-x"
                 >
                 {DEFAULT_COURSES.map(defCourse => {
                    const slot = courseSlots.find(c => c.course_slug === defCourse.slug) || { course_slug: defCourse.slug, available_slots: 10, price: defCourse.price };
@@ -897,7 +899,7 @@ ${JSON.stringify(lead.behavior_log, null, 2)}
                    };
       
                    return (
-                     <div key={defCourse.slug} className={`group relative bg-slate-900 rounded-2xl border border-slate-800 ${course.cardBorder} transition-all duration-300 flex flex-col overflow-hidden w-[85vw] sm:w-[320px] shrink-0 snap-center`}>
+                     <div key={defCourse.slug} className={`group relative bg-slate-900 rounded-2xl border border-slate-800 ${course.cardBorder} transition-all duration-300 flex flex-col overflow-hidden w-[78vw] sm:w-[300px] md:w-[320px] flex-shrink-0 snap-center`}>
                         
                         {/* EDIT OVERLAY - visible on hover (desktop) or always visible on mobile */}
                         <div className="absolute inset-0 bg-slate-950/70 backdrop-blur-sm opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity z-30 flex flex-col items-center justify-center gap-3">
@@ -1215,7 +1217,7 @@ ${JSON.stringify(lead.behavior_log, null, 2)}
       </nav>
 
       {/* MAIN CONTENT */}
-      <main className="flex-1 md:ml-64 flex flex-col min-h-screen pb-20 md:pb-0">
+      <main className="flex-1 md:ml-64 flex flex-col min-h-screen pb-20 md:pb-0 overflow-x-hidden">
          <header className="bg-white border-b border-slate-100 sticky top-0 z-20 px-4 md:px-8 py-4 md:py-5 flex flex-col sm:flex-row sm:justify-between sm:items-center shadow-sm gap-3">
             <div className="flex justify-between items-center w-full sm:w-auto">
               <div>
@@ -1245,7 +1247,7 @@ ${JSON.stringify(lead.behavior_log, null, 2)}
             </div>
          </header>
 
-         <div className="p-4 md:p-8 flex-1 w-full max-w-[1600px] mx-auto">
+         <div className="p-4 md:p-8 flex-1 w-full max-w-[1600px] mx-auto overflow-x-hidden">
             {activeTab === 'analytics' && renderAnalytics()}
             {activeTab === 'builder' && renderBuilder()}
             {activeTab === 'settings' && renderSettings()}
