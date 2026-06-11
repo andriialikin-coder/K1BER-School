@@ -1,6 +1,17 @@
-import { Clock, Apple, Users, Gamepad2, Sparkles } from 'lucide-react';
+import { Clock, Apple, Users, Gamepad2, Sparkles, Box } from 'lucide-react';
 
 const features = [
+  {
+    title: "3D-друк",
+    desc: (
+      <>
+        Один з найулюбленіших напрямків дітей. Місце, де власні ідеї перетворюються на <strong className="text-white font-semibold">реальні об'єкти</strong> за допомогою сучасних 3D-технологій.
+      </>
+    ),
+    icon: <Box className="w-8 h-8 md:w-10 md:h-10 text-rose-400" />,
+    className: "md:col-span-1 md:row-span-2 bg-gradient-to-br from-slate-900 to-slate-950 border-rose-500/20 hover:border-rose-500/50 flex flex-col justify-center",
+    glow: "bg-rose-500/10"
+  },
   {
     title: "Зручний Формат",
     desc: (
@@ -75,8 +86,8 @@ export function BentoGrid() {
         </p>
       </div>
       
-      {/* Сітка 2x2 для 4 карток */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 auto-rows-fr max-w-5xl mx-auto">
+      {/* Сітка Bento: 1 високий блок зліва + 2x2 справа */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
         {features.map((feature, i) => (
           <div 
             key={i} 
