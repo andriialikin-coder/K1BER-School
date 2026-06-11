@@ -763,80 +763,77 @@ export const ContactsAndMap = () => (
                     </p>
                 </div>
 
-                {/* Деталі - Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                {/* Деталі - Елегантний список 2026 */}
+                <div className="flex flex-col gap-6 pt-4 relative">
+                    {/* Вертикальна лінія-світіння (timeline ефект) */}
+                    <div className="absolute left-[23px] top-8 bottom-8 w-[2px] bg-gradient-to-b from-cyan-500/20 via-blue-500/10 to-violet-500/20 hidden sm:block"></div>
+
                     {/* 1. Адреса */}
-                    <div className="group relative p-5 bg-slate-900/40 backdrop-blur-md border border-slate-800/80 rounded-2xl hover:bg-cyan-950/30 hover:border-cyan-500/40 transition-all duration-500 overflow-hidden shadow-lg shadow-slate-950/50">
-                        <div className="absolute top-0 left-0 w-1 h-full bg-cyan-500/50 group-hover:bg-cyan-400 transition-colors duration-500"></div>
-                        <div className="flex items-start gap-4">
-                            <div className="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-xl flex-shrink-0 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-[0_0_15px_rgba(6,182,212,0.15)] group-hover:shadow-[0_0_25px_rgba(6,182,212,0.3)] text-cyan-400">
+                    <div className="group flex items-start gap-5 relative z-10">
+                        <div className="relative flex-shrink-0 mt-1">
+                            <div className="absolute inset-0 bg-cyan-500/20 blur-md rounded-full group-hover:bg-cyan-500/40 transition-colors duration-500"></div>
+                            <div className="relative w-12 h-12 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-xl z-10 group-hover:border-cyan-500/50 transition-colors duration-500 text-cyan-400 shadow-sm shadow-cyan-900/30">
                                 📍
                             </div>
-                            <div>
-                                <h4 className="text-[10px] font-bold uppercase tracking-widest text-cyan-400/80 mb-1">Наша адреса</h4>
-                                <p className="text-slate-200 text-sm md:text-base font-semibold leading-snug">
-                                    м. Суми,<br />вул. Нижньовоскресенська, 1
-                                    <span className="block text-slate-500 text-xs font-normal mt-1">(ТРЦ «КИЇВ»)</span>
-                                </p>
-                            </div>
+                        </div>
+                        <div className="flex-1 pb-6 border-b border-slate-800/50 group-hover:border-cyan-500/30 transition-colors duration-500">
+                            <h4 className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1 group-hover:text-cyan-400 transition-colors duration-300">Локація</h4>
+                            <p className="text-slate-200 text-base md:text-lg font-medium leading-snug">
+                                м. Суми, вул. Нижньовоскресенська, 1
+                                <span className="block text-slate-400 text-sm mt-1 font-normal">ТРЦ «КИЇВ»</span>
+                            </p>
                         </div>
                     </div>
 
                     {/* 2. Телефон */}
-                    <div className="group relative p-5 bg-slate-900/40 backdrop-blur-md border border-slate-800/80 rounded-2xl hover:bg-emerald-950/30 hover:border-emerald-500/40 transition-all duration-500 overflow-hidden shadow-lg shadow-slate-950/50">
-                        <div className="absolute top-0 left-0 w-1 h-full bg-emerald-500/50 group-hover:bg-emerald-400 transition-colors duration-500"></div>
-                        <div className="flex items-start gap-4">
-                            <div className="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-xl flex-shrink-0 group-hover:scale-110 group-hover:-rotate-3 transition-all duration-500 shadow-[0_0_15px_rgba(16,185,129,0.15)] group-hover:shadow-[0_0_25px_rgba(16,185,129,0.3)] text-emerald-400">
+                    <div className="group flex items-start gap-5 relative z-10">
+                        <div className="relative flex-shrink-0 mt-1">
+                            <div className="absolute inset-0 bg-emerald-500/20 blur-md rounded-full group-hover:bg-emerald-500/40 transition-colors duration-500"></div>
+                            <div className="relative w-12 h-12 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-xl z-10 group-hover:border-emerald-500/50 transition-colors duration-500 text-emerald-400 shadow-sm shadow-emerald-900/30">
                                 📞
                             </div>
-                            <div className="flex flex-col justify-center">
-                                <h4 className="text-[10px] font-bold uppercase tracking-widest text-emerald-400/80 mb-1">Зателефонувати</h4>
-                                <a
-                                    href="tel:+380502828029"
-                                    className="inline-block text-lg md:text-xl font-black text-white hover:text-emerald-400 tracking-tight transition-colors duration-300 mt-1"
-                                >
-                                    +38 050 282 80 29
-                                </a>
-                            </div>
+                        </div>
+                        <div className="flex-1 pb-6 border-b border-slate-800/50 group-hover:border-emerald-500/30 transition-colors duration-500 flex flex-col justify-center">
+                            <h4 className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1 group-hover:text-emerald-400 transition-colors duration-300">Зв'язок</h4>
+                            <a href="tel:+380502828029" className="inline-block text-xl md:text-2xl font-black text-white hover:text-emerald-400 tracking-tight transition-colors duration-300">
+                                +38 050 282 80 29
+                            </a>
                         </div>
                     </div>
 
-                    {/* 3. Графік роботи */}
-                    <div className="group relative p-5 bg-slate-900/40 backdrop-blur-md border border-slate-800/80 rounded-2xl hover:bg-blue-950/30 hover:border-blue-500/40 transition-all duration-500 overflow-hidden shadow-lg shadow-slate-950/50">
-                        <div className="absolute top-0 left-0 w-1 h-full bg-blue-500/50 group-hover:bg-blue-400 transition-colors duration-500"></div>
-                        <div className="flex items-start gap-4">
-                            <div className="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-xl flex-shrink-0 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-[0_0_15px_rgba(59,130,246,0.15)] group-hover:shadow-[0_0_25px_rgba(59,130,246,0.3)] text-blue-400">
+                    {/* 3. Графік */}
+                    <div className="group flex items-start gap-5 relative z-10">
+                        <div className="relative flex-shrink-0 mt-1">
+                            <div className="absolute inset-0 bg-blue-500/20 blur-md rounded-full group-hover:bg-blue-500/40 transition-colors duration-500"></div>
+                            <div className="relative w-12 h-12 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-xl z-10 group-hover:border-blue-500/50 transition-colors duration-500 text-blue-400 shadow-sm shadow-blue-900/30">
                                 🕒
                             </div>
-                            <div>
-                                <h4 className="text-[10px] font-bold uppercase tracking-widest text-blue-400/80 mb-1">Графік роботи</h4>
-                                <p className="text-slate-200 text-sm md:text-base font-semibold leading-snug">
-                                    Сб – Нд: 09:00 – 18:00
-                                    <span className="block text-slate-500 text-xs font-normal mt-1">(згідно з розкладом)</span>
-                                </p>
-                            </div>
+                        </div>
+                        <div className="flex-1 pb-6 border-b border-slate-800/50 group-hover:border-blue-500/30 transition-colors duration-500">
+                            <h4 className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1 group-hover:text-blue-400 transition-colors duration-300">Години роботи</h4>
+                            <p className="text-slate-200 text-base md:text-lg font-medium leading-snug">
+                                Субота та Неділя: 09:00 – 18:00
+                                <span className="block text-slate-400 text-sm mt-1 font-normal">Згідно з розкладом груп</span>
+                            </p>
                         </div>
                     </div>
 
-                    {/* 4. Онлайн запис */}
-                    <div className="group relative p-5 bg-slate-900/40 backdrop-blur-md border border-slate-800/80 rounded-2xl hover:bg-violet-950/30 hover:border-violet-500/40 transition-all duration-500 overflow-hidden shadow-lg shadow-slate-950/50">
-                        <div className="absolute top-0 left-0 w-1 h-full bg-violet-500/50 group-hover:bg-violet-400 transition-colors duration-500"></div>
-                        <div className="flex items-start gap-4">
-                            <div className="w-12 h-12 rounded-xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center text-xl flex-shrink-0 group-hover:scale-110 group-hover:-rotate-3 transition-all duration-500 shadow-[0_0_15px_rgba(139,92,246,0.15)] group-hover:shadow-[0_0_25px_rgba(139,92,246,0.3)] text-violet-400">
+                    {/* 4. Запис */}
+                    <div className="group flex items-start gap-5 relative z-10">
+                        <div className="relative flex-shrink-0 mt-1">
+                            <div className="absolute inset-0 bg-violet-500/20 blur-md rounded-full group-hover:bg-violet-500/40 transition-colors duration-500"></div>
+                            <div className="relative w-12 h-12 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-xl z-10 group-hover:border-violet-500/50 transition-colors duration-500 text-violet-400 shadow-sm shadow-violet-900/30">
                                 🎯
                             </div>
-                            <div className="flex flex-col justify-center w-full">
-                                <h4 className="text-[10px] font-bold uppercase tracking-widest text-violet-400/80 mb-1">Онлайн-запис</h4>
-                                <a
-                                    href="#register"
-                                    className="inline-flex items-center justify-between w-full text-white hover:text-violet-300 text-sm md:text-base font-semibold transition-colors duration-300 mt-1"
-                                >
-                                    Залишити заявку 
-                                    <div className="w-6 h-6 rounded-full bg-violet-500/20 flex items-center justify-center group-hover:bg-violet-500/40 transition-colors group-hover:translate-x-1">
-                                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
-                                    </div>
-                                </a>
-                            </div>
+                        </div>
+                        <div className="flex-1">
+                            <h4 className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1 group-hover:text-violet-400 transition-colors duration-300">Приєднатися</h4>
+                            <a href="#register" className="inline-flex items-center gap-3 text-white hover:text-violet-300 text-base md:text-lg font-semibold transition-colors duration-300 mt-1">
+                                Залишити заявку на урок
+                                <div className="w-8 h-8 rounded-full bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 group-hover:translate-x-2 transition-all duration-300 border border-violet-500/20 text-violet-400 shadow-inner">
+                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                                </div>
+                            </a>
                         </div>
                     </div>
                 </div>
