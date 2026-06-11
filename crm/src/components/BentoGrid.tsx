@@ -10,7 +10,8 @@ const features = [
     ),
     icon: <Box className="w-8 h-8 md:w-10 md:h-10 text-rose-400" />,
     className: "md:col-span-1 md:row-span-2 bg-gradient-to-br from-slate-900 to-slate-950 border-rose-500/20 hover:border-rose-500/50 flex flex-col justify-start",
-    glow: "bg-rose-500/10"
+    glow: "bg-rose-500/10",
+    image: "/printer.webp"
   },
   {
     title: "Зручний Формат",
@@ -96,17 +97,24 @@ export function BentoGrid() {
             {/* Глоу ефект */}
             <div className={`absolute -top-24 -right-24 w-48 h-48 rounded-full blur-[60px] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none ${feature.glow}`} />
             
-            <div className="mb-6 p-4 bg-slate-950/80 rounded-2xl inline-block border border-slate-800/80 shadow-inner">
+            <div className="mb-6 p-4 bg-slate-950/80 rounded-2xl inline-block border border-slate-800/80 shadow-inner self-start relative z-10">
               {feature.icon}
             </div>
             
-            <h3 className="font-bold text-white mb-4 leading-snug text-2xl" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+            <h3 className="font-bold text-white mb-4 leading-snug text-2xl relative z-10" style={{ fontFamily: "'Montserrat', sans-serif" }}>
               {feature.title}
             </h3>
             
-            <p className="text-slate-400 leading-relaxed text-base md:text-lg">
+            <p className="text-slate-400 leading-relaxed text-base md:text-lg relative z-10 flex-1">
               {feature.desc}
             </p>
+
+            {(feature as any).image && (
+              <div className="mt-8 relative w-full flex-1 min-h-[180px] flex items-end justify-center pointer-events-none">
+                 <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-slate-950 to-transparent z-10"></div>
+                 <img src={(feature as any).image} alt={feature.title} className="absolute bottom-0 w-[95%] object-contain drop-shadow-[0_-10px_25px_rgba(244,63,94,0.15)] group-hover:scale-105 group-hover:-translate-y-2 transition-all duration-500 ease-out z-0" />
+              </div>
+            )}
           </div>
         ))}
       </div>
