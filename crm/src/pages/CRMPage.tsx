@@ -996,6 +996,17 @@ ${JSON.stringify(lead.behavior_log, null, 2)}
                 <span className="block text-xs uppercase tracking-widest font-bold text-slate-400 mb-1">Вік дитини</span>
                 <p className="text-base font-medium text-slate-600">{selectedLead.child_age || '—'}</p>
               </div>
+              <div className="bg-emerald-50 p-4 rounded-2xl border border-emerald-100 col-span-2 sm:col-span-1">
+                <span className="block text-xs uppercase tracking-widest font-bold text-emerald-600/70 mb-1">Згода на обробку даних</span>
+                {selectedLead.behavior_log?.legal_consent ? (
+                  <p className="text-sm font-bold text-emerald-700 flex items-center gap-1.5">
+                    <CheckCircle2 size={16}/> 
+                    Отримано ({new Date(selectedLead.behavior_log.legal_consent_timestamp).toLocaleString('uk-UA')})
+                  </p>
+                ) : (
+                  <p className="text-sm font-medium text-slate-500">—</p>
+                )}
+              </div>
             </div>
 
             <div className="bg-blue-50/50 p-5 rounded-2xl border border-blue-100">

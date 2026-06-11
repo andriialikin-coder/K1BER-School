@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { ageGroups } from './BentoModules';
 import { Link } from 'react-router-dom';
@@ -250,6 +250,7 @@ export const RegisterForm = ({ sourceName = 'Інтенсив', onAuthSuccess, s
 
     const [loginPhone, setLoginPhone] = useState('+380');
     const [loginError, setLoginError] = useState('');
+    const [legalConsent, setLegalConsent] = useState(false);
 
     const isPhoneValid = (phone: string) => {
         const digits = phone.replace(/\D/g, '');
@@ -257,7 +258,7 @@ export const RegisterForm = ({ sourceName = 'Інтенсив', onAuthSuccess, s
     };
 
     const isFormInvalid = tab === 'new'
-        ? (!formData.name.trim() || !formData.course || !isPhoneValid(formData.phone) || !formData.city.trim() || !formData.child_age.trim() || !formData.child_name.trim())
+        ? (!formData.name.trim() || !formData.course || !isPhoneValid(formData.phone) || !formData.city.trim() || !formData.child_age.trim() || !formData.child_name.trim() || !legalConsent)
         : (!isPhoneValid(loginPhone));
 
     React.useEffect(() => {
@@ -354,7 +355,11 @@ export const RegisterForm = ({ sourceName = 'Інтенсив', onAuthSuccess, s
                 child_name: formData.child_name,
                 source: sourceName,
                 program_type: programType,
-                behavior_log: behaviorLogRef ? behaviorLogRef.current : {}
+                behavior_log: {
+                    ...(behaviorLogRef ? behaviorLogRef.current : {}),
+                    legal_consent: legalConsent,
+                    legal_consent_timestamp: new Date().toISOString()
+                }
             };
 
             console.log("Submitting payload to Supabase:", payload);
@@ -594,13 +599,24 @@ export const RegisterForm = ({ sourceName = 'Інтенсив', onAuthSuccess, s
                             </span>
                         </div>
 
-                        <button type="submit" disabled={loading || isFormInvalid} className="w-full mt-2 bg-gradient-to-r from-cyan-500 to-blue-600 hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold py-3.5 px-4 rounded-xl text-sm transition">
+                        <div className="mt-4 flex items-start gap-3">
+                            <div className="flex items-center h-5">
+                                <input
+                                    id="legal_consent"
+                                    type="checkbox"
+                                    checked={legalConsent}
+                                    onChange={(e) => setLegalConsent(e.target.checked)}
+                                    className="w-4 h-4 rounded border-slate-700 bg-slate-900 text-cyan-500 focus:ring-cyan-500/20 focus:ring-offset-slate-950"
+                                />
+                            </div>
+                            <label htmlFor="legal_consent" className="text-[11px] text-slate-500 leading-relaxed cursor-pointer">
+                                Я підтверджую свою згоду на обробку персональних даних, а також приймаю умови <Link to="/privacy" className="text-cyan-500 hover:underline">Політики конфіденційності</Link> та <Link to="/offer" className="text-cyan-500 hover:underline">Публічної оферти</Link>.
+                            </label>
+                        </div>
+
+                        <button type="submit" disabled={loading || isFormInvalid} className="w-full mt-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold py-3.5 px-4 rounded-xl text-sm transition">
                             {loading ? 'Відправляємо...' : tab === 'new' ? 'Забронювати місце на урок →' : 'Увійти в кабінет →'}
                         </button>
-                        
-                        <p className="mt-5 text-[11px] text-slate-500 text-center leading-relaxed px-2">
-                            Підтвердіть свою згоду на обробку персональних даних. Ми зобов'язуємося використовувати отриману інформацію тільки всередині нашої компанії, і не передавати третім особам. <Link to="/privacy" className="text-cyan-500 hover:underline">Детальніше</Link>
-                        </p>
                     </form>
                 )}
             </div>
@@ -1015,7 +1031,48 @@ export const MiniCabinet = ({ clientName, registeredCourse, phone, initialTime }
     );
 };
 
-// FloatingChat extracted to Layout.tsx
+// 9. КОМПОНЕНТ: COOKIE БАНЕР
+const CookieBanner = () => {
+    const [isVisible, setIsVisible] = useState(false);
+
+    useEffect(() => {
+        const consent = localStorage.getItem('kiber_cookie_consent');
+        if (!consent) {
+            setIsVisible(true);
+        }
+    }, []);
+
+    const acceptCookies = () => {
+        localStorage.setItem('kiber_cookie_consent', 'true');
+        setIsVisible(false);
+    };
+
+    if (!isVisible) return null;
+
+    return (
+        <div className="fixed bottom-0 left-0 w-full z-[9999] p-4 animate-in slide-in-from-bottom duration-500">
+            <div className="max-w-4xl mx-auto bg-slate-900/90 backdrop-blur-xl border border-slate-800 rounded-2xl p-4 md:p-6 shadow-2xl flex flex-col md:flex-row items-center gap-4 justify-between">
+                <div className="flex items-start gap-4">
+                    <span className="text-3xl hidden md:block">🍪</span>
+                    <div>
+                        <h4 className="text-white font-bold text-sm mb-1">Ми використовуємо файли cookie</h4>
+                        <p className="text-slate-400 text-xs md:text-sm leading-relaxed">
+                            Це допомагає нам аналізувати трафік та робити сайт кращим для вас. Залишаючись на сайті, ви погоджуєтесь з нашою <Link to="/privacy" className="text-cyan-400 hover:underline">Політикою конфіденційності</Link>.
+                        </p>
+                    </div>
+                </div>
+                <button 
+                    onClick={acceptCookies}
+                    className="w-full md:w-auto whitespace-nowrap bg-gradient-to-r from-cyan-500 to-blue-600 hover:opacity-90 text-white font-bold py-2.5 px-6 rounded-xl text-sm transition-all"
+                >
+                    Зрозуміло, дякую
+                </button>
+            </div>
+        </div>
+    );
+};
+
+
 
 export const ProgramModal = ({ course, modules, onClose }: { course: any, modules: any[], onClose: () => void }) => {
     const handleSelectModule = (moduleTitle: string) => {
