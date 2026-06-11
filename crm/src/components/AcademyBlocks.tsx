@@ -795,9 +795,14 @@ export const ContactsAndMap = () => (
                         </div>
                         <div className="flex-1 pb-6 border-b border-slate-800/50 group-hover:border-emerald-500/30 transition-colors duration-500 flex flex-col justify-center">
                             <h4 className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1 group-hover:text-emerald-400 transition-colors duration-300">Зв'язок</h4>
-                            <a href="tel:+380502828029" className="inline-block text-xl md:text-2xl font-black text-white hover:text-emerald-400 tracking-tight transition-colors duration-300">
-                                +38 050 282 80 29
-                            </a>
+                            <div className="flex flex-col gap-1">
+                                <a href="tel:+380502828029" className="inline-block text-xl md:text-2xl font-black text-white hover:text-emerald-400 tracking-tight transition-colors duration-300">
+                                    +38 050 282 80 29
+                                </a>
+                                <a href="mailto:kiberschool.it@gmail.com" className="inline-block text-sm md:text-base font-medium text-slate-400 hover:text-emerald-300 transition-colors duration-300">
+                                    kiberschool.it@gmail.com
+                                </a>
+                            </div>
                         </div>
                     </div>
 
