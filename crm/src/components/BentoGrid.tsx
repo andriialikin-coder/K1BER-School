@@ -2,14 +2,14 @@ import { Clock, Apple, Users, Gamepad2, Sparkles, Box } from 'lucide-react';
 
 const features = [
   {
-    title: "3D-друк",
+    title: "3D-моделювання та 3D-друк",
     desc: (
       <>
-        Один з найулюбленіших напрямків дітей. Місце, де власні ідеї перетворюються на <strong className="text-white font-semibold">реальні об'єкти</strong> за допомогою сучасних 3D-технологій.
+        Один з найулюбленіших напрямків дітей (7+). Діти зможуть створювати <strong className="text-white font-semibold">власні 3D-моделі</strong>, друкувати їх на принтері та втілювати свої ідеї у реальні проекти!
       </>
     ),
     icon: <Box className="w-8 h-8 md:w-10 md:h-10 text-rose-400" />,
-    className: "md:col-span-1 md:row-span-2 bg-gradient-to-br from-slate-900 to-slate-950 border-rose-500/20 hover:border-rose-500/50 flex flex-col justify-center",
+    className: "md:col-span-1 md:row-span-2 bg-gradient-to-br from-slate-900 to-slate-950 border-rose-500/20 hover:border-rose-500/50 flex flex-col justify-start",
     glow: "bg-rose-500/10"
   },
   {
