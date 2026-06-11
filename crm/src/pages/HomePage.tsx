@@ -148,7 +148,7 @@ export default function HomePage() {
 
   return (
     <main className="w-full bg-slate-950 overflow-x-hidden">
-      <section className="relative w-full min-h-[calc(100vh-72px)] flex flex-col items-center justify-start pt-32 md:pt-40 lg:justify-center lg:pt-0 pb-20 px-6">
+      <section className="relative w-full min-h-[calc(100vh-72px)] flex flex-col items-center justify-start pt-16 sm:pt-24 lg:justify-center lg:pt-0 pb-20 px-6">
       
       {/* 1. Глобальный фон: Неоновые градиенты космоса */}
       <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-80 h-80 sm:w-[450px] sm:h-[450px] rounded-full bg-purple-600/[0.08] blur-[100px] sm:blur-[150px] pointer-events-none animate-drift-slow" />
@@ -165,7 +165,7 @@ export default function HomePage() {
       />
 
       {/* Центральный Сатурн с орбитами (на фоне) */}
-      <div className="absolute top-[25%] md:top-[30%] lg:top-[40%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] flex items-center justify-center opacity-[0.25] md:opacity-[0.35] scale-[0.5] sm:scale-[0.75] md:scale-90 lg:scale-100 pointer-events-none z-0 mix-blend-screen">
+      <div className="absolute top-[15%] sm:top-[22%] lg:top-[40%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] flex items-center justify-center opacity-[0.25] md:opacity-[0.35] scale-[0.5] sm:scale-[0.75] md:scale-90 lg:scale-100 pointer-events-none z-0 mix-blend-screen">
         {/* Само тело планеты */}
         <div className="absolute w-[360px] h-[360px] rounded-full bg-gradient-to-br from-[#fb923c] via-[#ea580c] to-[#7c2d12] shadow-[inset_-40px_-40px_60px_rgba(0,0,0,0.8),0_0_120px_rgba(234,88,12,0.6)] z-10" />
 
