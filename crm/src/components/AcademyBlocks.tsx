@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { supabase } from '../lib/supabase';
 import { ageGroups } from './BentoModules';
+import { Link } from 'react-router-dom';
 
 // Header extracted to Layout.tsx
 
@@ -598,7 +599,7 @@ export const RegisterForm = ({ sourceName = 'Інтенсив', onAuthSuccess, s
                         </button>
                         
                         <p className="mt-5 text-[11px] text-slate-500 text-center leading-relaxed px-2">
-                            Підтвердіть свою згоду на обробку персональних даних. Ми зобов'язуємося використовувати отриману інформацію тільки всередині нашої компанії, і не передавати третім особам. <a href="#!" className="text-cyan-500 hover:underline">Детальніше</a>
+                            Підтвердіть свою згоду на обробку персональних даних. Ми зобов'язуємося використовувати отриману інформацію тільки всередині нашої компанії, і не передавати третім особам. <Link to="/privacy" className="text-cyan-500 hover:underline">Детальніше</Link>
                         </p>
                     </form>
                 )}

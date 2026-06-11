@@ -181,10 +181,13 @@ export default function Layout() {
                 <Outlet />
             </main>
 
-            <footer className="w-full bg-slate-950 py-6 text-center border-t border-slate-900">
+            <footer className="w-full bg-slate-950 py-6 text-center border-t border-slate-900 flex flex-col items-center justify-center gap-2">
                 <p className="text-slate-700 text-xs">
                     © {new Date().getFullYear()} K1BER.SCHOOL · Суми
                 </p>
+                <Link to="/privacy" className="text-slate-600 hover:text-cyan-500 text-xs transition-colors duration-300">
+                    Політика конфіденційності
+                </Link>
             </footer>
 
             <FloatingChat />

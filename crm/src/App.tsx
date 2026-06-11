@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
 import HomePage from './pages/HomePage';
-
+import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 import CRMPage from './pages/CRMPage';
 
 export default function App() {
@@ -14,6 +14,7 @@ export default function App() {
         {/* Публічний портал з єдиним Layout */}
         <Route element={<Layout />}>
           <Route path="/" element={<HomePage />} />
+          <Route path="/privacy" element={<PrivacyPolicyPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
