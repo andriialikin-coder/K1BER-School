@@ -2,6 +2,8 @@
 
 @import "tailwindcss";
 
+@custom-variant xs (@media (width >= 400px));
+
 :root {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;

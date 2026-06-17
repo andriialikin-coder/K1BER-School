@@ -10,9 +10,9 @@ const Header = () => {
             <div className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
 
                 {/* Логотип */}
-                <Link to="/" className="flex items-center gap-2 group">
-                    <img src="/logo.webp" alt="K1BER Logo" className="w-12 h-12 md:w-14 md:h-14 drop-shadow-[0_0_15px_rgba(6,182,212,0.4)] group-hover:drop-shadow-[0_0_25px_rgba(6,182,212,0.6)] transition-all duration-300 object-contain" />
-                    <span className="text-white font-black text-xl tracking-tight">
+                <Link to="/" className="flex items-center gap-2 group min-w-0">
+                    <img src="/logo.webp" alt="K1BER Logo" className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 flex-shrink-0 drop-shadow-[0_0_15px_rgba(6,182,212,0.4)] group-hover:drop-shadow-[0_0_25px_rgba(6,182,212,0.6)] transition-all duration-300 object-contain" />
+                    <span className="text-white font-black text-base sm:text-xl tracking-tight truncate">
                         K1BER<span className="text-cyan-400">.</span>SCHOOL
                     </span>
                 </Link>
@@ -37,7 +37,7 @@ const Header = () => {
                     </a>
                 </nav>
 
-                {/* CTA кнопка */}
+                {/* CTA кнопка — тільки десктоп */}
                 <div className="hidden md:flex items-center gap-4">
                     <a
                         href="#register"
@@ -50,11 +50,12 @@ const Header = () => {
                     </a>
                 </div>
 
-                {/* Мобільні елементи (Кнопка + Бургер) */}
-                <div className="flex md:hidden items-center gap-3">
+                {/* Мобільні елементи — тільки бургер (кнопка є в меню) */}
+                <div className="flex md:hidden items-center gap-2 flex-shrink-0">
+                    {/* Кнопка прихована на найменших екранах, показується від 400px */}
                     <a
                         href="#register"
-                        className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold py-1.5 px-4 rounded-lg text-xs shadow-lg shadow-cyan-500/25 active:scale-95 transition-all"
+                        className="hidden xs:inline-flex bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold py-1.5 px-3 rounded-lg text-xs shadow-lg shadow-cyan-500/25 active:scale-95 transition-all whitespace-nowrap"
                     >
                         Записатись
                     </a>
