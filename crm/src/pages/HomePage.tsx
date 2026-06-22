@@ -48,7 +48,7 @@ export default function HomePage() {
                       .from('leads')
                       .select('name, course, chosen_time')
                       .eq('phone', phone)
-                      .single();
+                      .maybeSingle();
 
                   if (!error && data) {
                       if (data.course) {

@@ -319,7 +319,7 @@ export const RegisterForm = ({ sourceName = 'Інтенсив', onAuthSuccess, s
                 .from('leads')
                 .select('name, course, chosen_time')
                 .eq('phone', loginPhone)
-                .single();
+                .maybeSingle();
 
             if (!error && data) {
                 localStorage.setItem('kiberUserPhone', loginPhone);
