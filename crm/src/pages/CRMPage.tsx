@@ -355,7 +355,7 @@ export default function CRMPage() {
 
       setAnalyzingId(lead.id);
       try {
-          const prompt = `Ти — геніальний аналітик-продажник IT-курсів для дітей у Сумах (K1BER.SCHOOL). Твоя задача — вичавити максимум інсайтів з ПОВЕДІНКИ клієнта на сайті [behavior_log].
+          const prompt = `Ти — геніальний аналітик-продажник IT-курсів для дітей у Сумах (SCHOOL). Твоя задача — вичавити максимум інсайтів з ПОВЕДІНКИ клієнта на сайті [behavior_log].
 
 ДЕТАЛЬНА АНАЛІТИКА ПОВЕДІНКИ КЛІЄНТА:
 ${JSON.stringify(lead.behavior_log, null, 2)}
@@ -507,7 +507,7 @@ ${JSON.stringify(lead.behavior_log, null, 2)}
           onSubmit={handleLoginSubmit}
         >
           <div className="flex justify-center mb-6">
-            <img src="/logo.webp" alt="K1BER Logo" className="w-16 h-16 drop-shadow-[0_0_15px_rgba(6,182,212,0.4)] object-contain" />
+            <img src="/logo.webp" alt="School Logo" className="w-16 h-16 drop-shadow-[0_0_15px_rgba(6,182,212,0.4)] object-contain" />
           </div>
           <h2 className="text-xl font-bold text-center mb-6">Вхід до CRM</h2>
           

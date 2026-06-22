@@ -83,7 +83,7 @@ export function BentoGrid() {
           </span>
         </h2>
         <p className="text-slate-400 text-lg md:text-xl max-w-2xl mx-auto font-medium leading-relaxed">
-          Те, що робить навчання у K1BER School дійсно особливим та комфортним
+          Те, що робить навчання у School дійсно особливим та комфортним
         </p>
       </div>
       

@@ -270,7 +270,7 @@ export default function HomePage() {
           style={{ fontFamily: "'Outfit', 'Inter', system-ui, sans-serif" }}
         >
           <span className="relative inline-block bg-gradient-to-r from-cyan-400 via-blue-400 to-indigo-400 bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(6,182,212,0.3)]">
-            K1BER School
+            School
           </span>
         </h1>
         <div className="mb-8 mt-3 relative z-10 w-[95%] max-w-2xl mx-auto flex justify-center">

@@ -11,9 +11,9 @@ const Header = () => {
 
                 {/* Логотип */}
                 <Link to="/" className="flex items-center gap-2 group min-w-0">
-                    <img src="/logo.webp" alt="K1BER Logo" className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 flex-shrink-0 drop-shadow-[0_0_15px_rgba(6,182,212,0.4)] group-hover:drop-shadow-[0_0_25px_rgba(6,182,212,0.6)] transition-all duration-300 object-contain" />
+                    <img src="/logo.webp" alt="School Logo" className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 flex-shrink-0 drop-shadow-[0_0_15px_rgba(6,182,212,0.4)] group-hover:drop-shadow-[0_0_25px_rgba(6,182,212,0.6)] transition-all duration-300 object-contain" />
                     <span className="text-white font-black text-base sm:text-xl tracking-tight truncate">
-                        K1BER<span className="text-cyan-400">.</span>SCHOOL
+                        SCHOOL
                     </span>
                 </Link>
 
@@ -248,7 +248,7 @@ export default function Layout() {
                     </div>
 
                     <p className="text-slate-700 text-xs">
-                        © {new Date().getFullYear()} K1BER.SCHOOL · Всі права захищено
+                        © {new Date().getFullYear()} SCHOOL · Всі права захищено
                     </p>
                 </div>
             </footer>

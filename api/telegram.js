@@ -21,7 +21,7 @@ export default async function handler(req, res) {
     }
 
     // Форматування повідомлення
-    const text = `🔥 НОВИЙ ЛІД ДЛЯ K1BER.SCHOOL!\n\n👤 Ім'я: ${lead.name || 'Не вказано'}\n📞 Телефон: ${lead.phone || 'Не вказано'}\n🎯 Курс: ${lead.course || 'Не обрано'}\n\n👇 Тисни кнопку нижче, щоб подивитися AI-аналіз клієнта та готовий скрипт для дзвінка!`;
+    const text = `🔥 НОВИЙ ЛІД ДЛЯ SCHOOL!\n\n👤 Ім'я: ${lead.name || 'Не вказано'}\n📞 Телефон: ${lead.phone || 'Не вказано'}\n🎯 Курс: ${lead.course || 'Не обрано'}\n\n👇 Тисни кнопку нижче, щоб подивитися AI-аналіз клієнта та готовий скрипт для дзвінка!`;
 
     const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
     const payloadTemplate = {

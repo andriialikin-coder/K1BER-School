@@ -19,16 +19,16 @@ export default function OfferPage() {
 
                 <div className="bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-3xl p-8 md:p-12 shadow-2xl">
                     <div className="flex items-center gap-4 mb-10 pb-10 border-b border-slate-800">
-                        <img src="/logo.webp" alt="K1BER Logo" className="w-16 h-16 drop-shadow-[0_0_15px_rgba(6,182,212,0.4)] object-contain" />
-                        <div>
-                            <h1 className="text-3xl font-black text-white tracking-tight">Публічна оферта</h1>
-                            <p className="text-cyan-400 font-medium tracking-widest uppercase text-xs mt-1">K1BER.SCHOOL</p>
-                        </div>
+                        <img src="/logo.webp" alt="School Logo" className="w-16 h-16 drop-shadow-[0_0_15px_rgba(6,182,212,0.4)] object-contain" />
+                    </div>
+                    <div className="text-center sm:text-left">
+                        <h1 className="text-3xl font-black text-white tracking-tight">Публічна оферта</h1>
+                        <p className="text-cyan-400 font-medium tracking-widest uppercase text-xs mt-1">SCHOOL</p>
                     </div>
 
-                    <div className="space-y-8 text-slate-400 leading-relaxed">
+                    <div className="space-y-8 text-slate-400 leading-relaxed mt-10">
                         <p className="text-lg text-slate-300">
-                            Цей договір є офіційною пропозицією (публічною офертою) <span className="text-white font-semibold">K1BER.SCHOOL</span> щодо надання освітніх послуг.
+                            Цей договір є офіційною пропозицією (публічною офертою) <span className="text-white font-semibold">SCHOOL</span> щодо надання освітніх послуг.
                         </p>
                         
                         <div className="p-4 bg-amber-500/10 border border-amber-500/20 rounded-xl text-amber-200 text-sm">

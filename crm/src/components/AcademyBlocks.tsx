@@ -704,7 +704,7 @@ export const FAQ = ({ onFaqToggle }: { onFaqToggle?: (question: string) => void 
 
                     <img 
                         src="/filin.webp" 
-                        alt="Мудра сова K1BER" 
+                        alt="Мудра сова School" 
                         className="w-40 sm:w-48 md:w-56 lg:w-[320px] object-contain drop-shadow-[0_0_20px_rgba(6,182,212,0.25)] relative z-10 transform transition-all duration-700 ease-out group-hover:scale-105 group-hover:-translate-y-4"
                     />
                 </div>
@@ -776,7 +776,7 @@ export const ContactsAndMap = () => (
                     </h2>
 
                     <p className="text-slate-400 text-base md:text-lg leading-relaxed max-w-lg">
-                        Навчальний простір <span className="text-white font-semibold">K1BER.SCHOOL</span> розташований у центрі міста. Поки дитина створює свої перші IT-проекти під наглядом менторів — батьки можуть комфортно зайнятися шопінгом або відпочити в кафе.
+                        Навчальний простір <span className="text-white font-semibold">SCHOOL</span> розташований у центрі міста. Поки дитина створює свої перші IT-проекти під наглядом менторів — батьки можуть комфортно зайнятися шопінгом або відпочити в кафе.
                     </p>
                 </div>
 
@@ -885,7 +885,7 @@ export const ContactsAndMap = () => (
                             <span className="text-white text-lg">🏫</span>
                         </div>
                         <div>
-                            <p className="text-white font-bold text-sm">K1BER.SCHOOL</p>
+                            <p className="text-white font-bold text-sm">SCHOOL</p>
                             <p className="text-cyan-400 text-xs">Ми знаходимось тут</p>
                         </div>
                     </div>
@@ -944,7 +944,7 @@ export const MiniCabinet = ({ clientName, registeredCourse, phone, initialTime }
                             <div>
                                 <span className="block text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-1">Адреса</span>
                                 <span className="text-slate-300 text-sm leading-relaxed block">
-                                    IT школа K1BER School, ТРЦ "КИЇВ",<br />
+                                    IT школа School, ТРЦ "КИЇВ",<br />
                                     Нижньовоскресенська 1 (м. Суми)
                                 </span>
                             </div>
