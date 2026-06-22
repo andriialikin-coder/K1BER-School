@@ -101,7 +101,7 @@ const FloatingChat = () => {
                 {[
                     {
                         name: 'Instagram',
-                        url: 'https://www.instagram.com/kiberschool.it/',
+                        url: '#',
                         bg: 'bg-gradient-to-tr from-[#f09433] via-[#e6683c] to-[#bc1888]',
                         border: '',
                         icon: (
@@ -114,7 +114,7 @@ const FloatingChat = () => {
                     },
                     {
                         name: 'Threads',
-                        url: 'https://www.threads.com/@kiberschool.it?xmt=AQG0xw5HBdx2-BiOJFwVelXl8-XQipYC_aUMQYbcBX8LqqQ',
+                        url: '#',
                         bg: 'bg-black',
                         border: 'border border-slate-700',
                         icon: (
@@ -123,7 +123,7 @@ const FloatingChat = () => {
                     },
                     {
                         name: 'Facebook',
-                        url: 'https://www.facebook.com/k1berschool.sumy/?ref=PROFILE_EDIT_xav_ig_profile_page_web#',
+                        url: '#',
                         bg: 'bg-[#1877F2]',
                         border: '',
                         icon: (
@@ -134,7 +134,7 @@ const FloatingChat = () => {
                     },
                     {
                         name: 'TikTok',
-                        url: 'https://www.tiktok.com/@kiberschool.it?_t=8osFnGqnEHt&_r=1&fbclid=PAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQPOTM2NjE5NzQzMzkyNDU5AAGnkdtSEjNPT-bnGd90n_LW_N-xiS0c1KiDloEWzaNtsiUgk3kfcV03CG49T8U_aem_U93ujt0yBxKRwpW-rlR8Hw',
+                        url: '#',
                         bg: 'bg-slate-900',
                         border: 'border border-slate-700',
                         icon: (

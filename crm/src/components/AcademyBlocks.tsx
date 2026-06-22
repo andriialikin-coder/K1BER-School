@@ -796,8 +796,8 @@ export const ContactsAndMap = () => (
                         <div className="flex-1 pb-6 border-b border-slate-800/50 group-hover:border-cyan-500/30 transition-colors duration-500">
                             <h4 className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1 group-hover:text-cyan-400 transition-colors duration-300">Локація</h4>
                             <p className="text-slate-200 text-base md:text-lg font-medium leading-snug">
-                                м. Суми, вул. Нижньовоскресенська, 1
-                                <span className="block text-slate-400 text-sm mt-1 font-normal">ТРЦ «КИЇВ»</span>
+                                Ваше Місто, вул. Назва, 1
+                                <span className="block text-slate-400 text-sm mt-1 font-normal">Назва ТРЦ</span>
                             </p>
                         </div>
                     </div>
@@ -813,11 +813,11 @@ export const ContactsAndMap = () => (
                         <div className="flex-1 pb-6 border-b border-slate-800/50 group-hover:border-emerald-500/30 transition-colors duration-500 flex flex-col justify-center">
                             <h4 className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1 group-hover:text-emerald-400 transition-colors duration-300">Зв'язок</h4>
                             <div className="flex flex-col gap-1">
-                                <a href="tel:+380502828029" className="inline-block text-xl md:text-2xl font-black text-white hover:text-emerald-400 tracking-tight transition-colors duration-300">
-                                    +38 050 282 80 29
+                                <a href="tel:+380000000000" className="inline-block text-xl md:text-2xl font-black text-white hover:text-emerald-400 tracking-tight transition-colors duration-300">
+                                    +38 000 000 00 00
                                 </a>
-                                <a href="mailto:kiberschool.it@gmail.com" className="inline-block text-sm md:text-base font-medium text-slate-400 hover:text-emerald-300 transition-colors duration-300">
-                                    kiberschool.it@gmail.com
+                                <a href="mailto:email@example.com" className="inline-block text-sm md:text-base font-medium text-slate-400 hover:text-emerald-300 transition-colors duration-300">
+                                    email@example.com
                                 </a>
                             </div>
                         </div>
@@ -870,8 +870,8 @@ export const ContactsAndMap = () => (
                 <div className="absolute inset-0 bg-slate-950/20 group-hover:bg-transparent transition-colors duration-500 pointer-events-none z-10"></div>
 
                 <iframe
-                    title="K1BER.SCHOOL — м. Суми, ТРЦ КИЇВ, вул. Нижньовоскресенська, 1"
-                    src="https://maps.google.com/maps?q=ТРЦ%20Київ,%20вулиця%20Нижньовоскресенська%201,%20Суми&t=&z=16&ie=UTF8&iwloc=&output=embed"
+                    title="Локація"
+                    src="https://maps.google.com/maps?q=Київ&t=&z=12&ie=UTF8&iwloc=&output=embed"
                     className="w-full h-full grayscale-[0.8] opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700 scale-105 group-hover:scale-100"
                     allowFullScreen={false}
                     loading="lazy"
