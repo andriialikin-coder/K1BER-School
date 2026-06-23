@@ -243,7 +243,7 @@ export default function Layout() {
                             ФОП Прізвище Ім'я По батькові (приклад)
                         </p>
                         <p className="text-slate-600 text-xs font-mono">
-                            ІПН: 1234567890 | м. Суми, вул. Назва, 1
+                            ІПН: 1234567890 | вул. Назва, 1
                         </p>
                     </div>
 

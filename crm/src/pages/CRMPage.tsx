@@ -355,7 +355,7 @@ export default function CRMPage() {
 
       setAnalyzingId(lead.id);
       try {
-          const prompt = `Ти — геніальний аналітик-продажник IT-курсів для дітей у Сумах (SCHOOL). Твоя задача — вичавити максимум інсайтів з ПОВЕДІНКИ клієнта на сайті [behavior_log].
+          const prompt = `Ти — геніальний аналітик-продажник IT-курсів для дітей (SCHOOL). Твоя задача — вичавити максимум інсайтів з ПОВЕДІНКИ клієнта на сайті [behavior_log].
 
 ДЕТАЛЬНА АНАЛІТИКА ПОВЕДІНКИ КЛІЄНТА:
 ${JSON.stringify(lead.behavior_log, null, 2)}

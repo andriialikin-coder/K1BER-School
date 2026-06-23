@@ -530,7 +530,7 @@ export const RegisterForm = ({ sourceName = 'Інтенсив', onAuthSuccess, s
                                             required
                                             value={formData.city}
                                             onChange={e => setFormData({ ...formData, city: e.target.value })}
-                                            placeholder="Суми / Онлайн"
+                                            placeholder="Місто / Онлайн"
                                             className="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-cyan-500 text-white"
                                         />
                                     </div>
@@ -945,7 +945,7 @@ export const MiniCabinet = ({ clientName, registeredCourse, phone, initialTime }
                                 <span className="block text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-1">Адреса</span>
                                 <span className="text-slate-300 text-sm leading-relaxed block">
                                     IT школа School, ТРЦ "КИЇВ",<br />
-                                    Нижньовоскресенська 1 (м. Суми)
+                                    Нижньовоскресенська 1
                                 </span>
                             </div>
                         </div>
